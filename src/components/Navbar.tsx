@@ -2,25 +2,39 @@ import Button from '../components/Button';
 import { Link } from 'react-router-dom';
 
 const NavBar = () => {
-    return (
-        <div>
-            <Link to="/HomePage">
-                <Button onClick={() => console.log('Home clicked')}>Home</Button>
-            </Link>
-           <Link to="/MessagesPage">
+  return (
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div className="container-fluid">
+        <Link to="/HomePage" className="navbar-brand">
+          <Button onClick={() => console.log('Home clicked')}>Home</Button>
+        </Link>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <Link to="/MessagesPage" className="nav-link">
                 <Button onClick={() => console.log('Messages clicked')}>Messages</Button>
-            </Link>
-            <Link to="/reg">
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/reg" className="nav-link">
                 <Button onClick={() => console.log('Conditions clicked')}>Conditions</Button>
-            </Link>
-            <Link to="/reg">
-                <Button onClick={() => console.log('Encounter clicked')}>Encounter </Button>
-            </Link>
-            <Link to="/reg">
-                <Button onClick={() => console.log('Observation clicked')}>Observation </Button>
-            </Link>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/reg" className="nav-link">
+                <Button onClick={() => console.log('Encounter clicked')}>Encounter</Button>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/reg" className="nav-link">
+                <Button onClick={() => console.log('Observation clicked')}>Observation</Button>
+              </Link>
+            </li>
+          </ul>
         </div>
-      );
-    };
-    
-    export default NavBar;
+      </div>
+    </nav>
+  );
+};
+
+export default NavBar;
