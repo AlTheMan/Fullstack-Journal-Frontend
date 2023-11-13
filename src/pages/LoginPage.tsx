@@ -11,8 +11,6 @@ const LoginPage = () => {
 
   return (
     <div>
-      <Button onClick={() => console.log('Login clicked')}>Login</Button>
-      <Button onClick={() => console.log('Register clicked')}>Register</Button>
       <LoginForm onSubmit={handleLoginFormSubmit} />
     </div>
   );
