@@ -16,13 +16,40 @@ const MessagesPage = () => {
       };
       const [doctors, setDoctors] = useState<Doctor[]>([]);
 
+      
+      type Message ={
+            id: number;
+            time: Date;
+            employeeId: number;
+            patientId: number;
+            sentById: number;
+            message: string;
+      };
+      const [messages, setMessages] = useState<Message[]>([]);
+
+
+
       const handleSelectDoctor=(id:number ) =>{
         console.log("staff/doctor id:" + id);
+        
+
+        const fetchData = async (employeeId: number, patientId: number) => {
+            const response = await axios.get('http://localhost:8080/messages/get',{
+                params: {
+                    employeeId,
+                    patientId,
+                },
+            });
+            if (response.status === 200) {
+              console.log(response.data);
+              const messageData: Message[] = response.data;
+              setMessages(messageData);
+            }
+        };
+        //fetchData(id, localStorage.getItem("username")); //TODO: hämta meddelanden från användarnamn istället, alt. returnera userId när man loggar in.
+
       }
 
-      type Message ={
-            
-      };
 
 
     
