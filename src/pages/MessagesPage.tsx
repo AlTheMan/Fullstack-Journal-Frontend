@@ -19,7 +19,10 @@ const MessagesPage = () => {
       const handleSelectDoctor=(id:number ) =>{
         console.log("staff/doctor id:" + id);
       }
-      const [selectedIndex, setSelectedIndex]= useState(-1);
+
+      type Message ={
+            
+      };
 
 
     
@@ -51,6 +54,9 @@ const MessagesPage = () => {
                 getLabel={(doctor) => `${doctor.firstName} ${doctor.lastName} (ID: ${doctor.id}) ${doctor.privilege}`}
                 onSelectItem={(doctor) => handleSelectDoctor(doctor.id)}
             />
+        </ul>
+        <ul>
+
         </ul>
     </div>
     </>
