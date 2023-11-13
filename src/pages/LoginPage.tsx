@@ -22,6 +22,7 @@ const LoginPage = () => {
       const response = await axios.post('http://localhost:8080/user/login', requestData);
       console.log(response.status);
       if(response.status==200){ //success
+        //TODO: kolla response.data==DOCTOR eller response.data==patient (?) kommer inte ihåg om det var patient.
         navigate('/HomePage');
       }
       console.log(response.data);
