@@ -32,6 +32,9 @@ const NavBar = () => {
             </li>
           </ul>
         </div>
+        <Link to="/LoginPage" className="nav-link">
+            <Button onClick={() => console.log('Logout clicked')}>Logout</Button>
+        </Link>
       </div>
     </nav>
   );

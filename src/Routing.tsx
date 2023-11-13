@@ -11,6 +11,7 @@ export const Routing=()=>{
           <Route path="/" element={<LoginPage />} />
           <Route path="/HomePage" element={<HomePage />} />
           <Route path="/MessagesPage" element={<MessagesPage />} />
+          <Route path="/LoginPage" element={<LoginPage />} />
         </Routes>
       </Router>
     )
