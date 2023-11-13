@@ -1,13 +1,10 @@
-import Button from './components/Button'
-import Login from './pages/Login'
 
+import HomePage from './pages/HomePage'
 
 function App() {
 
   return (
-   <div> hej <Button children='Login' onClick={()=>console.log('clicked')}></Button> 
-   <Login></Login>
-   </div>
+   <div className='App'> <HomePage></HomePage></div>
   )
 }
 
