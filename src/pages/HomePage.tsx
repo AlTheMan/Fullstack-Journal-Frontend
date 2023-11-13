@@ -9,7 +9,9 @@ return (
        <Link to="/LoginPage">
         <Button onClick={() => console.log('Login clicked')}>Login</Button>
       </Link>
+      <Link to="/reg">
         <Button onClick={() => console.log('Register clicked')}>Register</Button>
+        </Link>
     </div>
   );
 };

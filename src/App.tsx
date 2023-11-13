@@ -12,5 +12,5 @@ function App() {
     
   )
 }
-/*   <div className='App'> <HomePage></HomePage></div> */
+
 export default App
