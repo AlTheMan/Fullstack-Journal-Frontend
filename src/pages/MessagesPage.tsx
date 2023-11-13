@@ -1,14 +1,21 @@
 // MessagesPage.tsx
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Message from '../components/Message';
+import NavBar from '../components/Navbar';
+
+
 
 const MessagesPage = () => {
-  useEffect(() => {
+    type Doctor = {
+        id: number; //elr long
+        firstName: string;
+        lastName: string;
+      };
+    const [doctors, setDoctors] = useState([]);
 
-    const users = [
-        { firstName: 'Emil', lastName: 'Wennström', id: 39, privilege: 'DOCTOR' }
-    ]
+    
+  useEffect(() => {
 
     const fetchData = async () => {
         const response = await axios.get('http://localhost:8080/messages/getAllDoctors');
@@ -22,9 +29,19 @@ const MessagesPage = () => {
   }, []); // Empty dependency array to run the effect only once (equivalent to componentDidMount)
 
   return (
-    <div>
-      <Message message='test' />
+    <>
+    <NavBar></NavBar>
+    <div>{/* Render the list of doctors */}
+    <h2>List of Doctors:</h2>
+    <ul>
+        {doctors.map((doctor: Doctor) => (
+        <li key={doctor.id}>
+            {`${doctor.firstName} ${doctor.lastName} (ID: ${doctor.id})`}
+        </li>
+        ))}
+    </ul>
     </div>
+    </>
   );
 };
 
