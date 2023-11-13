@@ -21,11 +21,17 @@ const LoginPage = () => {
       // Make the HTTP POST request using Axios
       const response = await axios.post('http://localhost:8080/user/login', requestData);
       console.log(response.status);
+      console.log(response.data);
+
       if(response.status==200){ //success
         //TODO: kolla response.data==DOCTOR eller response.data==patient (?) kommer inte ihåg om det var patient.
+        localStorage.setItem("username",username);
+        localStorage.setItem("privilege",response.data);
+        console.log("username: " + localStorage.getItem("username"));
+        console.log("privilege: " + localStorage.getItem("privilege"));
         navigate('/HomePage');
       }
-      console.log(response.data);
+      
 
   };
 
