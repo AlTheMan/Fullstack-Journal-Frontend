@@ -3,7 +3,7 @@ import React from 'react';
 import Button from '../components/Button';
 import LoginForm from '../components/LoginForm';
 
-const HomePage = () => {
+const LoginPage = () => {
   const handleLoginFormSubmit = (username: string, password: string) => {
     // Handle the form submission logic here
     console.log('Submitted from HomePage:', username, password);
@@ -18,4 +18,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default LoginPage;
