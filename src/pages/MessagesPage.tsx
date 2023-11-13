@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Message from '../components/Message';
 import NavBar from '../components/Navbar';
+import ListGroupGeneric from '../components/ListGroupGeneric';
 
 
 
@@ -16,8 +17,10 @@ const MessagesPage = () => {
       const [doctors, setDoctors] = useState<Doctor[]>([]);
 
       const handleSelectDoctor=(id:number ) =>{
-        
+        console.log("staff/doctor id:" + id);
       }
+      const [selectedIndex, setSelectedIndex]= useState(-1);
+
 
     
   useEffect(() => {
@@ -41,20 +44,35 @@ const MessagesPage = () => {
     <NavBar></NavBar>
     <div>{/* Render the list of doctors */}
     <h2>List of Doctors:</h2>
-    <ul>
-        {doctors.map((doctor: Doctor) => (
-        <li key={doctor.id}
-        onClick={()=> {
-            handleSelectDoctor(doctor.id);
-        }}
-        >
-            {`${doctor.firstName} ${doctor.lastName} (ID: ${doctor.id}) ${doctor.privilege} `}
-        </li>
-        ))}
-    </ul>
+        <ul>
+            <ListGroupGeneric<Doctor>
+                items={doctors}
+                getKey={(doctor) => doctor.id.toString()}
+                getLabel={(doctor) => `${doctor.firstName} ${doctor.lastName} (ID: ${doctor.id}) ${doctor.privilege}`}
+                onSelectItem={(doctor) => handleSelectDoctor(doctor.id)}
+            />
+        </ul>
     </div>
     </>
   );
 };
 
 export default MessagesPage;
+
+
+
+/* alternativt:
+{doctors.map((doctor: Doctor) => (
+        <li key={doctor.id}
+        onClick={()=> {
+            setSelectedIndex(doctor.id);
+            handleSelectDoctor(doctor.id);
+        }}
+        className={selectedIndex===doctor.id ? 'list-group-item active': 'list-group-item'}
+        >
+            {`${doctor.firstName} ${doctor.lastName} (ID: ${doctor.id}) ${doctor.privilege} `}
+        </li>
+        ))}
+
+
+        */
