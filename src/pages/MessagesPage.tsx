@@ -12,7 +12,7 @@ const MessagesPage = () => {
         firstName: string;
         lastName: string;
       };
-    const [doctors, setDoctors] = useState([]);
+      const [doctors, setDoctors] = useState<Doctor[]>([]);
 
     
   useEffect(() => {
@@ -21,7 +21,8 @@ const MessagesPage = () => {
         const response = await axios.get('http://localhost:8080/messages/getAllDoctors');
         if (response.status === 200) {
           console.log(response.data);
-          
+          const doctorData: Doctor[] = response.data;
+          setDoctors(doctorData);
         }
     };
 
