@@ -1,13 +1,21 @@
-import Button from "../components/Button";
+// HomePage.tsx
+import React from 'react';
+import Button from '../components/Button';
+import LoginForm from '../components/LoginForm';
 
+const HomePage = () => {
+  const handleLoginFormSubmit = (username: string, password: string) => {
+    // Handle the form submission logic here
+    console.log('Submitted from HomePage:', username, password);
+  };
 
-const HomePage = () =>{
-    return (
-        <div>
-            <Button onClick={()=>console.log('clicked')}> login</Button>
-            <Button onClick={()=>console.log('clicked')}> Register</Button>
-        </div>
-    )
-}
+  return (
+    <div>
+      <Button onClick={() => console.log('Login clicked')}>Login</Button>
+      <Button onClick={() => console.log('Register clicked')}>Register</Button>
+      <LoginForm onSubmit={handleLoginFormSubmit} />
+    </div>
+  );
+};
 
 export default HomePage;
