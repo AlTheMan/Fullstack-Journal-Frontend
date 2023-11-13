@@ -11,14 +11,19 @@ const MessagesPage = () => {
         id: number; //elr long
         firstName: string;
         lastName: string;
+        privilege: 'STAFF' | 'DOCTOR';
       };
       const [doctors, setDoctors] = useState<Doctor[]>([]);
+
+      const handleSelectDoctor=(id:number ) =>{
+        
+      }
 
     
   useEffect(() => {
 
     const fetchData = async () => {
-        const response = await axios.get('http://localhost:8080/messages/getAllDoctors');
+        const response = await axios.get('http://localhost:8080/messages/getAllStaff');
         if (response.status === 200) {
           console.log(response.data);
           const doctorData: Doctor[] = response.data;
@@ -29,6 +34,8 @@ const MessagesPage = () => {
     fetchData();
   }, []); // Empty dependency array to run the effect only once (equivalent to componentDidMount)
 
+   
+
   return (
     <>
     <NavBar></NavBar>
@@ -36,8 +43,12 @@ const MessagesPage = () => {
     <h2>List of Doctors:</h2>
     <ul>
         {doctors.map((doctor: Doctor) => (
-        <li key={doctor.id}>
-            {`${doctor.firstName} ${doctor.lastName} (ID: ${doctor.id})`}
+        <li key={doctor.id}
+        onClick={()=> {
+            handleSelectDoctor(doctor.id);
+        }}
+        >
+            {`${doctor.firstName} ${doctor.lastName} (ID: ${doctor.id}) ${doctor.privilege} `}
         </li>
         ))}
     </ul>
