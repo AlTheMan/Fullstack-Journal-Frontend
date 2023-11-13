@@ -3,9 +3,12 @@ import React from 'react';
 import Button from '../components/Button';
 import LoginForm from '../components/LoginForm';
 import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 const LoginPage = () => {
+  const navigate = useNavigate(); //för forced-redirect
+
   const handleLoginFormSubmit = async (username: string, password: string) => {
     console.log('Submitted from LoginPage:', username, password);
 
@@ -18,6 +21,9 @@ const LoginPage = () => {
       // Make the HTTP POST request using Axios
       const response = await axios.post('http://localhost:8080/user/login', requestData);
       console.log(response.status);
+      if(response.status==200){ //success
+        navigate('/HomePage');
+      }
       console.log(response.data);
 
   };
