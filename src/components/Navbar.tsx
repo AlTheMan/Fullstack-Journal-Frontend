@@ -16,7 +16,7 @@ const NavBar = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/reg" className="nav-link">
+              <Link to="/ConditionPage" className="nav-link">
                 <Button onClick={() => console.log('Conditions clicked')}>Conditions</Button>
               </Link>
             </li>

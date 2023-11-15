@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import MessagesPage from './pages/MessagesPage';
+import ConditionPage from './pages/ConditionPage';
 
 
 export const Routing=()=>{
@@ -11,6 +12,7 @@ export const Routing=()=>{
           <Route path="/" element={<LoginPage />} />
           <Route path="/HomePage" element={<HomePage />} />
           <Route path="/MessagesPage" element={<MessagesPage />} />
+          <Route path='/ConditionPage' element={<ConditionPage />} />
           <Route path="/LoginPage" element={<LoginPage />} />
         </Routes>
       </Router>

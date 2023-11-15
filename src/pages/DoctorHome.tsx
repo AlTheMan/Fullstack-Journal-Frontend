@@ -1,4 +1,4 @@
-import { fetchData } from "../api/namedPersonApi";
+import { fetchData } from "../api/NamedPersonApi";
 import React, { useEffect, useState } from 'react';
 import { NamedPerson } from "../types/NamedPerson";
 
@@ -22,7 +22,7 @@ const DoctorHome: React.FC = () => {
 
 return (
     <div>
-       Welcome {doctor?.firstName} {doctor?.lastName}
+       <h1>Welcome: Dr {doctor?.firstName} {doctor?.lastName}</h1>
     </div>
   );
 };
