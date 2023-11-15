@@ -9,10 +9,18 @@ import ListGroupGeneric from '../components/ListGroupGeneric';
 
 
 type Doctor = {
-    id: number; //elr long
+    id: number; 
     firstName: string;
     lastName: string;
     privilege: 'STAFF' | 'DOCTOR';
+};
+
+type Patient = {
+    patientId: number; 
+    firstName: string;
+    familyName: string;
+    sex: string;
+    birthdate: string;
 };
 
 type Message ={
@@ -33,6 +41,7 @@ type MyIdType={
 const MessagesPage = () => {
    
     const [doctors, setDoctors] = useState<Doctor[]>([]);
+    const [patients, setPatients] = useState<Patient[]>([]);
     const [messages, setMessages] = useState<Message[]>([]);
     const [myId, setMyId] = useState<MyIdType | undefined>(undefined);
 
@@ -41,6 +50,7 @@ const MessagesPage = () => {
         const idFromLocalStorage = Number(localStorage.getItem("id")) || -1;
         setMyId({ id: idFromLocalStorage });
     }, []); // empty dependency array to run the effect only once (equivalent to componentDidMount)
+
 
 
     const handleSelectDoctor=(otherId:number ) =>{
@@ -69,7 +79,7 @@ const MessagesPage = () => {
 
         const privilege: string = localStorage.getItem("privilege") || "";
         if(privilege=="PATIENT"){
-            fetchMessages(otherId, myId); //ordningen av Idn är viktig för backend.
+            fetchMessages(otherId, myId); //ordningen är egentligen inte viktig.
         }
         else if(privilege=="DOCTOR" || privilege=="STAFF"){
             fetchMessages(myId, otherId);
@@ -132,37 +142,63 @@ const MessagesPage = () => {
     }
     
 
+    const privilege: string = localStorage.getItem("privilege") || "";
+    if(privilege=="PATIENT"){
+        useEffect(() => {
 
-    
-  useEffect(() => {
-
-    const fetchData = async () => {
-        const response = await axios.get('http://localhost:8080/messages/getAllStaff');
-        if (response.status === 200) {
-          console.log(response.data);
-          const doctorData: Doctor[] = response.data;
-          setDoctors(doctorData);
-        }
-    };
-
-    fetchData();
-  }, []); // Empty dependency array to run the effect only once (equivalent to componentDidMount)
-
+            const fetchData = async () => {
+                const response = await axios.get('http://localhost:8080/messages/getAllStaff');
+                if (response.status === 200) {
+                  console.log(response.data);
+                  const doctorData: Doctor[] = response.data;
+                  setDoctors(doctorData);
+                }
+            };
+        
+            fetchData();
+          }, []); // Empty dependency array to run the effect only once (equivalent to componentDidMount)        
+    }
+    else{
+        useEffect(() => {
+            const fetchData = async () => {
+                const response = await axios.get('http://localhost:8080/patient/get_all');
+                if (response.status === 200) {
+                  console.log(response.data);
+                  const patientData: Patient[] = response.data;
+                  setPatients(patientData);
+                }
+            };
+            fetchData();
+          }, []); // Empty dependency array to run the effect only once (equivalent to componentDidMount)        
+    }
+ 
    
 
   return (
     <>
     <NavBar></NavBar>
     <div>{/* Render the list of doctors */}
-    <h2>List of Doctors:</h2>
+    <h2>List of People:</h2>
         <ul>
-            {/* Visar Läkare/staff här */}
-            <ListGroupGeneric<Doctor>
+            {/* Visar patienter här */}
+            {localStorage.getItem('privilege') === 'PATIENT' ? (
+                //Visar doctor/staff lista
+                <ListGroupGeneric<Doctor>
                 items={doctors}
                 getKey={(doctor) => doctor.id.toString()}
                 getLabel={(doctor) => `${doctor.firstName} ${doctor.lastName} (ID: ${doctor.id}) ${doctor.privilege}`}
                 onSelectItem={(doctor) => handleSelectDoctor(doctor.id)}
-            />
+                />
+            
+          ) : (
+                //Visar patientlista
+                <ListGroupGeneric<Patient>
+                items={patients}
+                getKey={(patient) => patient.patientId.toString()}
+                getLabel={(patient) => `${patient.firstName} ${patient.familyName} (ID: ${patient.patientId})`}
+                onSelectItem={(patient) => handleSelectDoctor(patient.patientId)}
+                />
+          )}
         </ul>
         <ul>
             {/* Visar meddelanden här */}
