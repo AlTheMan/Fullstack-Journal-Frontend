@@ -1,5 +1,6 @@
 // LoginForm.tsx
 import React, { useState } from "react";
+import { Link } from 'react-router-dom';
 
 interface LoginFormProps {
   onSubmit: (username: string, password: string) => void;
@@ -20,7 +21,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
     <div style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", paddingTop: "200px"}}><h1>Algots Sjukstuga</h1></div>
     
       <div className="mx-auto" style={{
-        backgroundColor: "lightgray",
+        backgroundColor: "lightblue",
         margin: "100px",
         padding: "30px",
         width: "400px",
