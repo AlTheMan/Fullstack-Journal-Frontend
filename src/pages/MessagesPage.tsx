@@ -16,36 +16,47 @@ const MessagesPage = () => {
       };
       const [doctors, setDoctors] = useState<Doctor[]>([]);
 
-      
+
       type Message ={
-            id: number;
-            time: Date;
-            employeeId: number;
-            patientId: number;
-            sentById: number;
-            message: string;
-      };
-      const [messages, setMessages] = useState<Message[]>([]);
+        id: number;
+        time: Date;
+        employeeId: number;
+        patientId: number;
+        sentById: number;
+        message: string;
+  };
+  const [messages, setMessages] = useState<Message[]>([]);
 
-      const handleSelectDoctor=(id:number ) =>{
-        console.log("staff/doctor id:" + id);
+      const handleSelectDoctor=(otherId:number ) =>{
+
+        console.log("other id:" + otherId);
+        const myId: number = Number(localStorage.getItem("id")) || -1; //ifall att numret är null så sätts värdet till "-1"
+        console.log("my id: " + myId)
+
         
+        const fetchMessages = async (employeeIdInput: number, patientIdInput:number) => {
 
-        const fetchData = async (employeeId: number, patientId: number) => {
+
             const response = await axios.get('http://localhost:8080/messages/get',{
                 params: {
-                    employeeId,
-                    patientId,
+                    employeeId: employeeIdInput,
+                    patientId: patientIdInput,
                 },
             });
             if (response.status === 200) {
-              console.log(response.data);
+              console.log("messages: " + response.data);
               const messageData: Message[] = response.data;
               setMessages(messageData);
             }
-        };
-        //fetchData(id, localStorage.getItem("username")); //TODO: hämta meddelanden från användarnamn istället, alt. returnera userId när man loggar in.
-
+        }
+        const privilege: string = localStorage.getItem("privilege") || "";
+        if(privilege=="PATIENT"){
+            fetchMessages(otherId, myId);
+        }
+        else if(privilege=="DOCTOR" || privilege=="STAFF"){
+            fetchMessages(myId, otherId);
+        }
+       
       }
 
 
@@ -81,7 +92,6 @@ const MessagesPage = () => {
             />
         </ul>
         <ul>
-
         </ul>
     </div>
     </>
