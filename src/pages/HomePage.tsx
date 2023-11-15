@@ -1,6 +1,7 @@
 import React from 'react';
 import NavBar from '../components/Navbar';
 import PatientHome from './PatientHome';
+import DoctorHome from './DoctorHome';
 
 const HomePage: React.FC = () => {
   const privilege: string = localStorage.getItem("privilege") || ""; 
@@ -10,7 +11,7 @@ const HomePage: React.FC = () => {
   const performActionBasedOnPrivilege = () => {
     switch (privilege) {
       case "DOCTOR":
-        return <div>Doctor page</div>;
+        return <DoctorHome/>;
       case "STAFF":
         return <div>Staff page</div>;
       case "PATIENT":
