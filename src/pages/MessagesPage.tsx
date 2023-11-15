@@ -112,6 +112,7 @@ const MessagesPage = () => {
         const otherId: number = Number(localStorage.getItem("otherId")) || -1; //ifall att numret är null så sätts värdet till "-1"
         const privilege: string = localStorage.getItem("privilege") || "";
        
+        //TODO: egentligen borde man bara behöva en request-body istället för två, om man ändrar lite i back-enden. Man borde ha en "senderId" och "receiverId" istället för "employeeId" och "patientId"
         // Define the data to be sent in the request body
         const requestDataPatient = {
             employeeId: otherId,
