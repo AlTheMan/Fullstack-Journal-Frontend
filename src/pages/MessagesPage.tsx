@@ -53,7 +53,7 @@ const MessagesPage = () => {
 
 
 
-    const handleSelectDoctor=(otherId:number ) =>{
+    const handleSelectPerson=(otherId:number ) =>{
 
         const myId: number = Number(localStorage.getItem("id")) || -1; //ifall att numret är null så sätts värdet till "-1"
         console.log("other id:" + otherId);
@@ -116,29 +116,18 @@ const MessagesPage = () => {
                 const response = await axios.post('http://localhost:8080/messages/send',requestDataPatient);
                 console.log("status: "+response.status);
                 if(response.status==200){
-                //const updatedMessages = await fetchMessages(myId, otherId);
-                //setMessages(updatedMessages);
-
-                //const messageData: Message[] = response.data;
-                //setMessages(messageData);
-                //console.log("messages: " + messages);
+                    handleSelectPerson(otherId);
                 }
             }
             else{
                 const response = await axios.post('http://localhost:8080/messages/send',requestDataDoctor);
                 console.log("status: "+response.status);
                 if (response.status === 200) {
+                    handleSelectPerson(otherId);
                 }
             }
         }
         sendMessage()
-
-        if(privilege=="PATIENT"){
-            //fetchMessages(otherId, myId); //ordningen av Idn är viktig för backend.
-        }
-        else if(privilege=="DOCTOR" || privilege=="STAFF"){
-            //fetchMessages(myId, otherId);
-        }
     }
     
 
@@ -177,7 +166,7 @@ const MessagesPage = () => {
   return (
     <>
     <NavBar></NavBar>
-    <div>{/* Render the list of doctors */}
+    <div>{/* Render the list of doctors/staff or people */}
     <h2>List of People:</h2>
         <ul>
             {/* Visar patienter här */}
@@ -187,7 +176,7 @@ const MessagesPage = () => {
                 items={doctors}
                 getKey={(doctor) => doctor.id.toString()}
                 getLabel={(doctor) => `${doctor.firstName} ${doctor.lastName} (ID: ${doctor.id}) ${doctor.privilege}`}
-                onSelectItem={(doctor) => handleSelectDoctor(doctor.id)}
+                onSelectItem={(doctor) => handleSelectPerson(doctor.id)}
                 />
             
           ) : (
@@ -196,7 +185,7 @@ const MessagesPage = () => {
                 items={patients}
                 getKey={(patient) => patient.patientId.toString()}
                 getLabel={(patient) => `${patient.firstName} ${patient.familyName} (ID: ${patient.patientId})`}
-                onSelectItem={(patient) => handleSelectDoctor(patient.patientId)}
+                onSelectItem={(patient) => handleSelectPerson(patient.patientId)}
                 />
           )}
         </ul>
@@ -246,15 +235,3 @@ export default MessagesPage;
     ))}
 */
 
-/*
-{messages.map((message) => (
-    <li key={message.id}>
-        <strong>ID:</strong> {message.id} <br />
-        <strong>Time:</strong> {message.time.toLocaleString()} <br />
-        <strong>Employee ID:</strong> {message.employeeId} <br />
-        <strong>Patient ID:</strong> {message.patientId} <br />
-        <strong>Sent By ID:</strong> {message.sentById} <br />
-        <strong>Message:</strong> {message.message} <br />
-    </li>
-))}
-*/
