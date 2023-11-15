@@ -30,7 +30,7 @@ function ListGroup({items, heading, onSelectItem}: Props){
         <><h1> {heading}</h1>
             {items.length===0 ? <p> no item found </p>: null}
             {items.length===0 && <p> no item found </p>}
-            <ul class="list-group">
+            <ul className="list-group">
             {items.map((item, index) =>
                 <li className={selectedIndex===index ? 'list-group-item active': 'list-group-item'} //alt. bara  list-group-item active
                     key={item}

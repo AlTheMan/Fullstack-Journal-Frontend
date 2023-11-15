@@ -1,5 +1,5 @@
 import { Patient } from "../types/Patient";
-import { fetchData } from "../api/PatientApi"
+import { fetchData } from "../api/patientApi";
 import React, { useEffect, useState } from 'react';
 
 

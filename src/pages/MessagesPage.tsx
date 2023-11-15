@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Message from '../components/Message';
 import NavBar from '../components/Navbar';
+import MessageForm from '../components/MessageForm';
 import ListGroupGeneric from '../components/ListGroupGeneric';
 
 
@@ -28,11 +29,13 @@ type MyIdType={
 };
 
 
+
 const MessagesPage = () => {
    
     const [doctors, setDoctors] = useState<Doctor[]>([]);
     const [messages, setMessages] = useState<Message[]>([]);
     const [myId, setMyId] = useState<MyIdType | undefined>(undefined);
+
 
     useEffect(() => {
         const idFromLocalStorage = Number(localStorage.getItem("id")) || -1;
@@ -45,6 +48,7 @@ const MessagesPage = () => {
         const myId: number = Number(localStorage.getItem("id")) || -1; //ifall att numret är null så sätts värdet till "-1"
         console.log("other id:" + otherId);
         console.log("my id: " + myId)
+        localStorage.setItem("otherId", otherId.toString());
         
         const fetchMessages = async (employeeIdInput: number, patientIdInput:number) => {
 
@@ -73,6 +77,61 @@ const MessagesPage = () => {
     }
 
 
+    const handleSendMessage=(message:string ) =>{
+
+        const myId: number = Number(localStorage.getItem("id")) || -1; //ifall att numret är null så sätts värdet till "-1"
+        const otherId: number = Number(localStorage.getItem("otherId")) || -1; //ifall att numret är null så sätts värdet till "-1"
+        const privilege: string = localStorage.getItem("privilege") || "";
+       
+        // Define the data to be sent in the request body
+        const requestDataPatient = {
+            employeeId: otherId,
+            patientId: myId,
+            message: message,
+            senderId: myId
+        };
+        const requestDataDoctor = {
+            employeeId: myId,
+            patientId: otherId,
+            message: message,
+            senderId: myId
+        };
+
+        console.log("other id:" + otherId);
+        console.log("my id: " + myId)
+        
+        const sendMessage = async () => {
+            
+            if(privilege=="PATIENT"){
+                const response = await axios.post('http://localhost:8080/messages/send',requestDataPatient);
+                console.log("status: "+response.status);
+                if(response.status==200){
+                //const updatedMessages = await fetchMessages(myId, otherId);
+                //setMessages(updatedMessages);
+
+                //const messageData: Message[] = response.data;
+                //setMessages(messageData);
+                //console.log("messages: " + messages);
+                }
+            }
+            else{
+                const response = await axios.post('http://localhost:8080/messages/send',requestDataDoctor);
+                console.log("status: "+response.status);
+                if (response.status === 200) {
+                }
+            }
+        }
+        sendMessage()
+
+        if(privilege=="PATIENT"){
+            //fetchMessages(otherId, myId); //ordningen av Idn är viktig för backend.
+        }
+        else if(privilege=="DOCTOR" || privilege=="STAFF"){
+            //fetchMessages(myId, otherId);
+        }
+    }
+    
+
 
     
   useEffect(() => {
@@ -97,6 +156,7 @@ const MessagesPage = () => {
     <div>{/* Render the list of doctors */}
     <h2>List of Doctors:</h2>
         <ul>
+            {/* Visar Läkare/staff här */}
             <ListGroupGeneric<Doctor>
                 items={doctors}
                 getKey={(doctor) => doctor.id.toString()}
@@ -105,10 +165,13 @@ const MessagesPage = () => {
             />
         </ul>
         <ul>
-            {/* Render your message data here */}
+            {/* Visar meddelanden här */}
             {messages.map((message) => (
                 <li key={message.id}
                 style={{
+                    listStyleType: 'none',
+                    padding: '12px',
+                    marginRight: '32px',
                     textAlign: message.sentById == myId?.id ? 'right' : 'left',
                     backgroundColor: message.sentById == myId?.id ? '#cce5ff' : '#f0f0f0',
                 }}
@@ -116,6 +179,13 @@ const MessagesPage = () => {
                     {message.message} <br />
                 </li>
             ))}
+
+            {/* Skickar meddelanden här */}
+            <div>
+                <MessageForm onSubmit={handleSendMessage} />
+            </div>
+      </ul>
+      <ul>
       </ul>
     </div>
     </>
