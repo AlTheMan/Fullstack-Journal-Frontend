@@ -1,5 +1,6 @@
 
-export type Condition = {
+interface Condition {
+    id: number
     clinicalStatus: string;
     verificationStatus: string;
     category: string;
@@ -7,4 +8,10 @@ export type Condition = {
     code: string;
     bodySite: string;
     evidence: string;
+}
+
+interface ConditionCollection {
+    patientId: number;
+    fhirId: string;
+    conditionDTOS: Condition[];
 }

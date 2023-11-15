@@ -1,11 +1,9 @@
 import { Patient } from "../types/Patient";
-import { fetchData } from "../api/patientApi";
-import React, { useEffect, useState } from 'react';
-
+import { fetchData } from "../api/PatientApi";
+import React, { useEffect, useState } from "react";
 
 const PatientHome: React.FC = () => {
-
-    const [patient, setPatient] = useState<Patient | null>(null);
+  const [patient, setPatient] = useState<Patient | null>(null);
 
   const id: number = Number(localStorage.getItem("id")) || -1;
   const username: string = String(localStorage.getItem("username") || "");
@@ -21,12 +19,11 @@ const PatientHome: React.FC = () => {
     loadPatient();
   }, []);
 
-return (
+  return (
     <div>
-       Welcome {patient?.firstName} {patient?.familyName}
+      Welcome {patient?.firstName} {patient?.familyName}
     </div>
   );
 };
 
 export default PatientHome;
-
