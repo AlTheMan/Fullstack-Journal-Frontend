@@ -22,6 +22,7 @@ export const fetchData = async (
     }
   } catch (error) {
     console.error('An error occured while fetching patient data', error)
+    return null
   }
 };
 
