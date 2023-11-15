@@ -3,6 +3,7 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import MessagesPage from './pages/MessagesPage';
 import ConditionPage from './pages/ConditionPage';
+import ObservationPage from './pages/ObservationPage';
 
 
 export const Routing=()=>{
@@ -13,6 +14,7 @@ export const Routing=()=>{
           <Route path="/HomePage" element={<HomePage />} />
           <Route path="/MessagesPage" element={<MessagesPage />} />
           <Route path='/ConditionPage' element={<ConditionPage />} />
+          <Route path='/ObservationPage' element={<ObservationPage />} />
           <Route path="/LoginPage" element={<LoginPage />} />
         </Routes>
       </Router>

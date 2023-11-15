@@ -26,7 +26,7 @@ const NavBar = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/reg" className="nav-link">
+              <Link to="/ObservationPage" className="nav-link">
                 <Button onClick={() => console.log('Observation clicked')}>Observation</Button>
               </Link>
             </li>

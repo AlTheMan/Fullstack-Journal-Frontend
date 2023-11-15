@@ -12,6 +12,5 @@ interface Condition {
 
 interface ConditionCollection {
     patientId: number;
-    fhirId: string;
     conditionDTOS: Condition[];
 }

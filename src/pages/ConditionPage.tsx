@@ -1,12 +1,8 @@
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import React, { useState, useEffect } from "react";
-import { fetchData } from "../api/PatientConditionsApi";
+import { fetchConditions } from "../api/PatientConditionsApi";
+import NavBar from "../components/Navbar";
+import GenericTable from "../components/GenericTable";
+import { Box, padding } from "@mui/system";
 
 const ConditionPage: React.FC = () => {
   const [conditions, setConditions] = useState<ConditionCollection | null>(
@@ -20,7 +16,7 @@ const ConditionPage: React.FC = () => {
 
   useEffect(() => {
     const loadConditions = async () => {
-      const conditionData = await fetchData(username, id);
+      const conditionData = await fetchConditions(username, id);
       if (conditionData) {
         setConditions(conditionData);
       }
@@ -34,46 +30,43 @@ const ConditionPage: React.FC = () => {
   }
 
   var conditionList = conditions.conditionDTOS;
-
   for (let index = 0; index < conditionList.length; index++) {
     const item = conditionList[index];
     item.id = index;
   }
+  
+  const columns: TableColumn[] = [
+    { id: "bodySite", label: "Body Site" },
+    { id: "clinicalStatus", label: "Clinical Status" },
+    { id: "category", label: "Category" },
+    { id: "evidence", label: "Evicence" },
+    { id: "verificationStatus", label: "Verification Status" },
+    { id: "code", label: "Code" },
+  ];
+
+  const data: TableData[] = conditionList.map((conditionList) => ({
+    id: conditionList.id,
+    values: [
+      conditionList.bodySite,
+      conditionList.clinicalStatus,
+      conditionList.category,
+      conditionList.evidence,
+      conditionList.verificationStatus,
+      conditionList.code,
+    ],
+  }));
+
+ 
 
   return (
     <>
-    <h2>Patient Conditions</h2>
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Body Site</TableCell>
-            <TableCell>Clinical Status</TableCell>
-            <TableCell>Category</TableCell>
-            <TableCell>Evidence</TableCell>
-            <TableCell>Verification Status</TableCell>
-            <TableCell>Code</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {conditionList.map((row) => (
-            <TableRow
-              key={row.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.bodySite}
-              </TableCell>
-              <TableCell>{row.clinicalStatus}</TableCell>
-              <TableCell>{row.category}</TableCell>
-              <TableCell>{row.evidence}</TableCell>
-              <TableCell>{row.verificationStatus}</TableCell>
-              <TableCell>{row.code}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+      <NavBar></NavBar>
+      <div style={{margin: "20px"}}>
+      <h2>Patient Conditions</h2>
+      </div>
+      
+      
+      <GenericTable columns={columns} data={data}></GenericTable>
     </>
   );
 };
