@@ -27,8 +27,6 @@ const MessagesPage = () => {
       };
       const [messages, setMessages] = useState<Message[]>([]);
 
-
-
       const handleSelectDoctor=(id:number ) =>{
         console.log("staff/doctor id:" + id);
         

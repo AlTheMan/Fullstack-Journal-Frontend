@@ -24,11 +24,19 @@ const LoginPage = () => {
       console.log(response.data);
 
       if(response.status==200){ //success
+
+        const { privilege, id } = response.data;
+
+
+
         //TODO: kolla response.data==DOCTOR eller response.data==patient (?) kommer inte ihåg om det var patient.
         localStorage.setItem("username",username);
-        localStorage.setItem("privilege",response.data);
+        localStorage.setItem("privilege",privilege);
+        localStorage.setItem("id", id);
+
         console.log("username: " + localStorage.getItem("username"));
         console.log("privilege: " + localStorage.getItem("privilege"));
+        console.log("id: " + localStorage.getItem("id"));
         navigate('/HomePage');
       }
       
