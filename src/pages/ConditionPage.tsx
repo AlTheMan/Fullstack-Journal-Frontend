@@ -2,32 +2,51 @@ import React, { useState, useEffect } from "react";
 import { fetchConditions } from "../api/PatientConditionsApi";
 import NavBar from "../components/Navbar";
 import GenericTable from "../components/GenericTable";
-import { Box, padding } from "@mui/system";
+
 
 const ConditionPage: React.FC = () => {
   const [conditions, setConditions] = useState<ConditionCollection | null>(
     null
   );
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const id: number = Number(localStorage.getItem("id")) || -1;
-  const username: string = String(localStorage.getItem("username") || "");
-
-  if (id === -1 || username.length == 0) return <> Something went wrong.. </>;
 
   useEffect(() => {
+    const id = Number(localStorage.getItem("id"));
+    const username = localStorage.getItem("username") || "";
+
+    if (id === -1 || username.length === 0) {
+      setError('Invalid ID or Username');
+      return;
+    }
+
     const loadConditions = async () => {
-      const conditionData = await fetchConditions(username, id);
-      if (conditionData) {
-        setConditions(conditionData);
+      setLoading(true);
+      try {
+        const conditionData = await fetchConditions(username, id);
+        if (conditionData) {
+          setConditions(conditionData);
+        } else {
+          setError('Data not found');
+        }
+      } catch (error) {
+        setError('An error occurred while fetching data');
+      } finally {
+        setLoading(false);
       }
     };
 
     loadConditions();
-  }, []);
+  }, []); // Add any dependencies here if necessary
 
-  if (!conditions) {
-    return <>No conditions found</>;
-  }
+  if (error) return <>{error}</>;
+  if (loading || conditions === null) 
+  return (
+    <><div className="spinner-border text-primary" role="status">
+    <span className="visually-hidden">Loading...</span>
+    </div>
+  </>);
 
   var conditionList = conditions.conditionDTOS;
   for (let index = 0; index < conditionList.length; index++) {

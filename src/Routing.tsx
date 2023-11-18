@@ -5,6 +5,7 @@ import MessagesPage from './pages/MessagesPage';
 import ConditionPage from './pages/ConditionPage';
 import ObservationPage from './pages/ObservationPage';
 import RegisterPage from './pages/RegisterPage';
+import EncounterPage from './pages/EncounterPage';
 
 
 export const Routing=()=>{
@@ -15,6 +16,7 @@ export const Routing=()=>{
           <Route path="/HomePage" element={<HomePage />} />
           <Route path="/MessagesPage" element={<MessagesPage />} />
           <Route path='/ConditionPage' element={<ConditionPage />} />
+          <Route path='/EncounterPage' element={<EncounterPage/>} />
           <Route path='/ObservationPage' element={<ObservationPage />} />
           <Route path="/LoginPage" element={<LoginPage />} />
           <Route path="/RegisterPage" element={<RegisterPage />} />
