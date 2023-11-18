@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { fetchConditions } from "../api/PatientConditionsApi";
 import NavBar from "../components/Navbar";
 import GenericTable from "../components/GenericTable";
-
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const ConditionPage: React.FC = () => {
   const [conditions, setConditions] = useState<ConditionCollection | null>(
@@ -11,13 +11,12 @@ const ConditionPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-
   useEffect(() => {
     const id = Number(localStorage.getItem("id"));
     const username = localStorage.getItem("username") || "";
 
     if (id === -1 || username.length === 0) {
-      setError('Invalid ID or Username');
+      setError("Invalid ID or Username");
       return;
     }
 
@@ -28,10 +27,10 @@ const ConditionPage: React.FC = () => {
         if (conditionData) {
           setConditions(conditionData);
         } else {
-          setError('Data not found');
+          setError("Data not found");
         }
       } catch (error) {
-        setError('An error occurred while fetching data');
+        setError("An error occurred while fetching data");
       } finally {
         setLoading(false);
       }
@@ -41,19 +40,20 @@ const ConditionPage: React.FC = () => {
   }, []); // Add any dependencies here if necessary
 
   if (error) return <>{error}</>;
-  if (loading || conditions === null) 
-  return (
-    <><div className="spinner-border text-primary" role="status">
-    <span className="visually-hidden">Loading...</span>
-    </div>
-  </>);
+  if (loading || !conditions)
+    return (
+      <>
+        <NavBar></NavBar>
+        <LoadingSpinner></LoadingSpinner>
+      </>
+    );
 
   var conditionList = conditions.conditionDTOS;
   for (let index = 0; index < conditionList.length; index++) {
     const item = conditionList[index];
     item.id = index;
   }
-  
+
   const columns: TableColumn[] = [
     { id: "bodySite", label: "Body Site" },
     { id: "clinicalStatus", label: "Clinical Status" },
@@ -75,16 +75,13 @@ const ConditionPage: React.FC = () => {
     ],
   }));
 
- 
-
   return (
     <>
       <NavBar></NavBar>
-      <div style={{margin: "20px"}}>
-      <h2>Patient Conditions</h2>
+      <div style={{ margin: "20px" }}>
+        <h2>Patient Conditions</h2>
       </div>
-      
-      
+
       <GenericTable columns={columns} data={data}></GenericTable>
     </>
   );

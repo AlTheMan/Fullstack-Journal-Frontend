@@ -1,3 +1,11 @@
 cardStyle {
     padding: 20px;
 }
+
+
+.centerDiv {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    height: 100vh;
+}

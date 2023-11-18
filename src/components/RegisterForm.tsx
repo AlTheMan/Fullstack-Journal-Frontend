@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from 'react-router-dom';
 
 interface RegisterFormProps {
   onSubmit: (username: string, password: string, role: string) => void;

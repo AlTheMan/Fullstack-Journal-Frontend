@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import NavBar from "../components/Navbar";
 import fetchObservations from "../api/PatientObservationsApi";
 import GenericTable from "../components/GenericTable";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 
 const ObservationPage: React.FC = () => {
 
     const [observations, setObservations] = useState<ObservationCollection | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const id: number = Number(localStorage.getItem("id")) || -1;
     const username: string = String(localStorage.getItem("username") || "");
@@ -14,18 +17,46 @@ const ObservationPage: React.FC = () => {
     if (id === -1 || username.length == 0) return <> Something went wrong.. </>;
 
     useEffect(() => {
+      
+      const id: number = Number(localStorage.getItem("id")) || -1;
+      const username: string = String(localStorage.getItem("username") || "");
+  
+      if (id === -1 || username.length == 0) return <> Something went wrong.. </>;
+
+
         const loadObservations = async () => {
-          const observationData = await fetchObservations(username, id);
-          if (observationData) {
-            setObservations(observationData);
+          
+          setLoading(true);
+          try {
+            const observationData = await fetchObservations(username, id);
+            if (observationData) {
+              setObservations(observationData);
+            } else {
+              setError("Data not found");
+            } 
+          } catch (error) {
+            setError("An error occured while fetching data");
+          } finally {
+            setLoading(false)
           }
+
+
+
+          
         };
     
         loadObservations();
       }, []);
+
+
+      if(error) return <>Error + {error}</>
     
-      if (!observations) {
-        return <><NavBar></NavBar>No conditions found</>;
+      if (!observations || loading) {
+        return (
+        <>
+          <NavBar></NavBar>
+          <LoadingSpinner></LoadingSpinner>
+        </>);
       }
 
       var observationList = observations.observationDTOs;

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import fetchEncounters from "../api/PatientEncountersApi";
 import NavBar from "../components/Navbar";
+import "../App.css";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const EncounterPage: React.FC = () => {
   const [encounters, setEncounters] = useState<EncounterCollection | null>(
@@ -14,43 +16,38 @@ const EncounterPage: React.FC = () => {
     const username: string = String(localStorage.getItem("username") || null);
 
     if (id === -1 || username.length === 0) {
-        setError('Invalid ID or Username');
-        return;
-      }
+      setError("Invalid ID or Username");
+      return;
+    }
 
-      const loadEncounters = async () => {
-        setLoading(true);
-        try {
-            const encounterData = await fetchEncounters(username, id);
-            if (encounterData) {
-                setEncounters(encounterData)
-            } else {
-                setError("Data not found");
-            }
-
-        } catch (error){
-            setError("An error occured while fetching data");
-        } finally {
-            setLoading(false);
+    const loadEncounters = async () => {
+      setLoading(true);
+      try {
+        const encounterData = await fetchEncounters(username, id);
+        if (encounterData) {
+          setEncounters(encounterData);
+        } else {
+          setError("Data not found");
         }
-      };
+      } catch (error) {
+        setError("An error occured while fetching data");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      loadEncounters();
-
-
+    loadEncounters();
   }, []);
 
-
-  if (error) return (<>Error</>)
-  if(loading || encounters === null) {
+  if (error) return <>Error</>;
+  if (loading || encounters === null) {
     return (
-        <><div className="spinner-border text-primary" role="status">
-        <span className="visually-hidden">Loading...</span>
-        </div>
-      </>);
+      <>
+        <NavBar></NavBar>
+        <LoadingSpinner></LoadingSpinner>
+      </>
+    );
   }
-
-
 
   return (
     <>
