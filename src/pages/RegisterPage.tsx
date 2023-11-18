@@ -10,18 +10,22 @@ import RegisterForm from '../components/RegisterForm';
 const RegisterPage = () => {
   const navigate = useNavigate(); //för forced-redirect
 
-  const handleRegisterFormSubmit = async (username: string, password: string, role:string) => {
-    console.log('Submitted from RegisterPage:', username, password, role);
+  const handleRegisterFormSubmit = async (username: string, password: string, userPrivilege:string) => {
+    
+    // Convert userPrivilege to uppercase
+    const userPrivilegeUpperCase = userPrivilege.toUpperCase();
+    console.log('Submitted from RegisterPage:', username, password, userPrivilegeUpperCase);
 
     // Define the data to be sent in the request body
     const requestData = {
       username: username,
       password: password,
-      role: role
+      userPrivilege: userPrivilegeUpperCase
     };
+        console.log("trying to send POST with following information: " + username + ", " + password+ ", " + userPrivilege)
 
       // Make the HTTP POST request using Axios
-      const response = await axios.post('http://localhost:8080/user/register', requestData);
+      const response = await axios.post('http://localhost:8080/user/registerUser', requestData);
       console.log(response.status);
       console.log(response.data);
 

@@ -54,9 +54,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
               value={role}
               onChange={(event) => setRole(event.target.value)}
             >
-              <option value="doctor">Doctor</option>
-              <option value="patient">Patient</option>
-              <option value="staff">Staff</option>
+              <option value="DOCTOR">DOCTOR</option>
+              <option value="PATIENT">PATIENT</option>
+              <option value="STAFF">STAFF</option>
             </select>
           </div>
           <div className="form-group">
