@@ -3,7 +3,7 @@ interface Encounter {
     status: string;
     reason: string;
     priority: string;
-    doctors: string[];
+    doctors: Doctor[];
 }
 
 interface EncounterCollection {

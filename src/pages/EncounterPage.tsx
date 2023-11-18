@@ -3,6 +3,8 @@ import fetchEncounters from "../api/PatientEncountersApi";
 import NavBar from "../components/Navbar";
 import "../App.css";
 import LoadingSpinner from "../components/LoadingSpinner";
+import GenericTable from "../components/GenericTable";
+import ClickPopupButton from "../components/ClickPopupButton";
 
 const EncounterPage: React.FC = () => {
   const [encounters, setEncounters] = useState<EncounterCollection | null>(
@@ -49,9 +51,35 @@ const EncounterPage: React.FC = () => {
     );
   }
 
+  var encounterList = encounters.encounters;
+
+  for (let index = 0; index < encounterList.length; index++) {
+    const item = encounterList[index];
+    item.id = index;
+  }
+
+  const columns: TableColumn[] = [
+    { id: "reason", label: "Reason for appointment" },
+    { id: "priority", label: "Priority" },
+    { id: "status", label: "Appointment status" },
+    { id: "doctors", label: "Doctors present" },
+  ];
+
+  const data: TableData[] = encounterList.map((encounter) => ({
+    id: encounter.id,
+    values: [
+      encounter.reason,
+      encounter.priority,
+      encounter.status,
+      <ClickPopupButton doctorList={encounter.doctors}></ClickPopupButton>,
+    ],
+  }));
+
   return (
     <>
       <NavBar></NavBar>
+
+      <GenericTable columns={columns} data={data}></GenericTable>
     </>
   );
 };

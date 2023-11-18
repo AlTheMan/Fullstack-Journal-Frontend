@@ -5,7 +5,7 @@ interface TableColumn {
   
   interface TableData {
     id: number; // Unique identifier for each row, used for the `key` prop
-    values: (string | number)[]; // Array of values for each cell in the row
+    values: (string | number | JSX.Element)[]; // Array of values for each cell in the row
   }
   
   interface GenericTableProps {

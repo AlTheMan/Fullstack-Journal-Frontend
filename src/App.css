@@ -9,3 +9,13 @@ cardStyle {
     align-items: center;
     height: 100vh;
 }
+
+.popup {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1; 
+  }
+  
