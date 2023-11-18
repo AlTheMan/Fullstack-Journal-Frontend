@@ -6,6 +6,7 @@ import ConditionPage from './pages/ConditionPage';
 import ObservationPage from './pages/ObservationPage';
 import RegisterPage from './pages/RegisterPage';
 import EncounterPage from './pages/EncounterPage';
+import RegisterPatientPage from './pages/RegisterPatientPage';
 
 
 export const Routing=()=>{
@@ -20,6 +21,8 @@ export const Routing=()=>{
           <Route path='/ObservationPage' element={<ObservationPage />} />
           <Route path="/LoginPage" element={<LoginPage />} />
           <Route path="/RegisterPage" element={<RegisterPage />} />
+          <Route path="/RegisterPatientPage" element={<RegisterPatientPage />} />
+      
         </Routes>
       </Router>
     )
