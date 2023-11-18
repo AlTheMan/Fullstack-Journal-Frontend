@@ -4,6 +4,7 @@ import LoginPage from './pages/LoginPage';
 import MessagesPage from './pages/MessagesPage';
 import ConditionPage from './pages/ConditionPage';
 import ObservationPage from './pages/ObservationPage';
+import RegisterPage from './pages/RegisterPage';
 
 
 export const Routing=()=>{
@@ -16,6 +17,7 @@ export const Routing=()=>{
           <Route path='/ConditionPage' element={<ConditionPage />} />
           <Route path='/ObservationPage' element={<ObservationPage />} />
           <Route path="/LoginPage" element={<LoginPage />} />
+          <Route path="/RegisterPage" element={<RegisterPage />} />
         </Routes>
       </Router>
     )

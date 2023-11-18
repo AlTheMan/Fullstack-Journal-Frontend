@@ -1,25 +1,24 @@
-// LoginForm.tsx
 import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 
-interface LoginFormProps {
-  onLogin: (username: string, password: string) => void;
-  onRegister: () => void;
+interface RegisterFormProps {
+  onSubmit: (username: string, password: string, role: string) => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({onLogin, onRegister }) => {
+const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("doctor"); // Default role
 
-  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onLogin(username, password);
+    onSubmit(username, password, role);
   };
 
   return (
     <>
-    <div style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", paddingTop: "200px"}}><h1>Algots Sjukstuga</h1></div>
-    
+      <div style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", paddingTop: "200px"}}><h1>Algots Sjukstuga</h1></div>
+      
       <div className="mx-auto" style={{
         backgroundColor: "lightblue",
         margin: "100px",
@@ -27,7 +26,7 @@ const LoginForm: React.FC<LoginFormProps> = ({onLogin, onRegister }) => {
         width: "400px",
         border: "1px solid black",
       }}>
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Email address: </label>
             <input
@@ -49,8 +48,19 @@ const LoginForm: React.FC<LoginFormProps> = ({onLogin, onRegister }) => {
             />
           </div>
           <div className="form-group">
-            <button type="submit">Login</button>
-            <button type="submit" onClick={onRegister}>Register</button>
+            <label>Role:</label>
+            <select
+              className="form-control"
+              value={role}
+              onChange={(event) => setRole(event.target.value)}
+            >
+              <option value="doctor">Doctor</option>
+              <option value="patient">Patient</option>
+              <option value="staff">Staff</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <button type="submit">Register</button>
           </div>
         </form>
       </div>
@@ -58,4 +68,4 @@ const LoginForm: React.FC<LoginFormProps> = ({onLogin, onRegister }) => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;

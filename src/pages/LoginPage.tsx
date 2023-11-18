@@ -39,13 +39,15 @@ const LoginPage = () => {
         console.log("id: " + localStorage.getItem("id"));
         navigate('/HomePage');
       }
-      
-
   };
+
+  const handleRegister = async () => {
+    navigate('/RegisterPage');
+  }
 
   return (
     <div>
-      <LoginForm onSubmit={handleLoginFormSubmit} />
+      <LoginForm onLogin={handleLoginFormSubmit} onRegister={handleRegister}  />
     </div>
   );
 };
