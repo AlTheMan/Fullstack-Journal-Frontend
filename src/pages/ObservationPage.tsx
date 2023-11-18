@@ -4,98 +4,82 @@ import fetchObservations from "../api/PatientObservationsApi";
 import GenericTable from "../components/GenericTable";
 import LoadingSpinner from "../components/LoadingSpinner";
 
-
 const ObservationPage: React.FC = () => {
+  const [observations, setObservations] =
+    useState<ObservationCollection | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
-    const [observations, setObservations] = useState<ObservationCollection | null>(null);
-    const [error, setError] = useState<string | null>(null);
-    const [loading, setLoading] = useState<boolean>(false);
+  useEffect(() => {
+    const id = Number(localStorage.getItem("id")) || -1;
+    const username = String(localStorage.getItem("username") || null);
 
-    const id: number = Number(localStorage.getItem("id")) || -1;
-    const username: string = String(localStorage.getItem("username") || "");
+    if (id === -1 || username === null) {
+      setError("Invalid ID or Username");
+      return;
+    }
 
-    if (id === -1 || username.length == 0) return <> Something went wrong.. </>;
-
-    useEffect(() => {
-      
-      const id: number = Number(localStorage.getItem("id")) || -1;
-      const username: string = String(localStorage.getItem("username") || "");
-  
-      if (id === -1 || username.length == 0) return <> Something went wrong.. </>;
-
-
-        const loadObservations = async () => {
-          
-          setLoading(true);
-          try {
-            const observationData = await fetchObservations(username, id);
-            if (observationData) {
-              setObservations(observationData);
-            } else {
-              setError("Data not found");
-            } 
-          } catch (error) {
-            setError("An error occured while fetching data");
-          } finally {
-            setLoading(false)
-          }
-
-
-
-          
-        };
-    
-        loadObservations();
-      }, []);
-
-
-      if(error) return <>Error + {error}</>
-    
-      if (!observations || loading) {
-        return (
-        <>
-          <NavBar></NavBar>
-          <LoadingSpinner></LoadingSpinner>
-        </>);
+    const loadObservations = async () => {
+      setLoading(true);
+      try {
+        const observationData = await fetchObservations(username, id);
+        if (observationData) {
+          setObservations(observationData);
+        } else {
+          setError("Data not found");
+        }
+      } catch (error) {
+        setError("An error occured while fetching data");
+      } finally {
+        setLoading(false);
       }
+    };
 
-      var observationList = observations.observationDTOs;
-    
-      for (let index = 0; index < observationList.length; index++) {
-        const item = observationList[index];
-        item.id = index;
-      }
+    loadObservations();
+  }, []);
 
+  if (error) return <>Error + {error}</>;
 
+  if (!observations || loading) {
+    return (
+      <>
+        <NavBar></NavBar>
+        <LoadingSpinner></LoadingSpinner>
+      </>
+    );
+  }
 
-      const columns: TableColumn[] = [
-        { id: "description", label: "Description" },
-        { id: "value", label: "Value" },
-        { id: "unit", label: "Unit" }
-      ];
-    
-      const data: TableData[] = observationList.map((observationList) => ({
-        id: observationList.id,
-        values: [
-          observationList.description,
-          observationList.value,
-          observationList.unit
-        ],
-      }));
+  var observationList = observations.observationDTOs;
 
+  for (let index = 0; index < observationList.length; index++) {
+    const item = observationList[index];
+    item.id = index;
+  }
 
-      return (
-        <>
-          <NavBar></NavBar>
-          <div>
-            <h2 style={{padding: "20px"}}>Patient Observations</h2>
-          </div>
-          <GenericTable columns={columns} data={data}></GenericTable>
-        </>
-      );
+  const columns: TableColumn[] = [
+    { id: "description", label: "Description" },
+    { id: "value", label: "Value" },
+    { id: "unit", label: "Unit" },
+  ];
 
-}
+  const data: TableData[] = observationList.map((observationList) => ({
+    id: observationList.id,
+    values: [
+      observationList.description,
+      observationList.value,
+      observationList.unit,
+    ],
+  }));
 
-
+  return (
+    <>
+      <NavBar></NavBar>
+      <div>
+        <h2 style={{ padding: "20px" }}>Patient Observations</h2>
+      </div>
+      <GenericTable columns={columns} data={data}></GenericTable>
+    </>
+  );
+};
 
 export default ObservationPage;

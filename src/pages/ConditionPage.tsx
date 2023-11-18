@@ -5,9 +5,7 @@ import GenericTable from "../components/GenericTable";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 const ConditionPage: React.FC = () => {
-  const [conditions, setConditions] = useState<ConditionCollection | null>(
-    null
-  );
+  const [conditions, setConditions] = useState<ConditionCollection | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
