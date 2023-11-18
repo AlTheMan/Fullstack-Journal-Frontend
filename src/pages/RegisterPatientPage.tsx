@@ -11,27 +11,30 @@ import RegisterPatientForm from '../components/RegisterPatientForm';
 const RegisterPatientPage = () => {
   const navigate = useNavigate(); //för forced-redirect
 
-  const handleRegisterFormSubmit = async (username: string, password: string, userPrivilege:string) => {
+  const handleRegisterFormSubmit = async (firstName: string, familyName: string, birthdate: string, sex:'MALE'|'FEMALE',) => {
     
-    // Convert userPrivilege to uppercase
-    const userPrivilegeUpperCase = userPrivilege.toUpperCase();
-    console.log('Submitted from RegisterPage:', username, password, userPrivilegeUpperCase);
+    
+    console.log('Submitted from RegisterPage:', firstName, familyName, sex, birthdate);
 
     // Define the data to be sent in the request body
     const requestData = {
-      username: username,
-      password: password,
-      userPrivilege: userPrivilegeUpperCase
+      firstName: firstName,
+      familyName: familyName,
+      sex:sex,
+      userId:localStorage.getItem("userId"),
+      birthdate:birthdate
     };
-        console.log("trying to send POST with following information: " + username + ", " + password+ ", " + userPrivilege)
+        console.log("trying to send POST with following information: " + firstName + ", " + familyName + ", userId:" + localStorage.getItem("id")+", "+ birthdate)
 
       // Make the HTTP POST request using Axios
-      const response = await axios.post('http://localhost:8080/user/registerUser', requestData);
+      const response = await axios.post('http://localhost:8080/patient/add', requestData);
+      const { id } = response.data;
       console.log(response.status);
       console.log(response.data);
 
       if(response.status==200){ //success
         console.log("sucessfully registered account!")
+        localStorage.setItem("id",id);
         navigate('/LoginPage');
       }
       

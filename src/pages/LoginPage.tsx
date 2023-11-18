@@ -32,23 +32,30 @@ const LoginPage = () => {
         //TODO: kolla response.data==DOCTOR eller response.data==patient (?) kommer inte ihåg om det var patient.
         localStorage.setItem("username",username);
         localStorage.setItem("privilege",privilege);
-        localStorage.setItem("id",id);
+       
 
         console.log("username: " + localStorage.getItem("username"));
         console.log("privilege: " + localStorage.getItem("privilege"));
-        console.log("id: " + localStorage.getItem("id"));
+        
 
 
         if(privilege==="NEWPATIENT"){
+          localStorage.setItem("userId",id);
+          console.log("userId: " + localStorage.getItem("userId"));
           navigate('/RegisterPatientPage');
         }
         else if(privilege=="NEWDOCTOR"){
-
+          localStorage.setItem("userId",id);
+          console.log("userId: " + localStorage.getItem("userId"));
         }
         else if(privilege=="NEWSTAFF"){
-
+          localStorage.setItem("userId",id);
+          console.log("userId: " + localStorage.getItem("userId"));
+          
         }
         else{
+          localStorage.setItem("id",id);
+          console.log("id: " + localStorage.getItem("id"));
           navigate('/HomePage');
         }
       }
