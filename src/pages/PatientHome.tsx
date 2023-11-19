@@ -5,6 +5,7 @@ import fetchNotes from "../api/NotesApi";
 import "../App.css";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Note from "../components/Note";
+import NavBar from "../components/Navbar";
 
 const PatientHome: React.FC = () => {
   const [patient, setPatient] = useState<Patient | null>(null);
@@ -74,6 +75,7 @@ const PatientHome: React.FC = () => {
 
   return (
     <>
+    <NavBar></NavBar>
       <div className="horizontalCenterWithTopMargin">
         <div>
           <h3>Welcome {priv?.toLowerCase()}</h3>

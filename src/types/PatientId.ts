@@ -1,0 +1,3 @@
+interface PatientId {
+    patientId: number;
+  }

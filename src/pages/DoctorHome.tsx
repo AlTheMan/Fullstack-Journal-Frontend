@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ListGroupGeneric from "../components/ListGroupGeneric";
 import axios from "axios";
 import { Patient } from "../types/Patient";
+import NavBarDoctor from "../components/NavBarDoctor";
 
 const DoctorHome: React.FC = () => {
   const [doctor, setDoctor] = useState<NamedPerson | null>(null);
@@ -64,20 +65,11 @@ const DoctorHome: React.FC = () => {
 
   return (
     <div>
+      <NavBarDoctor></NavBarDoctor>
       <h1>
         Welcome: Dr {doctor?.firstName} {doctor?.lastName}
       </h1>
-      <Link
-        to={selectedPatientId !== null ? `/NotePage/${selectedPatientId}` : "#"}
-        className="nav-link"
-      >
-        <Button onClick={() => console.log(`Patient id: ${selectedPatientId}`)}>
-          Add note
-        </Button>
-      </Link>
-      <div style={{ paddingBottom: "100px", backgroundColor: "transparent" }}>
-        {" "}
-        {/* Add padding to bottom equal to the height of the fixed form */}
+       <div style={{ paddingBottom: '100px', backgroundColor: 'transparent'}}> {/* Add padding to bottom equal to the height of the fixed form */}
         <h2>List of Patients:</h2>
         <div style={{ overflowY: "auto", height: "calc(100vh - 100px)" }}>
           {" "}

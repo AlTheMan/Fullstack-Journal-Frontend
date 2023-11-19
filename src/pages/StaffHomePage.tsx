@@ -5,6 +5,7 @@ import Message from '../components/Message';
 import NavBar from '../components/Navbar';
 import MessageForm from '../components/MessageForm';
 import ListGroupGeneric from '../components/ListGroupGeneric';
+import NavBarDoctor from '../components/NavBarDoctor';
 
 
 
@@ -52,7 +53,7 @@ const MessagesPage = () => {
 
   return (
     <>
-    <NavBar />
+    <NavBarDoctor></NavBarDoctor>
     <div style={{ paddingBottom: '100px', backgroundColor: 'transparent'}}> {/* Add padding to bottom equal to the height of the fixed form */}
         <h2>List of People:</h2>
         <div style={{ overflowY: 'auto', height: 'calc(100vh - 100px)' }}> {/* Make this div scrollable */}

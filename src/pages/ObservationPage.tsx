@@ -3,6 +3,8 @@ import NavBar from "../components/Navbar";
 import fetchObservations from "../api/PatientObservationsApi";
 import GenericTable from "../components/GenericTable";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+
 
 const ObservationPage: React.FC = () => {
   const [observations, setObservations] =
@@ -10,8 +12,16 @@ const ObservationPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
+  //id från routing
+  const location = useLocation();
+  const patientId = location.state?.patientId;
+
+
   useEffect(() => {
-    const id = Number(localStorage.getItem("id")) || -1;
+    var id = Number(localStorage.getItem("id")) || -1;
+    if(patientId){
+      id=patientId; 
+    }
     const username = String(localStorage.getItem("username") || null);
 
     if (id === -1 || username === null) {
