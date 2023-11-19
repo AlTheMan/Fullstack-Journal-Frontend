@@ -75,7 +75,6 @@ const PatientHome: React.FC = () => {
 
   return (
     <>
-    <NavBar></NavBar>
       <div className="horizontalCenterWithTopMargin">
         <div>
           <h3>Welcome {priv?.toLowerCase()}</h3>

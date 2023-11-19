@@ -2,6 +2,7 @@ import React from 'react';
 import NavBar from '../components/Navbar';
 import PatientHome from './PatientHome';
 import DoctorHome from './DoctorHome';
+import NavBarDoctor from '../components/NavBarDoctor';
 
 const HomePage: React.FC = () => {
   const privilege: string = localStorage.getItem("privilege") || ""; 
@@ -11,11 +12,26 @@ const HomePage: React.FC = () => {
   const performActionBasedOnPrivilege = () => {
     switch (privilege) {
       case "DOCTOR":
-        return <DoctorHome/>;
+        return (
+          <>
+          <NavBarDoctor/>
+            <DoctorHome/>
+          </>
+        )
       case "STAFF":
-        return <div>Staff page</div>;
+        return (
+          <>
+          <NavBarDoctor/>
+            <DoctorHome/>
+          </>
+        )
       case "PATIENT":
-        return <PatientHome />;
+        return (
+          <>
+          <NavBar/>
+            <PatientHome/>
+          </>
+        )
       default:
         return <div>Privilege not recognized. Please log in.</div>;
     }
