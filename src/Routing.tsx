@@ -20,7 +20,7 @@ export const Routing=()=>{
           <Route path="/MessagesPage" element={<MessagesPage />} />
           <Route path='/ConditionPage' element={<ConditionPage />} />
           <Route path='/EncounterPage' element={<EncounterPage/>} />
-          <Route path='/NotePage' element={<NotePage/>} />
+          <Route path='/NotePage/:patientId' element={<NotePage/>} />
           <Route path='/ObservationPage' element={<ObservationPage />} />
           <Route path="/LoginPage" element={<LoginPage />} />
           <Route path="/RegisterPage" element={<RegisterPage />} />

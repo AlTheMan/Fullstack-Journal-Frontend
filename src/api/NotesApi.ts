@@ -29,3 +29,30 @@ export const fetchNotes = async (username: string, patientId: number) => {
 }
 
 export default fetchNotes;
+
+export const postNote = async (note: string, patientId: number) => {
+    var username = localStorage.getItem("username");
+    var writtenBy = localStorage.getItem("id");
+
+    var requestUri = "http://localhost:8080/patient/note/add"
+
+    try {
+        const response = await axios.post<String>(requestUri, {
+            note,
+            patientId,
+            writtenBy
+        }, {
+            headers: {username: username}
+        }
+        );
+        if (response.status === 200) {
+            console.log("Created")
+        } else {
+            console.error("Something went wrong", response.statusText)
+        }
+    } catch (error){
+        console.error("Something went wrong posting note", error)
+    }
+
+    
+}

@@ -15,6 +15,7 @@ const PatientHome: React.FC = () => {
   const id: number = Number(localStorage.getItem("id")) || -1;
   const username: string = String(localStorage.getItem("username") || "");
 
+  // Fetching patient name from db
   useEffect(() => {
     const loadPatient = async () => {
       setLoading(true);
@@ -35,6 +36,7 @@ const PatientHome: React.FC = () => {
     loadPatient();
   }, [username, id]);
 
+  // fetching notes
   useEffect(() => {
     const loadNotes = async () => {
       setLoading(true);
@@ -82,28 +84,25 @@ const PatientHome: React.FC = () => {
           <h5>Gender: {patient.sex.toLowerCase()}</h5>
         </div>
       </div>
-        <div className="noteBoxesAlignment">
-          {noteList.map((noteItem, index) => { // Renamed 'note' to 'noteItem' to avoid variable name conflict
-            const firstName = noteItem.name.firstName;
-            const lastName = noteItem.name.lastName;
-    
-            const date = noteItem.dateWritten;
-            const noteContent = noteItem.note; // Renamed 'note' to 'noteContent' to avoid variable name conflict
-    
-            // The component must be returned from the map callback.
-            // Also, string concatenation should be done with template literals or the + operator without curly braces.
-            return <Note 
-                    key={index} // Always provide a unique key when rendering lists
-                    writtenBy={`${firstName} ${lastName}`} // Corrected string concatenation
-                    date={new Date(date)} // Assuming 'date' is a string that needs to be converted to a Date object
-                    note={noteContent}
-                  />;
-          })}
-          </div>
+      <div className="noteBoxesAlignment">
+        {noteList.map((noteItem, index) => {
+          const firstName = noteItem.name.firstName;
+          const lastName = noteItem.name.lastName;
+
+          const date = noteItem.dateWritten;
+          const noteContent = noteItem.note;
+          return (
+            <Note
+              key={index}
+              writtenBy={`${firstName} ${lastName}`}
+              date={new Date(date)}
+              note={noteContent}
+            />
+          );
+        })}
+      </div>
     </>
   );
-  
- 
 };
 
 export default PatientHome;
