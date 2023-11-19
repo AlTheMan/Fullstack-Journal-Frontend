@@ -1,13 +1,13 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
-import LoginPage from './pages/LoginPage';
+import LoginPage from './pages/login/LoginPage';
 import MessagesPage from './pages/MessagesPage';
 import ConditionPage from './pages/ConditionPage';
 import ObservationPage from './pages/ObservationPage';
-import RegisterPage from './pages/RegisterPage';
+import RegisterPage from './pages/login/RegisterPage';
 import EncounterPage from './pages/EncounterPage';
-import RegisterPatientPage from './pages/RegisterPatientPage';
-import RegisterStaffPage from './pages/RegisterStaffPage';
+import RegisterPatientPage from './pages/login/RegisterPatientPage';
+import RegisterStaffPage from './pages/login/RegisterStaffPage';
 import NotePage from './pages/NotePage';
 
 

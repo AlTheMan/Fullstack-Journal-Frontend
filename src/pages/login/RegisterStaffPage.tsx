@@ -3,7 +3,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import RegisterStaffForm from '../components/RegisterStaffForm';
+import RegisterStaffForm from '../../components/RegisterStaffForm';
 
 
 const RegisterStaffPage = () => {

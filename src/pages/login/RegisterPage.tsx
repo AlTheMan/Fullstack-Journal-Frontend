@@ -1,10 +1,10 @@
 //RegisterPage.tsx
 
 import React from 'react';
-import Button from '../components/Button';
+import Button from '../../components/Button';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import RegisterForm from '../components/RegisterForm';
+import RegisterForm from '../../components/RegisterForm';
 
 
 const RegisterPage = () => {

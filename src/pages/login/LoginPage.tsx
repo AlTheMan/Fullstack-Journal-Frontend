@@ -1,7 +1,7 @@
 // LoginPage.tsx
 import React from 'react';
-import Button from '../components/Button';
-import LoginForm from '../components/LoginForm';
+import Button from '../../components/Button';
+import LoginForm from '../../components/LoginForm';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 
