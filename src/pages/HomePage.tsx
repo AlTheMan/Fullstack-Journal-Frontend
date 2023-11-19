@@ -23,7 +23,6 @@ const HomePage: React.FC = () => {
 
   return (
     <>
-      <NavBar /> 
       {performActionBasedOnPrivilege()}
     </>
   );

@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import ListGroupGeneric from '../components/ListGroupGeneric';
 import axios from 'axios';
 import { Patient } from "../types/Patient";
+import NavBarDoctor from "../components/NavBarDoctor";
 
 
 const DoctorHome: React.FC = () => {
@@ -65,6 +66,7 @@ const DoctorHome: React.FC = () => {
 
 return (
     <div>
+      <NavBarDoctor></NavBarDoctor>
       <h1>
         Welcome: Dr {doctor?.firstName} {doctor?.lastName}
       </h1>
