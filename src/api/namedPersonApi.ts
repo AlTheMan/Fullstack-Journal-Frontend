@@ -1,5 +1,4 @@
 import axios from "axios";
-import { NamedPerson } from "../types/NamedPerson";
 
 export const fetchData = async (
   id: number

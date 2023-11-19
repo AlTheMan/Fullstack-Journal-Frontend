@@ -1,5 +1,5 @@
 // MessagesPage.tsx
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import Message from '../components/Message';
 import NavBar from "../components/NavBar";

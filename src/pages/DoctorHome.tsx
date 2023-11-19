@@ -1,11 +1,9 @@
-import { fetchData } from "../api/namedPersonApi";
+import { fetchData } from "../api/NamedPersonApi";
 import React, { useEffect, useState } from "react";
-import Button from "../components/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ListGroupGeneric from "../components/ListGroupGeneric";
 import axios from "axios";
 import { Patient } from "../types/Patient";
-import NavBarDoctor from "../components/NavBarDoctor";
 
 const DoctorHome: React.FC = () => {
   const [doctor, setDoctor] = useState<NamedPerson | null>(null);
@@ -23,8 +21,7 @@ const DoctorHome: React.FC = () => {
     loadDoctor();
   }, []);
 
-  var patientId = 11;
-
+ 
   const [patients, setPatients] = useState<Patient[]>([]);
 
 

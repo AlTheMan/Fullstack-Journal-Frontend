@@ -3,7 +3,7 @@ import NavBar from "../components/NavBar";
 import fetchObservations from "../api/PatientObservationsApi";
 import GenericTable from "../components/GenericTable";
 import LoadingSpinner from "../components/LoadingSpinner";
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 
 const ObservationPage: React.FC = () => {

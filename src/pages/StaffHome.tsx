@@ -1,9 +1,6 @@
 // MessagesPage.tsx
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Message from '../components/Message';
-import NavBar from '../components/NavbarPatient';
-import MessageForm from '../components/MessageForm';
 import ListGroupGeneric from '../components/ListGroupGeneric';
 import NavBarDoctor from '../components/NavBarDoctor';
 
@@ -31,7 +28,7 @@ const MessagesPage = () => {
         console.log("my id: " + myId)
         localStorage.setItem("otherId", otherId.toString());
 
-        const privilege: string = localStorage.getItem("privilege") || "";
+        //const privilege: string = localStorage.getItem("privilege") || "";
         
     }
 

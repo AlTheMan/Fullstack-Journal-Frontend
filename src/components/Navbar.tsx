@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import NavBarPatient from "../components/NavbarPatient";
-import NavBarDoctor from "../components/NavBarDoctor"; // Import NavBarDoctor
+import React from "react";
+import NavBarPatient from "./NavBarPatient";
+import NavBarDoctor from "./NavBarDoctor"; // Import NavBarDoctor
 // ... other imports
 
 const NavBar: React.FC = () => {

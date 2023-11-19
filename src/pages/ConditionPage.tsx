@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { fetchConditions } from "../api/PatientConditionsApi";
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import NavBar from "../components/NavBar";
 import GenericTable from "../components/GenericTable";
 import LoadingSpinner from "../components/LoadingSpinner";
