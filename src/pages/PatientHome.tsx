@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import fetchNotes from "../api/NotesApi";
 import "../App.css";
 import LoadingSpinner from "../components/LoadingSpinner";
-import { colors } from "@mui/material";
 import Note from "../components/Note";
 
 const PatientHome: React.FC = () => {
@@ -83,7 +82,6 @@ const PatientHome: React.FC = () => {
           <h5>Gender: {patient.sex.toLowerCase()}</h5>
         </div>
       </div>
-      <div className="horizontalCenterWithTopMargin">
         <div className="noteBoxesAlignment">
           {noteList.map((noteItem, index) => { // Renamed 'note' to 'noteItem' to avoid variable name conflict
             const firstName = noteItem.name.firstName;
@@ -102,7 +100,6 @@ const PatientHome: React.FC = () => {
                   />;
           })}
           </div>
-        </div>
     </>
   );
   

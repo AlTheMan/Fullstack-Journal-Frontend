@@ -11,11 +11,8 @@ cardStyle {
 }
 
 .horizontalCenterWithTopMargin {
-    margin: 5%;
-    margin-left: 5%;
     display: flex;
     justify-content: center;
-    align-items: stretch;
     align-content: center;
     margin-top: 20px;
 }
@@ -25,7 +22,7 @@ cardStyle {
     margin: 5%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: left;
+    justify-content: center;
     gap: 10px;
     align-items: stretch; /* This will make all items in a row the same height */
   }
