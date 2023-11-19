@@ -1,7 +1,5 @@
-import { fetchData } from "../api/NamedPersonApi";
+import { fetchData } from "../api/namedPersonApi";
 import React, { useEffect, useState } from 'react';
-import { NamedPerson } from "../types/NamedPerson";
-
 
 const DoctorHome: React.FC = () => {
 
