@@ -24,7 +24,7 @@ const RegisterPatientPage = () => {
       userId:localStorage.getItem("userId"),
       birthdate:birthdate
     };
-        console.log("trying to send POST with following information: " + firstName + ", " + familyName + ", userId:" + localStorage.getItem("id")+", "+ birthdate)
+        console.log("trying to send POST with following information: " + firstName + ", " + familyName + ", userId:" + localStorage.getItem("userId")+", "+ birthdate)
 
       // Make the HTTP POST request using Axios
       const response = await axios.post('http://localhost:8080/patient/add', requestData);

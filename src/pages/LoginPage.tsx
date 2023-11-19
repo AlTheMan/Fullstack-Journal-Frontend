@@ -47,11 +47,12 @@ const LoginPage = () => {
         else if(privilege=="NEWDOCTOR"){
           localStorage.setItem("userId",id);
           console.log("userId: " + localStorage.getItem("userId"));
+          navigate('/RegisterStaffPage');
         }
         else if(privilege=="NEWSTAFF"){
           localStorage.setItem("userId",id);
           console.log("userId: " + localStorage.getItem("userId"));
-          
+          navigate('/RegisterStaffPage');
         }
         else{
           localStorage.setItem("id",id);
