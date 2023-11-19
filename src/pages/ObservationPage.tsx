@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import NavBar from "../components/Navbar";
+import NavBar from "../components/NavBar";
 import fetchObservations from "../api/PatientObservationsApi";
 import GenericTable from "../components/GenericTable";
 import LoadingSpinner from "../components/LoadingSpinner";

@@ -5,7 +5,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import ListGroupGeneric from '../components/ListGroupGeneric';
 import axios from 'axios';
 import { Patient } from "../types/Patient";
-import NavBar from "../components/Navbar";
+import NavBar from "../components/NavbarPatient";
 import NavBarDoctor from "../components/NavBarDoctor";
 
 

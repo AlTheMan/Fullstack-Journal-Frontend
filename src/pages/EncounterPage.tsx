@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import fetchEncounters from "../api/PatientEncountersApi";
-import NavBar from "../components/Navbar";
 import "../App.css";
 import LoadingSpinner from "../components/LoadingSpinner";
 import GenericTable from "../components/GenericTable";
 import ClickPopupButton from "../components/ClickPopupButton";
 import NavBarDoctor from "../components/NavBarDoctor";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import NavBar from "../components/NavBar";
 
 const EncounterPage: React.FC = () => {
   const [encounters, setEncounters] = useState<EncounterCollection | null>(

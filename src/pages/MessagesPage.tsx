@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import Message from '../components/Message';
-import NavBar from '../components/Navbar';
+import NavBar from "../components/NavBar";
 import MessageForm from '../components/MessageForm';
 import ListGroupGeneric from '../components/ListGroupGeneric';
 

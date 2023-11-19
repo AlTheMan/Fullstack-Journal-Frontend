@@ -5,7 +5,7 @@ import fetchNotes from "../api/NotesApi";
 import "../App.css";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Note from "../components/Note";
-import NavBar from "../components/Navbar";
+import NavBar from "../components/NavbarPatient";
 
 const PatientHome: React.FC = () => {
   const [patient, setPatient] = useState<Patient | null>(null);

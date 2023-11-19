@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { postNote } from "../api/NotesApi";
+import NavBar from "../components/NavBar";
 
 const NotePage: React.FC = () => {
   let { patientId } = useParams();
@@ -33,6 +34,7 @@ const NotePage: React.FC = () => {
 
   return (
     <>
+    <NavBar/>
       <div
         style={{
           display: "flex",
