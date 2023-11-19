@@ -2,7 +2,7 @@ import React from 'react';
 
 import PatientHome from './PatientHome';
 import DoctorHome from './DoctorHome';
-import NavBar from '../components/Navbar';
+import NavBar from '../components/NavBar';
 
 const HomePage: React.FC = () => {
   const privilege: string = localStorage.getItem("privilege") || ""; 
