@@ -10,8 +10,16 @@ const ConditionPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
+  //id från routing
+  const location = useLocation();
+  const patientId = location.state?.patientId;
+
   useEffect(() => {
-    const id = Number(localStorage.getItem("id"));
+    
+    var id = Number(localStorage.getItem("id"));
+    if(patientId){
+        id=patientId; 
+    }
     const username = localStorage.getItem("username") || "";
 
     if (id === -1 || username.length === 0) {

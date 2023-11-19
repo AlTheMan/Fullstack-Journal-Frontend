@@ -5,7 +5,9 @@ import "../App.css";
 import LoadingSpinner from "../components/LoadingSpinner";
 import GenericTable from "../components/GenericTable";
 import ClickPopupButton from "../components/ClickPopupButton";
+import NavBarDoctor from "../components/NavBarDoctor";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+
 const EncounterPage: React.FC = () => {
   const [encounters, setEncounters] = useState<EncounterCollection | null>(
     null
@@ -13,8 +15,15 @@ const EncounterPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
+  //id från routing
+  const location = useLocation();
+  const patientId = location.state?.patientId;
+
   useEffect(() => {
-    const id: number = Number(localStorage.getItem("id")) || -1;
+    var id: number = Number(localStorage.getItem("id")) || -1;
+    if(patientId){
+      id=patientId; 
+    }
     const username: string = String(localStorage.getItem("username") || null);
 
     if (id === -1 || username.length === 0) {
