@@ -19,7 +19,7 @@ const DoctorHome: React.FC = () => {
     };
 
     loadDoctor();
-  }, []);
+  }, [id]);
 
  
   const [patients, setPatients] = useState<Patient[]>([]);

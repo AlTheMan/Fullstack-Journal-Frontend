@@ -4,8 +4,8 @@ import { postNote } from "../api/NotesApi";
 import NavBar from "../components/NavBar";
 
 const NotePage: React.FC = () => {
-  let { patientId } = useParams();
-  let patientIdNum = Number(patientId);
+  const { patientId } = useParams();
+  const patientIdNum = Number(patientId);
 
   const [validationError, setValidationError] = useState("");
   const [note, setNote] = useState("");

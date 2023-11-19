@@ -58,7 +58,7 @@ const PatientHome: React.FC = () => {
       }
     };
     loadNotes();
-  }, []);
+  }, [id, username]);
 
   if (error) return (<>Error</>)
 
@@ -70,9 +70,9 @@ const PatientHome: React.FC = () => {
     );
   }
 
-  var noteList = notes.notes;
+  const noteList = notes.notes;
 
-  var priv = localStorage.getItem("privilege");
+  const priv = localStorage.getItem("privilege");
 
   return (
     <>

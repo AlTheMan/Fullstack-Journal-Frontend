@@ -1,8 +1,9 @@
+import React from "react";
 
 interface NoteProps {
     writtenBy: string;
     date: Date;
-    note: String;
+    note: string;
 }
 
 

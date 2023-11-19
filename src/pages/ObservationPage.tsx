@@ -18,7 +18,7 @@ const ObservationPage: React.FC = () => {
 
 
   useEffect(() => {
-    var id = Number(localStorage.getItem("id")) || -1;
+    let id = Number(localStorage.getItem("id")) || -1;
     if(patientId){
       id=patientId; 
     }
@@ -46,7 +46,7 @@ const ObservationPage: React.FC = () => {
     };
 
     loadObservations();
-  }, []);
+  }, [patientId]);
 
   if (error) return <>Error + {error}</>;
 
@@ -59,7 +59,7 @@ const ObservationPage: React.FC = () => {
     );
   }
 
-  var observationList = observations.observationDTOs;
+  const observationList = observations.observationDTOs;
 
   for (let index = 0; index < observationList.length; index++) {
     const item = observationList[index];

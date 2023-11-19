@@ -16,7 +16,7 @@ const ConditionPage: React.FC = () => {
 
   useEffect(() => {
     
-    var id = Number(localStorage.getItem("id"));
+    let id = Number(localStorage.getItem("id"));
     if(patientId){
         id=patientId; 
     }
@@ -44,7 +44,7 @@ const ConditionPage: React.FC = () => {
     };
 
     loadConditions();
-  }, []); // Add any dependencies here if necessary
+  }, [patientId]); // Add any dependencies here if necessary
 
   if (error) return <>{error}</>;
   if (loading || !conditions)
@@ -55,7 +55,7 @@ const ConditionPage: React.FC = () => {
       </>
     );
 
-  var conditionList = conditions.conditionDTOS;
+  const conditionList = conditions.conditionDTOS;
   for (let index = 0; index < conditionList.length; index++) {
     const item = conditionList[index];
     item.id = index;

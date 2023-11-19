@@ -19,7 +19,7 @@ const EncounterPage: React.FC = () => {
   const patientId = location.state?.patientId;
 
   useEffect(() => {
-    var id: number = Number(localStorage.getItem("id")) || -1;
+    let id: number = Number(localStorage.getItem("id")) || -1;
     if(patientId){
       id=patientId; 
     }
@@ -47,7 +47,7 @@ const EncounterPage: React.FC = () => {
     };
 
     loadEncounters();
-  }, []);
+  }, [patientId]);
 
   if (error) return <>Error</>;
   if (loading || encounters === null) {
@@ -59,7 +59,7 @@ const EncounterPage: React.FC = () => {
     );
   }
 
-  var encounterList = encounters.encounters;
+  const encounterList = encounters.encounters;
 
   for (let index = 0; index < encounterList.length; index++) {
     const item = encounterList[index];

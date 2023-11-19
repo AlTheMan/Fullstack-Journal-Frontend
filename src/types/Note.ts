@@ -2,7 +2,7 @@
 interface Note {
     dateWritten: Date;
     name: NamedPerson;
-    note: String;
+    note: string;
 }
 
 
