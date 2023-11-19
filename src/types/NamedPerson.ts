@@ -1,6 +1,6 @@
 // Patient
 
-export type NamedPerson = {
+interface NamedPerson {
     firstName: string;
     lastName: string;
 };

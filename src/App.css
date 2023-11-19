@@ -10,6 +10,31 @@ cardStyle {
     height: 100vh;
 }
 
+.horizontalCenterWithTopMargin {
+    margin: 5%;
+    margin-left: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    align-content: center;
+    margin-top: 20px;
+}
+
+
+.noteBoxesAlignment {
+    margin: 5%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    gap: 10px;
+    align-items: stretch; /* This will make all items in a row the same height */
+  }
+  
+  .noteBoxesAlignment .card {
+    flex: 0 0 20%; /* This will allow the boxes to grow to fill the space, but not shrink below 20% */
+    max-width: 15%; /* Maximum width of each card */
+  }
+
 .popup {
     position: absolute;
     background-color: #fff;

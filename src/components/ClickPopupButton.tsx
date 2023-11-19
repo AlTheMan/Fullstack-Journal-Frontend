@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Button from "./Button";
 
 interface ClickPopupButtonProps {
   doctorList: Doctor[];
@@ -23,7 +24,7 @@ const ClickPopupButton: React.FC<ClickPopupButtonProps> = ({ doctorList }) => {
 
   return (
     <div>
-      <button onClick={togglePopup}>View</button>
+      <Button onClick={togglePopup}>View</Button>
       {isPopupVisible && (
         <div className="popup">
           <ul>
