@@ -3,14 +3,10 @@ import { useParams } from "react-router-dom";
 import { postNote } from "../api/NotesApi";
 
 const NotePage: React.FC = () => {
-  let {patientId} = useParams();
- 
-  console.log(patientId)
+  let { patientId } = useParams();
+  let patientIdNum = Number(patientId);
 
-  let patientIdNum = Number(patientId)
- 
-
-  
+  const [validationError, setValidationError] = useState("");
   const [note, setNote] = useState("");
   const maxLength = 255;
   const remainingCharacters = maxLength - note.length;
@@ -24,12 +20,15 @@ const NotePage: React.FC = () => {
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault(); 
-    if (note.length < 2) return;
-    
+    event.preventDefault();
+    if (note.length < 2) {
+        setValidationError("Your note must have atleast 2 characters")
+        return;
+    }
+    setValidationError("");
+
     await postNote(note, patientIdNum);
     clearText();
-
   };
 
   return (
@@ -72,8 +71,9 @@ const NotePage: React.FC = () => {
               className="form-control"
               style={{ height: "200px", resize: "none" }}
             ></textarea>
+            {validationError && <div style={{ color: "red", padding:"10px" }}>{validationError}</div>}
           </div>
-          <div style={{ padding: "10px" }}>
+          <div style={{ paddingLeft: "10px", paddingBottom: "10px" }}>
             {remainingCharacters} characters remaining.
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
