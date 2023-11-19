@@ -1,5 +1,9 @@
 import { fetchData } from "../api/namedPersonApi";
 import React, { useEffect, useState } from 'react';
+import { NamedPerson } from "../types/NamedPerson";
+import Button from '../components/Button';
+import { Link } from 'react-router-dom';
+
 
 const DoctorHome: React.FC = () => {
 
@@ -21,6 +25,10 @@ const DoctorHome: React.FC = () => {
 return (
     <div>
        <h1>Welcome: Dr {doctor?.firstName} {doctor?.lastName}</h1>
+       <Link to="/NotePage" className="nav-link">
+          <Button onClick={() => console.log("clicked")}>Add note</Button>
+       </Link>
+      
     </div>
   );
 };

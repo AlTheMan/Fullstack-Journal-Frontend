@@ -8,6 +8,7 @@ import RegisterPage from './pages/RegisterPage';
 import EncounterPage from './pages/EncounterPage';
 import RegisterPatientPage from './pages/RegisterPatientPage';
 import RegisterStaffPage from './pages/RegisterStaffPage';
+import NotePage from './pages/NotePage';
 
 
 export const Routing=()=>{
@@ -19,6 +20,7 @@ export const Routing=()=>{
           <Route path="/MessagesPage" element={<MessagesPage />} />
           <Route path='/ConditionPage' element={<ConditionPage />} />
           <Route path='/EncounterPage' element={<EncounterPage/>} />
+          <Route path='/NotePage' element={<NotePage/>} />
           <Route path='/ObservationPage' element={<ObservationPage />} />
           <Route path="/LoginPage" element={<LoginPage />} />
           <Route path="/RegisterPage" element={<RegisterPage />} />
