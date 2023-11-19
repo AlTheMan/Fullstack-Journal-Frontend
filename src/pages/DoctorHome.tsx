@@ -26,16 +26,21 @@ const DoctorHome: React.FC = () => {
   var patientId = 11;
 
   const [patients, setPatients] = useState<Patient[]>([]);
+  const [selectedPatientId, setSelectedPatientId] = useState<number | null>(null);
+
 
     const handleSelectPerson=(patientId:number ) =>{
         const myId: number = Number(localStorage.getItem("id")) || -1; //ifall att numret är null så sätts värdet till "-1"
         console.log("my id: " + myId)
         const privilege: string = localStorage.getItem("privilege") || "";
+        setSelectedPatientId(patientId);
+        console.log("patient id: " + patientId)
+
     }
 
 
     useEffect(() => {
-        const fetchData2 = async () => {
+        const fetchDataPatients = async () => {
             const response = await axios.get('http://localhost:8080/patient/get_all');
             if (response.status === 200) {
                 console.log(response.data);
@@ -43,7 +48,7 @@ const DoctorHome: React.FC = () => {
                 setPatients(patientData);
             }
         };
-        fetchData2();
+        fetchDataPatients();
         }, []); // Empty dependency array to run the effect only once (equivalent to componentDidMount)        
 
  
@@ -53,11 +58,10 @@ return (
       <h1>
         Welcome: Dr {doctor?.firstName} {doctor?.lastName}
       </h1>
-      <Link to={`/NotePage/${patientId}`} className="nav-link">
-        <Button onClick={() => console.log(`Patient id: ${patientId}`)}>
-         Add note
-        </Button>
-       
+      <Link to={selectedPatientId !== null ? `/NotePage/${selectedPatientId}` : '#'} className="nav-link">
+          <Button onClick={() => console.log(`Patient id: ${selectedPatientId}`)}>
+              Add note
+          </Button>
       </Link>
        <div style={{ paddingBottom: '100px', backgroundColor: 'transparent'}}> {/* Add padding to bottom equal to the height of the fixed form */}
         <h2>List of Patients:</h2>
