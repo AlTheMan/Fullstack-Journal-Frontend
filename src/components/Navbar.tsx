@@ -1,5 +1,5 @@
 import React from "react";
-import NavBarPatient from "./NavBarPatient";
+import NavBarPatient from './NavBarPatient.tsx';
 import NavBarDoctor from "./NavBarDoctor"; // Import NavBarDoctor
 // ... other imports
 
