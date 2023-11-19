@@ -1,7 +1,8 @@
 import React from 'react';
-import NavBar from '../components/NavBar';
+
 import PatientHome from './PatientHome';
 import DoctorHome from './DoctorHome';
+import NavBar from '../components/Navbar';
 
 const HomePage: React.FC = () => {
   const privilege: string = localStorage.getItem("privilege") || ""; 
