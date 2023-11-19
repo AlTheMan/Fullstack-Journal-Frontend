@@ -1,6 +1,5 @@
 import { fetchData } from "../api/namedPersonApi";
 import React, { useEffect, useState } from 'react';
-import { NamedPerson } from "../types/NamedPerson";
 import Button from '../components/Button';
 import { Link } from 'react-router-dom';
 
