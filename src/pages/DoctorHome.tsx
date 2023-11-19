@@ -70,11 +70,6 @@ return (
       <h1>
         Welcome: Dr {doctor?.firstName} {doctor?.lastName}
       </h1>
-      <Link to={selectedPatientId !== null ? `/NotePage/${selectedPatientId}` : '#'} className="nav-link">
-          <Button onClick={() => console.log(`Patient id: ${selectedPatientId}`)}>
-              Add note
-          </Button>
-      </Link>
        <div style={{ paddingBottom: '100px', backgroundColor: 'transparent'}}> {/* Add padding to bottom equal to the height of the fixed form */}
         <h2>List of Patients:</h2>
         <div style={{ overflowY: 'auto', height: 'calc(100vh - 100px)' }}> {/* Make this div scrollable */}
