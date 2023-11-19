@@ -3,8 +3,12 @@ import { useParams } from "react-router-dom";
 import { postNote } from "../api/NotesApi";
 
 const NotePage: React.FC = () => {
-  let patientIdString = useParams();
-  let patientId = Number(patientIdString)
+  let {patientId} = useParams();
+ 
+  console.log(patientId)
+
+  let patientIdNum = Number(patientId)
+ 
 
   
   const [note, setNote] = useState("");
@@ -21,7 +25,10 @@ const NotePage: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault(); 
-    await postNote(note, patientId);
+    if (note.length < 2) return;
+    
+    await postNote(note, patientIdNum);
+    clearText();
 
   };
 
