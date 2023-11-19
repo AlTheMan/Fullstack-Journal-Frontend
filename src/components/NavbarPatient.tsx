@@ -1,7 +1,7 @@
 import Button from './Button';
 import { Link } from 'react-router-dom';
 
-const NavBar = () => {
+const NavBarPatient = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
@@ -40,4 +40,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default NavBarPatient;
