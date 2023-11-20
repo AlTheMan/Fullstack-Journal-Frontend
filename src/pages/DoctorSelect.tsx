@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Button from '../components/Button';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import NavBarDoctor from "../components/NavBarDoctor";
+import '../App.css'
 
 
 const DoctorSelect: React.FC = () => {
@@ -9,30 +10,31 @@ const DoctorSelect: React.FC = () => {
 
     const location = useLocation();
     //const patientId = location.state?.patientId;
-    const [selectedPatientId, setSelectedPatientId] = useState<number | null>(null);
+    //const [selectedPatientId, setSelectedPatientId] = useState<number | null>(null);
+    const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null)
     const navigate = useNavigate();
 
 
     useEffect(() => {
-        const patientId = location.state?.patientId;
-        if (patientId) {
-            setSelectedPatientId(patientId);
+        const patient = location.state?.patient;
+        if (patient) {
+            setSelectedPatient(patient)
+            //setSelectedPatientId(patient.patientId);
         }
     }, [location.state]);
 
     const handleNavigate = (path: string) => {
-        if (selectedPatientId !== null) {
-            navigate(path, { state: { patientId: selectedPatientId } });
+        if (selectedPatient !== null) {
+            navigate(path, { state: { patientId: selectedPatient.patientId } });
         }
     };
 
     return (
         <div>
             <NavBarDoctor></NavBarDoctor>
-            <h1>Welcome: Dr</h1>
-            <p>selected patient id: {selectedPatientId}</p>
-            <Link to={selectedPatientId !== null ? `/NotePage/${selectedPatientId}` : '#'} className="nav-link">
-                <Button onClick={() => console.log(`Patient id: ${selectedPatientId}`)}>
+            <div className='horizontalCenterWithTopMargin'>Current patient: {selectedPatient?.firstName} {selectedPatient?.familyName}</div>
+            <Link to={selectedPatient?.patientId !== null ? `/NotePage/${selectedPatient?.patientId}` : '#'} className="nav-link">
+                <Button onClick={() => console.log(`Patient id: ${selectedPatient?.patientId}`)}>
                     Add note
                 </Button>
             </Link>

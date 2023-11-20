@@ -5,7 +5,7 @@ export const fetchEncounters = async (
     patientId: number
 ) => {
 
-    var requestUri = "http://localhost:8080/patient/encounter"
+    const requestUri = "http://localhost:8080/patient/encounter";
 
     try { const response = await axios.get<EncounterCollection>(
         requestUri, {

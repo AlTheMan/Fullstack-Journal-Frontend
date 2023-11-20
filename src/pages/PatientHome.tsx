@@ -72,13 +72,13 @@ const PatientHome: React.FC = () => {
 
   const noteList = notes.notes;
 
-  const priv = localStorage.getItem("privilege");
+  const privilege = localStorage.getItem("privilege");
 
   return (
     <>
       <div className="horizontalCenterWithTopMargin">
         <div>
-          <h3>Welcome {priv?.toLowerCase()}</h3>
+          <h3>Welcome {privilege?.toLowerCase()}</h3>
           <h5>
             Name: {patient.firstName} {patient.familyName}
           </h5>

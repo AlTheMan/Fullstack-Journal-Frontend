@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const fetchConditions = async (username: string, patientId: number) => {
-  var requestUri = "http://localhost:8080/patient/condition";
+  const requestUri = "http://localhost:8080/patient/condition";
 
   try {
     const response = await axios.get<ConditionCollection>(requestUri, {

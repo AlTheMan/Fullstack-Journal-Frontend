@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const fetchNotes = async (username: string, patientId: number) => {
 
-    var requestUri = "http://localhost:8080/patient/note/get";
+    const requestUri = "http://localhost:8080/patient/note/get";
 
     try {
         const response = await axios.get<NoteCollection>(requestUri, {

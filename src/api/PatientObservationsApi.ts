@@ -5,7 +5,7 @@ export const fetchObservations = async (
     patientId: number
 ) => {
 
-    var requestUri = "http://localhost:8080/patient/observation";
+    const requestUri = "http://localhost:8080/patient/observation";
 
     try {
         const response = await axios.get<ObservationCollection>(requestUri, {

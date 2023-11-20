@@ -62,23 +62,23 @@ const ConditionPage: React.FC = () => {
   }
 
   const columns: TableColumn[] = [
+    { id: "code", label: "Condition code" },
     { id: "bodySite", label: "Body Site" },
     { id: "clinicalStatus", label: "Clinical Status" },
     { id: "category", label: "Category" },
     { id: "evidence", label: "Evicence" },
-    { id: "verificationStatus", label: "Verification Status" },
-    { id: "code", label: "Code" },
+    { id: "verificationStatus", label: "Verification Status" }
   ];
 
   const data: TableData[] = conditionList.map((conditionList) => ({
     id: conditionList.id,
     values: [
+      conditionList.code,
       conditionList.bodySite,
       conditionList.clinicalStatus,
       conditionList.category,
       conditionList.evidence,
-      conditionList.verificationStatus,
-      conditionList.code,
+      conditionList.verificationStatus
     ],
   }));
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Patient } from "../types/Patient";
+import {Patient} from "../types/Patient";
 
 export const fetchData = async (
   patientId: string,
@@ -13,9 +13,7 @@ export const fetchData = async (
 
     if (response.status === 200) {
       console.log(response.data);
-
-      const patientData: Patient = response.data;
-      return patientData;
+      return response.data;
     } else {
       console.error("Failed to fetch patient data:", response.status);
       return null;

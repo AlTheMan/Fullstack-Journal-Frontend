@@ -6,7 +6,7 @@ export const fetchData = async (
 
     const privilege: string = localStorage.getItem("privilege") || "";
 
-    var requestUri = "";
+    let requestUri = "";
 
     switch (privilege){
         case "DOCTOR": requestUri = "http://localhost:8080/staff/get_doctor"; break;
@@ -27,9 +27,7 @@ export const fetchData = async (
 
     if (response.status === 200) {
       console.log(response.data);
-
-      const personData: NamedPerson = response.data;
-      return personData;
+      return response.data;
     } else {
       console.error("Failed to fetch staff/doctor data:", response.status);
       return null;

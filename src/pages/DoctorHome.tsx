@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ListGroupGeneric from "../components/ListGroupGeneric";
 import axios from "axios";
-import { Patient } from "../types/Patient";
 
 const DoctorHome: React.FC = () => {
   const [doctor, setDoctor] = useState<NamedPerson | null>(null);
@@ -27,14 +26,14 @@ const DoctorHome: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const handleSelectPerson = (patientId: number) => {
+  const handleSelectPerson = (patient: Patient) => {
     const privilege: string = localStorage.getItem("privilege") || "";
-    console.log("patient id: " + patientId);
+    console.log("patient id: " + patient.patientId);
     if(privilege=="DOCTOR"){
-      navigate("/DoctorSelect", { state: { patientId } });
+      navigate("/DoctorSelect", { state: { patient } });
     }
     if(privilege=="STAFF"){
-      navigate("/StaffSelect", { state: { patientId } });
+      navigate("/StaffSelect", { state: { patient } });
     }
    
   };
@@ -78,7 +77,7 @@ const DoctorHome: React.FC = () => {
               getLabel={(patient) =>
                 `${patient.firstName} ${patient.familyName} (ID: ${patient.patientId})`
               }
-              onSelectItem={(patient) => handleSelectPerson(patient.patientId)}
+              onSelectItem={(patient) => handleSelectPerson(patient)}
             />
           </ul>
         </div>
