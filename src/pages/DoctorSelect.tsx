@@ -3,6 +3,7 @@ import Button from '../components/Button';
 import { useNavigate, useLocation } from 'react-router-dom';
 import NavBarDoctor from "../components/NavBarDoctor";
 import '../App.css'
+import DoctorButton from '../components/DoctorButton';
 
 
 const DoctorSelect: React.FC = () => {
@@ -45,6 +46,9 @@ const DoctorSelect: React.FC = () => {
             <Button onClick={() => handleNavigate('/ObservationPage')}>
                 Observation
             </Button>
+            <DoctorButton onClick={() => handleNavigate('/AddObservation')}>
+                Add Observation
+            </DoctorButton>
         </div>
     );
 };
