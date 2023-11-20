@@ -1,4 +1,3 @@
-import { Patient } from "../types/Patient";
 import { fetchData } from "../api/PatientApi";
 import React, { useEffect, useState } from "react";
 import fetchNotes from "../api/NotesApi";

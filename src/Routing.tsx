@@ -11,6 +11,7 @@ import RegisterStaffPage from './pages/login/RegisterStaffPage';
 import NotePage from './pages/NotePage';
 import DoctorSelect from './pages/DoctorSelect';
 import StaffSelect from './pages/StaffSelect';
+import PatientNotes from './pages/PatientNotes';
 
 export const Routing=()=>{
     return(
@@ -29,6 +30,7 @@ export const Routing=()=>{
           <Route path="/RegisterStaffPage" element={<RegisterStaffPage />} />
           <Route path="/DoctorSelect" element={<DoctorSelect />} />
           <Route path="/StaffSelect" element={<StaffSelect />} />
+          <Route path="/PatientNotes" element={<PatientNotes />} />
 
         </Routes>
       </Router>
