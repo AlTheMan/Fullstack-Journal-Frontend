@@ -49,6 +49,9 @@ const DoctorSelect: React.FC = () => {
             <DoctorButton onClick={() => handleNavigate('/AddObservation')}>
                 Add Observation
             </DoctorButton>
+            <DoctorButton onClick={() => handleNavigate('/AddEncounter')}>
+                Add Encounter
+            </DoctorButton>
         </div>
     );
 };

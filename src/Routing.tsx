@@ -13,6 +13,7 @@ import DoctorSelect from './pages/DoctorSelect';
 import StaffSelect from './pages/StaffSelect';
 import PatientNotes from './pages/PatientNotes';
 import AddObservation from './pages/AddObservation';
+import AddEncounter from './pages/AddEncounter';
 
 export const Routing=()=>{
     return(
@@ -33,6 +34,7 @@ export const Routing=()=>{
           <Route path="/StaffSelect" element={<StaffSelect />} />
           <Route path="/PatientNotes" element={<PatientNotes />} />
           <Route path="/AddObservation" element={<AddObservation />} />
+          <Route path="/AddEncounter" element={<AddEncounter />} />
 
         </Routes>
       </Router>
