@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { fetchConditions } from "../api/PatientConditionsApi";
-import { useLocation } from 'react-router-dom';
 import NavBar from "../components/NavBar";
 import GenericTable from "../components/GenericTable";
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -9,44 +8,53 @@ const ConditionPage: React.FC = () => {
   const [conditions, setConditions] = useState<ConditionCollection | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
 
   //id från routing
-  const location = useLocation();
-  const patientId = location.state?.patientId;
+  
 
   useEffect(() => {
-    
-    let id = Number(localStorage.getItem("id"));
-    if(patientId){
-        id=patientId; 
+    const storedPatient = localStorage.getItem("currentPatient")
+    if (storedPatient) {
+        const patientData: Patient = JSON.parse(storedPatient)
+        setSelectedPatient(patientData);
     }
-    const username = localStorage.getItem("username") || "";
+}, []);
 
-    if (id === -1 || username.length === 0) {
-      setError("Invalid ID or Username");
-      return;
-    }
-
-    const loadConditions = async () => {
-      setLoading(true);
-      try {
-        const conditionData = await fetchConditions(username, id);
-        if (conditionData) {
-          setConditions(conditionData);
-        } else {
-          setError("Data not found");
-        }
-      } catch (error) {
-        setError("An error occurred while fetching data");
-      } finally {
-        setLoading(false);
+  useEffect(() => {
+    if (selectedPatient){
+      const id = Number(selectedPatient?.patientId)
+      const username = localStorage.getItem("username") || "";
+  
+  
+  
+      if (id === -1 || username.length === 0) {
+        setError("Invalid ID or Username");
+        return;
       }
-    };
+  
+      const loadConditions = async () => {
+        setLoading(true);
+        try {
+          const conditionData = await fetchConditions(username, id);
+          if (conditionData) {
+            setConditions(conditionData);
+          } 
+        } catch (error) {
+          // Handle error
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      loadConditions();
+    }
 
-    loadConditions();
-  }, [patientId]); // Add any dependencies here if necessary
 
-  if (error) return <>{error}</>;
+   
+  }, [selectedPatient]); // Add any dependencies here if necessary
+
+  //if (error) return <>{error}</>;
   if (loading || !conditions)
     return (
       <>

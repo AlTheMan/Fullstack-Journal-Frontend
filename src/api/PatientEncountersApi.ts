@@ -17,7 +17,6 @@ export const fetchEncounters = async (
     if (response.status === 200) {
         console.log("Encounters fetched")
         const encounterData = response.data;
-        console.log(response.data);
         return encounterData
     } else {
         console.error("Failed to get patient encounters");

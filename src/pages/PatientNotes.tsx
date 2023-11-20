@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 import NavBarDoctor from "../components/NavBarDoctor";
 
 const PatientNotes: React.FC = () => {
-  const location = useLocation();
   const [patient, setPatient] = useState<Patient | null>(null)
 
   const [notes, setNotes] = useState<NoteCollection | null>(null);
@@ -18,19 +17,20 @@ const PatientNotes: React.FC = () => {
   const username: string = String(localStorage.getItem("username") || "");
 
   useEffect(() => {
-    const selectedPatient = location.state?.selectedPatient;
-    if (selectedPatient) {
-        setPatient(selectedPatient)
+    const storedPatient = localStorage.getItem("currentPatient")
+    if (storedPatient) {
+        const patientData: Patient = JSON.parse(storedPatient)
+        setPatient(patientData);
     }
-}, [location.state]);
+}, []);
 
 
 useEffect(() => {
-  console.log(patient?.patientId)
+  if(patient) {
     const loadNotes = async () => {
       setLoading(true);
       try {
-        const noteData = await fetchNotes(username, patient?.patientId);
+        const noteData = await fetchNotes(username, Number(patient?.patientId));
         if (noteData) {
           console.log("notes fetched");
           setNotes(noteData);
@@ -44,9 +44,11 @@ useEffect(() => {
       }
     };
     loadNotes();
+  }
+    
   }, [patient, username]);
 
-
+  if (error) return (<>Error</>)
 
   let noteList = notes?.notes;
 

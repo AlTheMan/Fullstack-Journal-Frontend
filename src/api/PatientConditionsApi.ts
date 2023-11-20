@@ -11,7 +11,6 @@ export const fetchConditions = async (username: string, patientId: number) => {
 
     if (response.status === 200) {
       const conditionData = response.data;
-      console.log(response.data);
       return conditionData;
     } else {
       console.error("Failed to fetch condition data");

@@ -1,5 +1,4 @@
 import axios from "axios";
-import {Patient} from "../types/Patient";
 
 export const fetchData = async (
   patientId: string,

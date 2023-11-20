@@ -4,7 +4,7 @@ import "../App.css";
 import LoadingSpinner from "../components/LoadingSpinner";
 import GenericTable from "../components/GenericTable";
 import ClickPopupButton from "../components/ClickPopupButton";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import NavBar from "../components/NavBar";
 
 const EncounterPage: React.FC = () => {
@@ -13,41 +13,49 @@ const EncounterPage: React.FC = () => {
   );
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
 
   //id från routing
   const location = useLocation();
   const patientId = location.state?.patientId;
 
   useEffect(() => {
-    let id: number = Number(localStorage.getItem("id")) || -1;
-    if(patientId){
-      id=patientId; 
+    const storedPatient = localStorage.getItem("currentPatient");
+    if (storedPatient) {
+      const patientData: Patient = JSON.parse(storedPatient);
+      setSelectedPatient(patientData);
     }
-    const username: string = String(localStorage.getItem("username") || null);
+  }, []);
 
-    if (id === -1 || username.length === 0) {
-      setError("Invalid ID or Username");
-      return;
-    }
+  useEffect(() => {
+    if (selectedPatient) {
+      const id = Number(selectedPatient?.patientId);
+      const username: string = String(localStorage.getItem("username") || null);
 
-    const loadEncounters = async () => {
-      setLoading(true);
-      try {
-        const encounterData = await fetchEncounters(username, id);
-        if (encounterData) {
-          setEncounters(encounterData);
-        } else {
-          setError("Data not found");
-        }
-      } catch (error) {
-        setError("An error occured while fetching data");
-      } finally {
-        setLoading(false);
+      if (id === -1 || username.length === 0) {
+        setError("Invalid ID or Username");
+        return;
       }
-    };
 
-    loadEncounters();
-  }, [patientId]);
+      const loadEncounters = async () => {
+        setLoading(true);
+        try {
+          const encounterData = await fetchEncounters(username, id);
+          if (encounterData) {
+            setEncounters(encounterData);
+          } else {
+            setError("Data not found");
+          }
+        } catch (error) {
+          setError("An error occured while fetching data");
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      loadEncounters();
+    }
+  }, [selectedPatient]);
 
   if (error) return <>Error</>;
   if (loading || encounters === null) {

@@ -14,15 +14,16 @@ const DoctorSelect: React.FC = () => {
 
 
     useEffect(() => {
-        const patient = location.state?.patient;
-        if (patient) {
-            setSelectedPatient(patient)
+        const storedPatient = localStorage.getItem("currentPatient")
+        if (storedPatient) {
+            const patientData: Patient = JSON.parse(storedPatient)
+            setSelectedPatient(patientData);
         }
-    }, [location.state]);
+    }, []);
 
     const handleNavigate = (path: string) => {
         if (selectedPatient) {
-            navigate(path, { state: { selectedPatient } });
+            navigate(path);
         }
     };
 

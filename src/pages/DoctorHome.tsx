@@ -28,9 +28,10 @@ const DoctorHome: React.FC = () => {
 
   const handleSelectPerson = (patient: Patient) => {
     const privilege: string = localStorage.getItem("privilege") || "";
-    console.log("patient id: " + patient.patientId);
+    localStorage.setItem("currentPatient", JSON.stringify(patient))
+    console.log("patient id in doctor home: " + patient.patientId); // patient id is a number
     if(privilege=="DOCTOR"){
-      navigate("/DoctorSelect", { state: { patient } });
+      navigate("/DoctorSelect");
     }
     if(privilege=="STAFF"){
       navigate("/StaffSelect", { state: { patient } });

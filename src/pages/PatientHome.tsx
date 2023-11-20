@@ -22,6 +22,7 @@ const PatientHome: React.FC = () => {
         const patientData = await fetchData(id.toString(), username);
         if (patientData) {
           setPatient(patientData);
+          localStorage.setItem("currentPatient", JSON.stringify(patientData))
         } else {
           setError("Couldn't get patient name");
         }

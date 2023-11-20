@@ -11,6 +11,7 @@ const ObservationPage: React.FC = () => {
     useState<ObservationCollection | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
 
   //id från routing
   const location = useLocation();
@@ -18,35 +19,44 @@ const ObservationPage: React.FC = () => {
 
 
   useEffect(() => {
-    let id = Number(localStorage.getItem("id")) || -1;
-    if(patientId){
-      id=patientId; 
+    const storedPatient = localStorage.getItem("currentPatient")
+    if (storedPatient) {
+        const patientData: Patient = JSON.parse(storedPatient)
+        setSelectedPatient(patientData);
     }
-    const username = String(localStorage.getItem("username") || null);
+}, []);
 
-    if (id === -1 || username === null) {
-      setError("Invalid ID or Username");
-      return;
-    }
-
-    const loadObservations = async () => {
-      setLoading(true);
-      try {
-        const observationData = await fetchObservations(username, id);
-        if (observationData) {
-          setObservations(observationData);
-        } else {
-          setError("Data not found");
-        }
-      } catch (error) {
-        setError("An error occured while fetching data");
-      } finally {
-        setLoading(false);
+  useEffect(() => {
+    if (selectedPatient) {
+      const id = Number(selectedPatient?.patientId);
+      const username = String(localStorage.getItem("username") || null);
+  
+      if (id === -1 || username === null) {
+        setError("Invalid ID or Username");
+        return;
       }
-    };
-
-    loadObservations();
-  }, [patientId]);
+  
+      const loadObservations = async () => {
+        setLoading(true);
+        try {
+          const observationData = await fetchObservations(username, id);
+          if (observationData) {
+            setObservations(observationData);
+          } else {
+            setError("Data not found");
+          }
+        } catch (error) {
+          setError("An error occured while fetching data");
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      loadObservations();
+    }
+    
+   
+  }, [selectedPatient?.patientId]);
 
   if (error) return <>Error + {error}</>;
 
