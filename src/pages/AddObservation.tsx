@@ -7,22 +7,24 @@ import { useLocation } from "react-router-dom";
 
 const AddObservation: React.FC = () => {
 
-    //useLocation from react-router-dom
-    const location = useLocation();
-  const selectedPatient = location.state?.selectedPatient as Patient | undefined;
 
+    // Get the stringified object from localStorage
+    const currentPatientString = localStorage.getItem("currentPatient");
 
-  //const { patientId } = useParams();
-  //const patientIdNum = Number(patientId);
+    // Parse the string to get the object. Use null coalescing for safety in case the item doesn't exist.
+    const currentPatientObject = currentPatientString ? JSON.parse(currentPatientString) : null;
+
+    // Access the patientId property from the object. Ensure it's a number if required.
+    const patientIdNum = currentPatientObject ? Number(currentPatientObject.patientId) : -1;
+    const patientId = currentPatientObject ? Number(currentPatientObject.patientId) : -1;
+
+    console.log("Patient ID:", patientIdNum);
+ // const { patientId } = localStorage.getItem("currentPatient");
 
   const [description, setDescription] = useState("");
   const [value, setValue] = useState<number | ''>(''); // Initialize as empty string for controlled input
   const [unit, setUnit] = useState("");
   const [validationError, setValidationError] = useState("");
-
-  // If selectedPatient is not defined, patientIdNum will be -1 or you can handle it differently
-  const patientIdNum = selectedPatient ? selectedPatient.patientId : -1;
-  console.log("patient id: " + patientIdNum)
 
 
   const handleSubmit = async (event: React.FormEvent) => {
