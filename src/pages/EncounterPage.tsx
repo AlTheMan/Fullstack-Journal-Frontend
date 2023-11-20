@@ -4,7 +4,6 @@ import "../App.css";
 import LoadingSpinner from "../components/LoadingSpinner";
 import GenericTable from "../components/GenericTable";
 import ClickPopupButton from "../components/ClickPopupButton";
-import { useLocation } from "react-router-dom";
 import NavBar from "../components/NavBar";
 
 const EncounterPage: React.FC = () => {
@@ -14,10 +13,6 @@ const EncounterPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
-
-  //id från routing
-  const location = useLocation();
-  const patientId = location.state?.patientId;
 
   useEffect(() => {
     const storedPatient = localStorage.getItem("currentPatient");

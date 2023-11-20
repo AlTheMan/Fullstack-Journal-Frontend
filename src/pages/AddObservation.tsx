@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
 import { PostObservation } from "../api/PostObservation";
 import NavBar from "../components/NavBar";
-import { useLocation } from "react-router-dom";
 
 
 const AddObservation: React.FC = () => {

@@ -5,12 +5,7 @@ import GenericTable from "../components/GenericTable";
 import LoadingSpinner from "../components/LoadingSpinner";
 import DoctorButton from "../components/DoctorButton";
 import "../App.css"
-
-
-const handleConditionButton = () => {
-
-
-}
+import { useNavigate } from "react-router-dom";
 
 
 const ConditionPage: React.FC = () => {
@@ -18,8 +13,11 @@ const ConditionPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
+  const navigate = useNavigate();
 
-  //id från routing
+  const handleConditionButton = () => {
+    navigate("/AddCondition");
+  }
   
 
   useEffect(() => {
@@ -67,7 +65,7 @@ const ConditionPage: React.FC = () => {
 
   let conditionList = conditions?.conditionDTOS ?? [];
 
-  // wont this code run if condition is null??
+  // Make this a hook
   for (let index = 0; index < conditionList.length; index++) {
     const item = conditionList[index];
     item.id = index;
@@ -77,6 +75,7 @@ const ConditionPage: React.FC = () => {
     { id: "code", label: "Condition code" },
     { id: "bodySite", label: "Body Site" },
     { id: "clinicalStatus", label: "Clinical Status" },
+    {id: "severity", label: "Severity"},
     { id: "category", label: "Category" },
     { id: "evidence", label: "Evicence" },
     { id: "verificationStatus", label: "Verification Status" }
@@ -88,18 +87,12 @@ const ConditionPage: React.FC = () => {
       conditionList.code,
       conditionList.bodySite,
       conditionList.clinicalStatus,
+      conditionList.severity,
       conditionList.category,
       conditionList.evidence,
       conditionList.verificationStatus
     ],
   }));
-
-
-  
-
-
-
- 
 
   return (
     <>
@@ -120,36 +113,3 @@ const ConditionPage: React.FC = () => {
 
 export default ConditionPage;
 
-
-
-
-
-/*
-const conditionList = conditions.conditionDTOS;
-  for (let index = 0; index < conditionList.length; index++) {
-    const item = conditionList[index];
-    item.id = index;
-  }
-
-  const columns: TableColumn[] = [
-    { id: "code", label: "Condition code" },
-    { id: "bodySite", label: "Body Site" },
-    { id: "clinicalStatus", label: "Clinical Status" },
-    { id: "category", label: "Category" },
-    { id: "evidence", label: "Evicence" },
-    { id: "verificationStatus", label: "Verification Status" }
-  ];
-
-  const data: TableData[] = conditionList.map((conditionList) => ({
-    id: conditionList.id,
-    values: [
-      conditionList.code,
-      conditionList.bodySite,
-      conditionList.clinicalStatus,
-      conditionList.category,
-      conditionList.evidence,
-      conditionList.verificationStatus
-    ],
-  }));
-
-*/

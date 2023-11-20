@@ -14,6 +14,7 @@ import StaffSelect from './pages/StaffSelect';
 import PatientNotes from './pages/PatientNotes';
 import AddObservation from './pages/AddObservation';
 import AddEncounter from './pages/AddEncounter';
+import AddCondition from './pages/AddCondition';
 
 export const Routing=()=>{
     return(
@@ -35,6 +36,7 @@ export const Routing=()=>{
           <Route path="/PatientNotes" element={<PatientNotes />} />
           <Route path="/AddObservation" element={<AddObservation />} />
           <Route path="/AddEncounter" element={<AddEncounter />} />
+          <Route path="/AddCondition" element={<AddCondition />} />
 
         </Routes>
       </Router>

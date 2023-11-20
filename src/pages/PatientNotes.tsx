@@ -1,4 +1,3 @@
-import  { useLocation} from "react-router-dom";
 import fetchNotes from "../api/NotesApi";
 import React, { useState, useEffect } from "react";
 import LoadingSpinner from "../components/LoadingSpinner";

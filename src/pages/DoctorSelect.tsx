@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Button from '../components/Button';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import NavBarDoctor from "../components/NavBarDoctor";
 import '../App.css'
 import DoctorButton from '../components/DoctorButton';
 
 
 const DoctorSelect: React.FC = () => {
-
-
-    const location = useLocation();
     const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null)
     const navigate = useNavigate();
 
