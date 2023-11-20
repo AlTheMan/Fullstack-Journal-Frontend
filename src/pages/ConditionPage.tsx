@@ -3,6 +3,15 @@ import { fetchConditions } from "../api/PatientConditionsApi";
 import NavBar from "../components/NavBar";
 import GenericTable from "../components/GenericTable";
 import LoadingSpinner from "../components/LoadingSpinner";
+import DoctorButton from "../components/DoctorButton";
+import "../App.css"
+
+
+const handleConditionButton = () => {
+
+
+}
+
 
 const ConditionPage: React.FC = () => {
   const [conditions, setConditions] = useState<ConditionCollection | null>(null);
@@ -55,15 +64,68 @@ const ConditionPage: React.FC = () => {
   }, [selectedPatient]); // Add any dependencies here if necessary
 
   //if (error) return <>{error}</>;
-  if (loading || !conditions)
-    return (
-      <>
-        <NavBar></NavBar>
-        <LoadingSpinner></LoadingSpinner>
-      </>
-    );
 
-  const conditionList = conditions.conditionDTOS;
+  let conditionList = conditions?.conditionDTOS ?? [];
+
+  // wont this code run if condition is null??
+  for (let index = 0; index < conditionList.length; index++) {
+    const item = conditionList[index];
+    item.id = index;
+  }
+
+  let columns: TableColumn[] = [
+    { id: "code", label: "Condition code" },
+    { id: "bodySite", label: "Body Site" },
+    { id: "clinicalStatus", label: "Clinical Status" },
+    { id: "category", label: "Category" },
+    { id: "evidence", label: "Evicence" },
+    { id: "verificationStatus", label: "Verification Status" }
+  ];
+
+  const data: TableData[] = conditionList.map((conditionList) => ({
+    id: conditionList.id,
+    values: [
+      conditionList.code,
+      conditionList.bodySite,
+      conditionList.clinicalStatus,
+      conditionList.category,
+      conditionList.evidence,
+      conditionList.verificationStatus
+    ],
+  }));
+
+
+  
+
+
+
+ 
+
+  return (
+    <>
+      <NavBar />
+      <div className="horizontalCenterWithTopMargin"><DoctorButton children="Add Condition" onClick={handleConditionButton} /></div>
+      {loading || !conditions ? <LoadingSpinner /> : (
+        <>
+          <div style={{ margin: "20px" }}>
+            <h2>Patient Conditions</h2>
+          </div>
+          
+          <GenericTable columns={columns} data={data} />
+        </>
+      )}
+    </>
+  );
+};
+
+export default ConditionPage;
+
+
+
+
+
+/*
+const conditionList = conditions.conditionDTOS;
   for (let index = 0; index < conditionList.length; index++) {
     const item = conditionList[index];
     item.id = index;
@@ -90,16 +152,4 @@ const ConditionPage: React.FC = () => {
     ],
   }));
 
-  return (
-    <>
-      <NavBar></NavBar>
-      <div style={{ margin: "20px" }}>
-        <h2>Patient Conditions</h2>
-      </div>
-
-      <GenericTable columns={columns} data={data}></GenericTable>
-    </>
-  );
-};
-
-export default ConditionPage;
+*/
