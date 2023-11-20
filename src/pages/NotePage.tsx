@@ -41,7 +41,7 @@ const NotePage: React.FC = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          paddingTop: "200px",
+          marginTop: "50px"
         }}
       >
         <h1>Enter note</h1>
@@ -51,10 +51,9 @@ const NotePage: React.FC = () => {
         className="mx-auto"
         style={{
           backgroundColor: "lightblue",
-          margin: "100px",
           padding: "30px",
           width: "400px",
-          border: "1px solid black",
+          border: "1px solid black"
         }}
       >
         <form onSubmit={handleSubmit}>
