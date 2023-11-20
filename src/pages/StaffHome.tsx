@@ -1,20 +1,9 @@
 // MessagesPage.tsx
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import ListGroupGeneric from '../components/ListGroupGeneric';
 import NavBarDoctor from '../components/NavBarDoctor';
-
-
-
-type Patient = {
-    patientId: number; 
-    firstName: string;
-    familyName: string;
-    sex: string;
-    birthdate: string;
-};
-
-
+import { fetchAllPatients } from '../api/GetAllPatientsTimerApi';
+import { RequestTimer } from '../api/RequestTimer';
 
 
 const MessagesPage = () => {
@@ -34,17 +23,25 @@ const MessagesPage = () => {
 
 
     useEffect(() => {
-        const fetchData = async () => {
-            const response = await axios.get('http://localhost:8080/patient/get_all');
-            if (response.status === 200) {
-                console.log(response.data);
-                const patientData: Patient[] = response.data;
-                setPatients(patientData);
+        const canMakeRequest = RequestTimer()
+        const storedPatients = localStorage.getItem("patients");
+        if (storedPatients) {
+          const patientData: Patient[] = JSON.parse(storedPatients);
+          setPatients(patientData);
+        } else if (canMakeRequest){
+          const getPatients = async () => {
+            const patientData = await fetchAllPatients();
+            if (patientData){
+              setPatients(patientData)
+            } else {
+              setPatients([])
             }
-        };
-        fetchData();
-        }, []); // Empty dependency array to run the effect only once (equivalent to componentDidMount)        
-
+          };
+          getPatients();
+         
+        }
+    
+      }, []);
  
    
 

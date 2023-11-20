@@ -2,8 +2,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ListGroupGeneric from "../components/ListGroupGeneric";
-import axios from "axios";
 import fetchData from "../api/NamedPersonApi";
+import { fetchAllPatients } from "../api/GetAllPatientsTimerApi";
+import { RequestTimer } from "../api/RequestTimer";
 
 const DoctorHome: React.FC = () => {
   const [doctor, setDoctor] = useState<NamedPerson | null>(null);
@@ -41,26 +42,25 @@ const DoctorHome: React.FC = () => {
   };
 
   useEffect(() => {
+    const canMakeRequest = RequestTimer()
     const storedPatients = localStorage.getItem("patients");
-
     if (storedPatients) {
-      // If patients are in local storage, parse and set to state
       const patientData: Patient[] = JSON.parse(storedPatients);
       setPatients(patientData);
+    } else if (canMakeRequest) {
+      const getPatients = async () => {
+        const patientData = await fetchAllPatients();
+        if (patientData){
+          setPatients(patientData)
+        } else {
+          setPatients([])
+        }
+      };
+      getPatients();
+     
     }
-    // If not in local storage, fetch from the server
 
-    const fetchDataPatients = async () => {
-      const response = await axios.get("http://localhost:8080/patient/get_all");
-      if (response.status === 200) {
-        const patientData: Patient[] = response.data;
-        setPatients(patientData);
-        localStorage.setItem("patients", JSON.stringify(patientData));
-      }
-    };
-
-    fetchDataPatients();
-  }, []); // Empty dependency array to run the effect only once
+  }, []);
 
   return (
     <div>

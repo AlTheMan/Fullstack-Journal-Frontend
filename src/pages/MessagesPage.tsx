@@ -5,6 +5,8 @@ import Message from '../components/Message';
 import NavBar from "../components/NavBar";
 import MessageForm from '../components/MessageForm';
 import ListGroupGeneric from '../components/ListGroupGeneric';
+import { fetchAllPatients } from '../api/GetAllPatientsTimerApi';
+import { RequestTimer } from '../api/RequestTimer';
 
 
 
@@ -15,13 +17,6 @@ type Doctor = {
     privilege: 'STAFF' | 'DOCTOR';
 };
 
-type Patient = {
-    patientId: number; 
-    firstName: string;
-    familyName: string;
-    sex: string;
-    birthdate: string;
-};
 
 type Message ={
     id: number;
@@ -168,17 +163,26 @@ const MessagesPage = () => {
           }, []); // Empty dependency array to run the effect only once (equivalent to componentDidMount)        
     }
     else{
-        useEffect(() => {
-            const fetchData = async () => {
-                const response = await axios.get('http://localhost:8080/patient/get_all');
-                if (response.status === 200) {
-                  console.log(response.data);
-                  const patientData: Patient[] = response.data;
-                  setPatients(patientData);
-                }
-            };
-            fetchData();
-          }, []); // Empty dependency array to run the effect only once (equivalent to componentDidMount)        
+      useEffect(() => {
+        const canMakeRequest = RequestTimer()
+        const storedPatients = localStorage.getItem("patients");
+        if (storedPatients) {
+          const patientData: Patient[] = JSON.parse(storedPatients);
+          setPatients(patientData);
+        } else if(canMakeRequest) {
+          const getPatients = async () => {
+            const patientData = await fetchAllPatients()
+            if (patientData){
+              setPatients(patientData)
+            } else {
+              setPatients([])
+            }
+          };
+          getPatients();
+         
+        }
+    
+      }, []);        
     }
  
    
