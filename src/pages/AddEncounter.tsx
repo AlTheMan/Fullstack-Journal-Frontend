@@ -23,7 +23,7 @@ const AddEncounter: React.FC = () => {
     }
 
     // State variables for form fields
-    const [status, setStatus] = useState("");
+    const [status, setStatus] = useState("PLANNED"); //default status
     const [reason, setReason] = useState("");
     const [priority, setPriority] = useState("");
     const [validationError, setValidationError] = useState("");
@@ -50,7 +50,13 @@ const AddEncounter: React.FC = () => {
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label>Status</label>
-                        <input type="text" value={status} onChange={(e) => setStatus(e.target.value)} className="form-control" />
+                        <select value={status} onChange={(e) => setStatus(e.target.value)} className="form-control">
+                            <option value="PLANNED">PLANNED</option>
+                            <option value="INPROGRESS">INPROGRESS</option>
+                            <option value="FINISHED">FINISHED</option>
+                            <option value="CANCELLED">CANCELLED</option>
+                            <option value="ONLEAVE">ONLEAVE</option>
+                        </select>
                     </div>
                     <div className="form-group">
                         <label>Reason</label>

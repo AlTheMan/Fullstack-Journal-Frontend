@@ -1,8 +1,9 @@
-import { fetchData } from "../api/NamedPersonApi";
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ListGroupGeneric from "../components/ListGroupGeneric";
 import axios from "axios";
+import fetchData from "../api/NamedPersonApi";
 
 const DoctorHome: React.FC = () => {
   const [doctor, setDoctor] = useState<NamedPerson | null>(null);
