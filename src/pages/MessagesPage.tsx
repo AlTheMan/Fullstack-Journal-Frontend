@@ -169,7 +169,8 @@ const MessagesPage = () => {
         if (storedPatients) {
           const patientData: Patient[] = JSON.parse(storedPatients);
           setPatients(patientData);
-        } else if(canMakeRequest) {
+        } 
+        if(canMakeRequest) {
           const getPatients = async () => {
             const patientData = await fetchAllPatients()
             if (patientData){

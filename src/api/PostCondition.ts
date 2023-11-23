@@ -10,7 +10,7 @@ export const PostCondition = async (
     verificationStatus: string,
     patientId: number
     ) => {
-    var username = localStorage.getItem("username");
+    //var username = localStorage.getItem("username");
     
 
     var requestUri = "http://localhost:8080/patient/condition/add";

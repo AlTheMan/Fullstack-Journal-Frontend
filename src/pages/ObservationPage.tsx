@@ -3,6 +3,8 @@ import NavBar from "../components/NavBar";
 import fetchObservations from "../api/PatientObservationsApi";
 import GenericTable from "../components/GenericTable";
 import LoadingSpinner from "../components/LoadingSpinner";
+import DoctorButton from "../components/DoctorButton";
+import { useNavigate } from "react-router-dom";
 
 
 const ObservationPage: React.FC = () => {
@@ -11,6 +13,12 @@ const ObservationPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
+
+  const navigate = useNavigate();
+
+  const handleObservationButton = () => {
+    navigate("/AddObservation");
+  }
 
   useEffect(() => {
     const storedPatient = localStorage.getItem("currentPatient")
@@ -37,10 +45,10 @@ const ObservationPage: React.FC = () => {
           if (observationData) {
             setObservations(observationData);
           } else {
-            setError("Data not found");
+            //setError("Data not found");
           }
         } catch (error) {
-          setError("An error occured while fetching data");
+          //setError("An error occured while fetching data");
         } finally {
           setLoading(false);
         }
@@ -54,16 +62,7 @@ const ObservationPage: React.FC = () => {
 
   if (error) return <>Error + {error}</>;
 
-  if (!observations || loading) {
-    return (
-      <>
-        <NavBar></NavBar>
-        <LoadingSpinner></LoadingSpinner>
-      </>
-    );
-  }
-
-  const observationList = observations.observationDTOs;
+  const observationList = observations?.observationDTOs ?? [];
 
   for (let index = 0; index < observationList.length; index++) {
     const item = observationList[index];
@@ -87,11 +86,23 @@ const ObservationPage: React.FC = () => {
 
   return (
     <>
-      <NavBar></NavBar>
-      <div>
-        <h2 style={{ padding: "20px" }}>Patient Observations</h2>
+      <NavBar />
+      <div className="horizontalCenterWithTopMargin">
+        <DoctorButton
+          children="Add Observation"
+          onClick={handleObservationButton}/>
       </div>
-      <GenericTable columns={columns} data={data}></GenericTable>
+      {loading || observations === null ? (
+        <LoadingSpinner />
+      ) : (
+        <>
+          <div style={{ margin: "20px" }}>
+            <h2>Patient Conditions</h2>
+          </div>
+
+          <GenericTable columns={columns} data={data} />
+        </>
+      )}
     </>
   );
 };

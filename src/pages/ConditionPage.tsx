@@ -33,8 +33,6 @@ const ConditionPage: React.FC = () => {
       const id = Number(selectedPatient?.patientId)
       const username = localStorage.getItem("username") || "";
   
-  
-  
       if (id === -1 || username.length === 0) {
         setError("Invalid ID or Username");
         return;
@@ -42,18 +40,10 @@ const ConditionPage: React.FC = () => {
   
       const loadConditions = async () => {
         setLoading(true);
-        try {
-          const conditionData = await fetchConditions(username, id);
-          if (conditionData) {
-            setConditions(conditionData);
-          } 
-        } catch (error) {
-          // Handle error
-        } finally {
-          setLoading(false);
-        }
+        const conditionData = await fetchConditions(username, id);
+        setConditions(conditionData)
+        setLoading(false)
       };
-  
       loadConditions();
     }
 
@@ -61,7 +51,7 @@ const ConditionPage: React.FC = () => {
    
   }, [selectedPatient]); // Add any dependencies here if necessary
 
-  //if (error) return <>{error}</>;
+  if (error) return <>{error}</>;
 
   let conditionList = conditions?.conditionDTOS ?? [];
 
@@ -75,7 +65,7 @@ const ConditionPage: React.FC = () => {
     { id: "code", label: "Condition code" },
     { id: "bodySite", label: "Body Site" },
     { id: "clinicalStatus", label: "Clinical Status" },
-    {id: "severity", label: "Severity"},
+    { id: "severity", label: "Severity"},
     { id: "category", label: "Category" },
     { id: "evidence", label: "Evicence" },
     { id: "verificationStatus", label: "Verification Status" }
@@ -97,13 +87,19 @@ const ConditionPage: React.FC = () => {
   return (
     <>
       <NavBar />
-      <div className="horizontalCenterWithTopMargin"><DoctorButton children="Add Condition" onClick={handleConditionButton} /></div>
-      {loading || !conditions ? <LoadingSpinner /> : (
+      <div className="horizontalCenterWithTopMargin">
+        <DoctorButton
+          children="Add Condition"
+          onClick={handleConditionButton}/>
+      </div>
+      {loading || conditions === null ? (
+        <LoadingSpinner />
+      ) : (
         <>
           <div style={{ margin: "20px" }}>
             <h2>Patient Conditions</h2>
           </div>
-          
+
           <GenericTable columns={columns} data={data} />
         </>
       )}

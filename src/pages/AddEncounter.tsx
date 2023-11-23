@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import NavBar from "../components/NavBar";
-import { PostObservation } from "../api/PostObservation";
 import { PostEncounter } from "../api/PostEncounter";
 
 const AddEncounter: React.FC = () => {

@@ -5,6 +5,8 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import GenericTable from "../components/GenericTable";
 import ClickPopupButton from "../components/ClickPopupButton";
 import NavBar from "../components/NavBar";
+import { useNavigate } from "react-router-dom";
+import DoctorButton from "../components/DoctorButton";
 
 const EncounterPage: React.FC = () => {
   const [encounters, setEncounters] = useState<EncounterCollection | null>(
@@ -13,6 +15,11 @@ const EncounterPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
+  const navigate = useNavigate();
+
+  const handleEncounterButton = () => {
+    navigate("/AddEncounter");
+  }
 
   useEffect(() => {
     const storedPatient = localStorage.getItem("currentPatient");
@@ -53,16 +60,8 @@ const EncounterPage: React.FC = () => {
   }, [selectedPatient]);
 
   if (error) return <>Error</>;
-  if (loading || encounters === null) {
-    return (
-      <>
-        <NavBar></NavBar>
-        <LoadingSpinner></LoadingSpinner>
-      </>
-    );
-  }
 
-  const encounterList = encounters.encounters;
+  const encounterList = encounters?.encounters ?? [];
 
   for (let index = 0; index < encounterList.length; index++) {
     const item = encounterList[index];
@@ -88,9 +87,23 @@ const EncounterPage: React.FC = () => {
 
   return (
     <>
-      <NavBar></NavBar>
+      <NavBar />
+      <div className="horizontalCenterWithTopMargin">
+        <DoctorButton
+          children="Add Encounter"
+          onClick={handleEncounterButton}/>
+      </div>
+      {loading || encounters === null ? (
+        <LoadingSpinner />
+      ) : (
+        <>
+          <div style={{ margin: "20px" }}>
+            <h2>Patient Conditions</h2>
+          </div>
 
-      <GenericTable columns={columns} data={data}></GenericTable>
+          <GenericTable columns={columns} data={data} />
+        </>
+      )}
     </>
   );
 };
