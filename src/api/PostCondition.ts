@@ -1,4 +1,9 @@
 import axios from "axios";
+import { patientApiAddress } from "./RequestAddresses";
+
+type Patient = {
+    id: Number
+}
 
 export const PostCondition = async (
     code: string, 
@@ -10,10 +15,12 @@ export const PostCondition = async (
     verificationStatus: string,
     patientId: number
     ) => {
-    //var username = localStorage.getItem("username");
+   
+    let patient: Patient = {id: patientId}
+    
     
 
-    var requestUri = "http://localhost:8080/patient/condition/add";
+    var requestUri = patientApiAddress() + '/condition/add';
 
     try {
         const response = await axios.post(requestUri, {
@@ -24,7 +31,7 @@ export const PostCondition = async (
             category,
             evidence,
             verificationStatus,
-            patientId
+            patient
         });
 
         if (response.status === 200) {

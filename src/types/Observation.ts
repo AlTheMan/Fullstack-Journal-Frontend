@@ -4,11 +4,5 @@ interface Observation {
     description: string;
     value: number;
     unit: string;
+    patient: Patient
 }
-
-interface ObservationCollection {
-    patientId: number;
-    observationDTOs: Observation[];
-}
-
-

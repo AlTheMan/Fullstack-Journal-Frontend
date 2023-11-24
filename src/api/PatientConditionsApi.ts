@@ -1,12 +1,12 @@
 import axios from "axios";
+import { patientApiAddress } from "./RequestAddresses";
 
-export const fetchConditions = async (username: string, patientId: number) => {
-  const requestUri = "http://localhost:8080/patient/condition";
+export const fetchConditions = async (patientId: number) => {
+  const requestUri = patientApiAddress() + '/condition';
 
   try {
-    const response = await axios.get<ConditionCollection>(requestUri, {
-      params: { patientId },
-      headers: { username: username },
+    const response = await axios.get<Condition[]>(requestUri, {
+      params: { patientId }
     });
 
     if (response.status === 200) {

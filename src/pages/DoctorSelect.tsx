@@ -27,7 +27,7 @@ const DoctorSelect: React.FC = () => {
       <NavBarDoctor></NavBarDoctor>
       <div className="horizontalCenterWithTopMargin">
         Current patient: {selectedPatient?.firstName}{" "}
-        {selectedPatient?.familyName}
+        {selectedPatient?.lastName}
       </div>
 
       <div className="horizontalCenterWithTopMargin">

@@ -31,7 +31,7 @@ const DoctorHome: React.FC = () => {
   const handleSelectPerson = (patient: Patient) => {
     const privilege: string = localStorage.getItem("privilege") || "";
     localStorage.setItem("currentPatient", JSON.stringify(patient))
-    console.log("patient id in doctor home: " + patient.patientId); // patient id is a number
+    console.log("patient id in doctor home: " + patient.id.toString()); // patient id is a number
     if(privilege=="DOCTOR"){
       navigate("/DoctorSelect");
     }
@@ -76,9 +76,9 @@ const DoctorHome: React.FC = () => {
           <ul>
             <ListGroupGeneric<Patient>
               items={patients}
-              getKey={(patient) => patient.patientId.toString()}
+              getKey={(patient) => patient.id.toString()}
               getLabel={(patient) =>
-                `${patient.firstName} ${patient.familyName} (ID: ${patient.patientId})`
+                `${patient.firstName} ${patient.lastName} (ID: ${patient.id})`
               }
               onSelectItem={(patient) => handleSelectPerson(patient)}
             />

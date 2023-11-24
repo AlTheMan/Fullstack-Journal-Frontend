@@ -1,9 +1,9 @@
 // Patient
 
 interface Patient  {
-    patientId: number;
+    id: number;
     firstName: string;
-    familyName: string;
+    lastName: string;
     sex: string;
     birthdate: Date;
 };

@@ -3,13 +3,12 @@ import fetchEncounters from "../api/PatientEncountersApi";
 import "../App.css";
 import LoadingSpinner from "../components/LoadingSpinner";
 import GenericTable from "../components/GenericTable";
-import ClickPopupButton from "../components/ClickPopupButton";
 import NavBar from "../components/NavBar";
 import { useNavigate } from "react-router-dom";
 import DoctorButton from "../components/DoctorButton";
 
 const EncounterPage: React.FC = () => {
-  const [encounters, setEncounters] = useState<EncounterCollection | null>(
+  const [encounters, setEncounters] = useState<Encounter[] | null>(
     null
   );
   const [error, setError] = useState<string | null>(null);
@@ -31,7 +30,7 @@ const EncounterPage: React.FC = () => {
 
   useEffect(() => {
     if (selectedPatient) {
-      const id = Number(selectedPatient?.patientId);
+      const id = Number(selectedPatient?.id);
       const username: string = String(localStorage.getItem("username") || null);
 
       if (id === -1 || username.length === 0) {
@@ -42,7 +41,7 @@ const EncounterPage: React.FC = () => {
       const loadEncounters = async () => {
         setLoading(true);
         try {
-          const encounterData = await fetchEncounters(username, id);
+          const encounterData = await fetchEncounters(id);
           if (encounterData) {
             setEncounters(encounterData);
           } else {
@@ -61,18 +60,13 @@ const EncounterPage: React.FC = () => {
 
   if (error) return <>Error</>;
 
-  const encounterList = encounters?.encounters ?? [];
-
-  for (let index = 0; index < encounterList.length; index++) {
-    const item = encounterList[index];
-    item.id = index;
-  }
+  const encounterList = encounters ?? [];
 
   const columns: TableColumn[] = [
     { id: "reason", label: "Reason for appointment" },
     { id: "priority", label: "Priority" },
     { id: "status", label: "Appointment status" },
-    { id: "doctors", label: "Doctors present" },
+    { id: "doctor", label: "Doctor present" },
   ];
 
   const data: TableData[] = encounterList.map((encounter) => ({
@@ -81,7 +75,7 @@ const EncounterPage: React.FC = () => {
       encounter.reason,
       encounter.priority,
       encounter.status,
-      <ClickPopupButton doctorList={encounter.doctors}></ClickPopupButton>,
+      encounter.doctor.firstName + encounter.doctor.lastName
     ],
   }));
 

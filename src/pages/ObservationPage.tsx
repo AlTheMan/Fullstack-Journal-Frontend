@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 const ObservationPage: React.FC = () => {
   const [observations, setObservations] =
-    useState<ObservationCollection | null>(null);
+    useState<Observation[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
@@ -30,7 +30,7 @@ const ObservationPage: React.FC = () => {
 
   useEffect(() => {
     if (selectedPatient) {
-      const id = Number(selectedPatient?.patientId);
+      const id = Number(selectedPatient?.id);
       const username = String(localStorage.getItem("username") || null);
   
       if (id === -1 || username === null) {
@@ -58,16 +58,11 @@ const ObservationPage: React.FC = () => {
     }
     
    
-  }, [selectedPatient?.patientId]);
+  }, [selectedPatient?.id]);
 
   if (error) return <>Error + {error}</>;
 
-  const observationList = observations?.observationDTOs ?? [];
-
-  for (let index = 0; index < observationList.length; index++) {
-    const item = observationList[index];
-    item.id = index;
-  }
+  const observationList = observations ?? [];
 
   const columns: TableColumn[] = [
     { id: "description", label: "Description" },

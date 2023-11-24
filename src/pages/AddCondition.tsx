@@ -13,10 +13,10 @@ const AddCondition: React.FC = () => {
 
   // Access the patientId property from the object. Ensure it's a number if required.
   const patientIdNum = currentPatientObject
-    ? Number(currentPatientObject.patientId)
+    ? Number(currentPatientObject.id)
     : -1;
   const patientId = currentPatientObject
-    ? Number(currentPatientObject.patientId)
+    ? Number(currentPatientObject.id)
     : -1;
 
   console.log("Patient ID:", patientIdNum);

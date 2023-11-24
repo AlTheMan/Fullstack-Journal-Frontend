@@ -13,11 +13,9 @@ const AddObservation: React.FC = () => {
     const currentPatientObject = currentPatientString ? JSON.parse(currentPatientString) : null;
 
     // Access the patientId property from the object. Ensure it's a number if required.
-    const patientIdNum = currentPatientObject ? Number(currentPatientObject.patientId) : -1;
-    const patientId = currentPatientObject ? Number(currentPatientObject.patientId) : -1;
+    const patientIdNum = currentPatientObject ? Number(currentPatientObject.id) : -1;
 
     console.log("Patient ID:", patientIdNum);
- // const { patientId } = localStorage.getItem("currentPatient");
 
   const [description, setDescription] = useState("");
   const [value, setValue] = useState<number | ''>(''); // Initialize as empty string for controlled input
@@ -50,7 +48,7 @@ const AddObservation: React.FC = () => {
     <>
       <NavBar />
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", marginTop: "50px" }}>
-        <h1>Add Observation for patient: {patientId}</h1>
+        <h1>Add Observation for patient: {patientIdNum}</h1>
       </div>
       <div className="mx-auto" style={{ backgroundColor: "lightblue", padding: "30px", width: "400px", border: "1px solid black" }}>
         <form onSubmit={handleSubmit}>

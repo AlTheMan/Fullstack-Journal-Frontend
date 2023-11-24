@@ -3,10 +3,12 @@
 import LoginForm from '../../components/LoginForm';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { userApiAddress } from '../../api/RequestAddresses';
 
 
 const LoginPage = () => {
   const navigate = useNavigate(); //för forced-redirect
+  const apiAddress = userApiAddress();
 
   const handleLoginFormSubmit = async (username: string, password: string) => {
     console.log('Submitted from LoginPage:', username, password);
@@ -18,7 +20,7 @@ const LoginPage = () => {
     };
 
       // Make the HTTP POST request using Axios
-      const response = await axios.post('http://localhost:8080/user/login', requestData);
+      const response = await axios.post(apiAddress + '/login', requestData);
       console.log(response.status);
       console.log(response.data);
 

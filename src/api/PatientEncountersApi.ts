@@ -1,16 +1,16 @@
 import axios from "axios"
+import { patientApiAddress } from "./RequestAddresses";
 
 export const fetchEncounters = async (
-    username: string,
     patientId: number
 ) => {
+    
 
-    const requestUri = "http://localhost:8080/patient/encounter";
+    const requestUri = patientApiAddress() + '/encounter';
 
-    try { const response = await axios.get<EncounterCollection>(
+    try { const response = await axios.get<Encounter[]>(
         requestUri, {
             params: {patientId},
-            headers: {username: username}
         }
     );
     console.log("Fetching encounters...");

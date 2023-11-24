@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 
 const ConditionPage: React.FC = () => {
-  const [conditions, setConditions] = useState<ConditionCollection | null>(null);
+  const [conditions, setConditions] = useState<Condition[] | null>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
@@ -30,7 +30,7 @@ const ConditionPage: React.FC = () => {
 
   useEffect(() => {
     if (selectedPatient){
-      const id = Number(selectedPatient?.patientId)
+      const id = Number(selectedPatient?.id)
       const username = localStorage.getItem("username") || "";
   
       if (id === -1 || username.length === 0) {
@@ -40,7 +40,7 @@ const ConditionPage: React.FC = () => {
   
       const loadConditions = async () => {
         setLoading(true);
-        const conditionData = await fetchConditions(username, id);
+        const conditionData = await fetchConditions(id);
         setConditions(conditionData)
         setLoading(false)
       };
@@ -53,13 +53,7 @@ const ConditionPage: React.FC = () => {
 
   if (error) return <>{error}</>;
 
-  let conditionList = conditions?.conditionDTOS ?? [];
-
-  // Make this a hook
-  for (let index = 0; index < conditionList.length; index++) {
-    const item = conditionList[index];
-    item.id = index;
-  }
+  let conditionList = conditions ?? [];
 
   let columns: TableColumn[] = [
     { id: "code", label: "Condition code" },

@@ -1,12 +1,8 @@
 interface Encounter {
     id: number;
+    patient: Patient;
     status: string;
     reason: string;
     priority: string;
-    doctors: Doctor[];
-}
-
-interface EncounterCollection {
-    patientid: Number;
-    encounters: Encounter[]
+    doctor: Doctor;
 }

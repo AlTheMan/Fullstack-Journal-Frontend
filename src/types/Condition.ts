@@ -8,9 +8,5 @@ interface Condition {
     code: string;
     bodySite: string;
     evidence: string;
-}
-
-interface ConditionCollection {
-    patientId: number;
-    conditionDTOS: Condition[];
+    patient: Patient;
 }
