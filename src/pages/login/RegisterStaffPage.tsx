@@ -3,13 +3,15 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import RegisterStaffForm from '../../components/RegisterStaffForm';
+import { userApiAddress } from '../../api/RequestAddresses';
+
 
 
 const RegisterStaffPage = () => {
   const navigate = useNavigate(); //för forced-redirect
 
   const handleRegisterFormSubmit = async (firstName: string, lastName: string) => {
-    
+    const apiAddress = userApiAddress();
     
     console.log('Submitted from RegisterPage:', firstName, lastName);
 
@@ -22,7 +24,7 @@ const RegisterStaffPage = () => {
     console.log("trying to send POST with following information: " + firstName + ", " + lastName + ", userId:" + localStorage.getItem("userId"))
     
     if(localStorage.getItem("privilege")== 'NEWSTAFF'){
-        const response = await axios.post('http://localhost:8080/staff/registerStaff', requestData);
+        const response = await axios.post(apiAddress+'/registerStaff', requestData);
         const { id } = response.data;
         console.log(response.status);
         console.log(response.data);
@@ -34,7 +36,7 @@ const RegisterStaffPage = () => {
         }
     }
     else if(localStorage.getItem("privilege")== 'NEWDOCTOR'){
-        const response = await axios.post('http://localhost:8080/staff/registerDoctor', requestData);
+        const response = await axios.post(apiAddress+'/registerStaff', requestData);
         const { id } = response.data;
         console.log(response.status);
         console.log(response.data);

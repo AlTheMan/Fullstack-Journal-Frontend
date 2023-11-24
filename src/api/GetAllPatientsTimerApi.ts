@@ -1,7 +1,8 @@
 import axios from "axios";
+import { patientApiAddress } from "./RequestAddresses";
 
 export const fetchAllPatients = async () => {
-  const response = await axios.get("http://localhost:8080/patient/get_all");
+  const response = await axios.get(patientApiAddress + '/get_all');
   if (response.status === 200) {
     const patientData: Patient[] = response.data;
     localStorage.setItem("patients", JSON.stringify(patientData));

@@ -3,9 +3,12 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import RegisterPatientForm from "../../components/RegisterPatientForm";
+import { userApiAddress } from "../../api/RequestAddresses";
 
 const RegisterPatientPage = () => {
   const navigate = useNavigate(); //för forced-redirect
+
+  const apiAddress = userApiAddress();
 
   const handleRegisterFormSubmit = async (
     firstName: string,
@@ -41,10 +44,7 @@ const RegisterPatientPage = () => {
     );
 
     // Make the HTTP POST request using Axios
-    const response = await axios.post(
-      "http://localhost:8080/patient/add",
-      requestData
-    );
+    const response = await axios.post(apiAddress + '/registerPatient',requestData);
     const { id } = response.data;
     console.log(response.status);
     console.log(response.data);

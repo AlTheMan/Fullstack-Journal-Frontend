@@ -16,14 +16,14 @@ const RegisterPage = () => {
 
     // Define the data to be sent in the request body
     const requestData = {
-      username: username,
+      email: username,
       password: password,
       userPrivilege: userPrivilegeUpperCase
     };
         console.log("trying to send POST with following information: " + username + ", " + password+ ", " + userPrivilege)
 
       // Make the HTTP POST request using Axios
-      const response = await axios.post('http://localhost:8080/user/registerUser', requestData);
+      const response = await axios.post('http://localhost:8080/user/register', requestData);
       console.log(response.status);
       console.log(response.data);
 
@@ -34,7 +34,6 @@ const RegisterPage = () => {
       
 
   };
-
   return (
     <div>
       <RegisterForm onSubmit={handleRegisterFormSubmit} />

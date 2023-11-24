@@ -13,7 +13,7 @@ const LoginPage = () => {
 
     // Define the data to be sent in the request body
     const requestData = {
-      username: username,
+      email: username,
       password: password,
     };
 
