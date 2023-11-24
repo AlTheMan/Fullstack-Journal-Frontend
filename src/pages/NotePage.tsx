@@ -1,16 +1,17 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import { postNote } from "../api/NotesApi";
 import NavBar from "../components/NavBar";
+import { useNavigate } from "react-router-dom";
 
 const NotePage: React.FC = () => {
-  const { patientId } = useParams();
-  const patientIdNum = Number(patientId);
-
+  
+  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null)
   const [validationError, setValidationError] = useState("");
   const [note, setNote] = useState("");
   const maxLength = 255;
   const remainingCharacters = maxLength - note.length;
+  const writtenById = localStorage.getItem("id");
+  const navigate = useNavigate()
 
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNote(event.target.value);
@@ -20,16 +21,33 @@ const NotePage: React.FC = () => {
     setNote("");
   };
 
+  useEffect(() => {
+    const storedPatient = localStorage.getItem("currentPatient")
+    if (storedPatient) {
+        const patientData: Patient = JSON.parse(storedPatient)
+        setSelectedPatient(patientData);
+    }
+}, []);
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (note.length < 2) {
         setValidationError("Your note must have atleast 2 characters")
         return;
     }
+    if (!selectedPatient) {
+      setValidationError("Patient id is not set")
+      return;
+    }
+    if (!writtenById) {
+      setValidationError("Author id not found")
+      return;
+    }
     setValidationError("");
-
-    await postNote(note, patientIdNum);
+    
+    await postNote(note, selectedPatient?.id, Number(writtenById));
     clearText();
+    navigate("/PatientNotes")
   };
 
   return (
@@ -58,7 +76,7 @@ const NotePage: React.FC = () => {
       >
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Note for patient: {patientId}</label>
+            <label>Note for patient: {selectedPatient?.id}</label>
             <br></br>
             <br />
           </div>

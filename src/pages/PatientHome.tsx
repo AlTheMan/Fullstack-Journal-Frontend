@@ -7,7 +7,7 @@ import Note from "../components/Note";
 
 const PatientHome: React.FC = () => {
   const [patient, setPatient] = useState<Patient | null>(null);
-  const [notes, setNotes] = useState<NoteCollection | null>(null);
+  const [notes, setNotes] = useState<Note[] | null>(null);
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -42,7 +42,7 @@ const PatientHome: React.FC = () => {
       setLoading(true);
       try {
         console.log("hello");
-        const noteData = await fetchNotes(username, id);
+        const noteData = await fetchNotes(id);
         if (noteData) {
           console.log("notes fetched");
           setNotes(noteData);
@@ -58,7 +58,7 @@ const PatientHome: React.FC = () => {
       }
     };
     loadNotes();
-  }, [id, username]);
+  }, [id]);
 
   if (error) return (<>Error</>)
 
@@ -70,7 +70,7 @@ const PatientHome: React.FC = () => {
     );
   }
 
-  const noteList = notes.notes;
+  const noteList = notes;
 
   const privilege = localStorage.getItem("privilege");
 
@@ -80,7 +80,7 @@ const PatientHome: React.FC = () => {
         <div>
           <h3>Welcome {privilege?.toLowerCase()}</h3>
           <h5>
-            Name: {patient.firstName} {patient.familyName}
+            Name: {patient.firstName} {patient.lastName}
           </h5>
           <h5>Birthdate: {patient.birthdate.toString()}</h5>
           <h5>Gender: {patient.sex.toLowerCase()}</h5>
@@ -88,11 +88,11 @@ const PatientHome: React.FC = () => {
       </div>
       <div className="noteBoxesAlignment">
         {noteList.map((noteItem, index) => {
-          const firstName = noteItem.name.firstName;
-          const lastName = noteItem.name.lastName;
+          const firstName = noteItem.writtenBy.firstName;
+          const lastName = noteItem.writtenBy.lastName;
 
           const date = noteItem.dateWritten;
-          const noteContent = noteItem.note;
+          const noteContent = noteItem.noteText;
           return (
             <Note
               key={index}

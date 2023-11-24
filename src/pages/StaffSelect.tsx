@@ -25,7 +25,7 @@ const DoctorSelect: React.FC = () => {
     return (
         <div>
             <NavBarDoctor></NavBarDoctor>
-            <div className='horizontalCenterWithTopMargin'><p>Current patient: {selectedPatient?.firstName} {selectedPatient?.familyName}</p></div>
+            <div className='horizontalCenterWithTopMargin'><p>Current patient: {selectedPatient?.firstName} {selectedPatient?.lastName}</p></div>
                 <div className='horizontalCenterWithTopMargin'><Button onClick={handleClick}>View Notes</Button></div>
                 
         </div>

@@ -1,13 +1,8 @@
 
 interface Note {
+    id: number
     dateWritten: Date;
-    name: NamedPerson;
-    note: string;
-}
-
-
-interface NoteCollection {
-    patientId: Number;
-    notes: Note[];
-
+    writtenBy: Staff;
+    noteText: string;
+    patient: Patient;
 }

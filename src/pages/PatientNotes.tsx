@@ -3,17 +3,20 @@ import React, { useState, useEffect } from "react";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Note from "../components/Note";
 import Button from "../components/Button";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import NavBarDoctor from "../components/NavBarDoctor";
 
 const PatientNotes: React.FC = () => {
   const [patient, setPatient] = useState<Patient | null>(null)
 
-  const [notes, setNotes] = useState<NoteCollection | null>(null);
+  const [notes, setNotes] = useState<Note[] | null>(null);
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const username: string = String(localStorage.getItem("username") || "");
+  const navigate = useNavigate();
+
+
+  //const username: string = String(localStorage.getItem("username") || "");
 
   useEffect(() => {
     const storedPatient = localStorage.getItem("currentPatient")
@@ -24,12 +27,17 @@ const PatientNotes: React.FC = () => {
 }, []);
 
 
+const handleAddNoteButton = () => {
+  navigate("/NotePage")
+}
+
+
 useEffect(() => {
   if(patient) {
     const loadNotes = async () => {
       setLoading(true);
       try {
-        const noteData = await fetchNotes(username, Number(patient?.patientId));
+        const noteData = await fetchNotes(patient?.id);
         if (noteData) {
           console.log("notes fetched");
           setNotes(noteData);
@@ -45,38 +53,30 @@ useEffect(() => {
     loadNotes();
   }
     
-  }, [patient, username]);
+  }, [patient]);
 
   if (error) return (<>Error</>)
 
-  let noteList = notes?.notes;
+  let noteList = notes ?? []
 
   return (
     <>
     <NavBarDoctor></NavBarDoctor>
 
-    <div className="horizontalCenterWithTopMargin"><p>Notes for {patient?.firstName} {patient?.familyName}</p></div>
+    <div className="horizontalCenterWithTopMargin"><p>Notes for {patient?.firstName} {patient?.lastName}</p></div>
       <div className="horizontalCenterWithTopMargin">
-        
-        <Link
-          to={patient?.patientId !== null ? `/NotePage/${patient?.patientId}` : "#"}
-          className="nav-link"
-        >
-          <Button onClick={() => console.log(`Patient id: ${patient?.patientId}`)}>
-            Add note
-          </Button>
-        </Link>
+           <Button onClick={handleAddNoteButton}>Add note</Button>
       </div>
 
       {loading && <LoadingSpinner />}
       {noteList && (
         <div className="noteBoxesAlignment">
           {noteList.map((noteItem, index) => {
-            const firstName = noteItem.name.firstName;
-            const lastName = noteItem.name.lastName;
+            const firstName = noteItem.writtenBy.firstName;
+            const lastName = noteItem.writtenBy.lastName;
 
             const date = noteItem.dateWritten;
-            const noteContent = noteItem.note;
+            const noteContent = noteItem.noteText;
             return (
               <Note
                 key={index}

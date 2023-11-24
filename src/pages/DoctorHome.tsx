@@ -7,7 +7,7 @@ import { fetchAllPatients } from "../api/GetAllPatientsTimerApi";
 import { RequestTimer } from "../api/RequestTimer";
 
 const DoctorHome: React.FC = () => {
-  const [doctor, setDoctor] = useState<NamedPerson | null>(null);
+  const [doctor, setDoctor] = useState<Staff | null>(null);
 
   const id: number = Number(localStorage.getItem("id")) || -1;
 

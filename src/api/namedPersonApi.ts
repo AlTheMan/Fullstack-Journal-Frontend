@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const fetchData = async (
   id: number
-): Promise<NamedPerson | null> => {
+): Promise<Staff | null> => {
 
     const privilege: string = localStorage.getItem("privilege") || "";
 

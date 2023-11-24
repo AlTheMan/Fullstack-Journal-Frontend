@@ -208,9 +208,9 @@ const MessagesPage = () => {
           //Visar patientlista
           <ListGroupGeneric<Patient>
             items={patients}
-            getKey={(patient) => patient.patientId.toString()}
-            getLabel={(patient) => `${patient.firstName} ${patient.familyName} (ID: ${patient.patientId})`}
-            onSelectItem={(patient) => handleSelectPerson(patient.patientId)}
+            getKey={(patient) => patient.id.toString()}
+            getLabel={(patient) => `${patient.firstName} ${patient.lastName} (ID: ${patient.id})`}
+            onSelectItem={(patient) => handleSelectPerson(patient.id)}
           />
         )}
       </ul>
