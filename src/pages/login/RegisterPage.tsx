@@ -3,6 +3,7 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import RegisterForm from '../../components/RegisterForm';
+import { userApiAddress } from '../../api/RequestAddresses';
 
 
 const RegisterPage = () => {
@@ -23,7 +24,7 @@ const RegisterPage = () => {
         console.log("trying to send POST with following information: " + username + ", " + password+ ", " + userPrivilege)
 
       // Make the HTTP POST request using Axios
-      const response = await axios.post('http://localhost:8080/user/register', requestData);
+      const response = await axios.post(userApiAddress() +'/register', requestData);
       console.log(response.status);
       console.log(response.data);
 

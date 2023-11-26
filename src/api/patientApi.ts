@@ -1,13 +1,12 @@
 import axios from "axios";
+import { patientApiAddress } from "./RequestAddresses";
 
 export const fetchData = async (
-  patientId: string,
-  username: string
+  patientId: number
 ): Promise<Patient | null> => {
   try {
-    const response = await axios.get("http://localhost:8080/patient/get", {
-      params: { patientId },
-      headers: { username: username },
+    const response = await axios.get(patientApiAddress() + '/get', {
+      params: { patientId }
     });
 
     if (response.status === 200) {

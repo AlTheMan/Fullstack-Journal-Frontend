@@ -19,7 +19,7 @@ const PatientHome: React.FC = () => {
     const loadPatient = async () => {
       setLoading(true);
       try {
-        const patientData = await fetchData(id.toString(), username);
+        const patientData = await fetchData(id);
         if (patientData) {
           setPatient(patientData);
           localStorage.setItem("currentPatient", JSON.stringify(patientData))

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { userApiAddress } from "./RequestAddresses";
 
 export const fetchData = async (
   id: number
@@ -6,7 +7,7 @@ export const fetchData = async (
 
     const privilege: string = localStorage.getItem("privilege") || "";
 
-    let requestUri = "";
+    /*let requestUri = "";
 
     switch (privilege){
         case "DOCTOR": requestUri = "http://localhost:8080/staff/get_doctor"; break;
@@ -17,7 +18,9 @@ export const fetchData = async (
     if (requestUri.length == 0) {
         console.log("Request URI was 0, wrong privilege?")
         return null;
-    }
+    }*/
+
+    const requestUri = userApiAddress() + '/get_staff';
 
 
   try {
