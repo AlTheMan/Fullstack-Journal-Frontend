@@ -35,6 +35,8 @@ const DoctorSelect: React.FC = () => {
         <Button onClick={() => handleNavigate("/ConditionPage")}>Conditions</Button>
         <Button onClick={() => handleNavigate("/EncounterPage")}>Encounters</Button>
         <Button onClick={() => handleNavigate("/ObservationPage")}>Observations</Button>
+        <Button onClick={() => handleNavigate("/ImagePage")}>Images</Button>
+
       </div>
     </div>
   );

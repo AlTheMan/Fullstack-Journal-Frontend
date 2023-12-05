@@ -15,6 +15,7 @@ import PatientNotes from './pages/PatientNotes';
 import AddObservation from './pages/AddObservation';
 import AddEncounter from './pages/AddEncounter';
 import AddCondition from './pages/AddCondition';
+import ImagePage from './pages/images/ImagePage';
 
 export const Routing=()=>{
     return(
@@ -37,6 +38,7 @@ export const Routing=()=>{
           <Route path="/AddObservation" element={<AddObservation />} />
           <Route path="/AddEncounter" element={<AddEncounter />} />
           <Route path="/AddCondition" element={<AddCondition />} />
+          <Route path="/ImagePage" element={<ImagePage/>} />
 
         </Routes>
       </Router>

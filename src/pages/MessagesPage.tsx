@@ -7,6 +7,7 @@ import MessageForm from '../components/MessageForm';
 import ListGroupGeneric from '../components/ListGroupGeneric';
 import { fetchAllPatients } from '../api/GetAllPatientsTimerApi';
 import { RequestTimer } from '../api/RequestTimer';
+import { messageApiAddress } from '../api/RequestAddresses';
 
 
 
@@ -77,7 +78,7 @@ const MessagesPage = () => {
         const fetchMessages = async (employeeIdInput: number, patientIdInput:number) => {
 
 
-            const response = await axios.get('http://localhost:8080/messages/get',{
+            const response = await axios.get(messageApiAddress() + '/get',{
                 params: {
                     employeeId: employeeIdInput,
                     patientId: patientIdInput,
@@ -128,14 +129,14 @@ const MessagesPage = () => {
         const sendMessage = async () => {
             
             if(privilege=="PATIENT"){
-                const response = await axios.post('http://localhost:8080/messages/send',requestDataPatient);
+                const response = await axios.post(messageApiAddress() + '/send',requestDataPatient);
                 console.log("status: "+response.status);
                 if(response.status==200){
                     handleSelectPerson(otherId);
                 }
             }
             else{
-                const response = await axios.post('http://localhost:8080/messages/send',requestDataDoctor);
+                const response = await axios.post(messageApiAddress() + '/send',requestDataDoctor);
                 console.log("status: "+response.status);
                 if (response.status === 200) {
                     handleSelectPerson(otherId);
@@ -151,7 +152,7 @@ const MessagesPage = () => {
         useEffect(() => {
 
             const fetchData = async () => {
-                const response = await axios.get('http://localhost:8080/messages/getAllStaff');
+                const response = await axios.get(messageApiAddress + '/getAllStaff');
                 if (response.status === 200) {
                   console.log(response.data);
                   const doctorData: Doctor[] = response.data;

@@ -17,6 +17,12 @@ cardStyle {
     margin-top: 20px;
 }
 
+.image-size {
+  width: 500px;
+  height: auto;
+}
+
+
 
 .noteBoxesAlignment {
     margin: 5%;

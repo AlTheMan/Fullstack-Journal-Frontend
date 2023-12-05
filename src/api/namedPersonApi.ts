@@ -5,7 +5,7 @@ export const fetchData = async (
   id: number
 ): Promise<Staff | null> => {
 
-    const privilege: string = localStorage.getItem("privilege") || "";
+    //const privilege: string = localStorage.getItem("privilege") || "";
 
     /*let requestUri = "";
 
