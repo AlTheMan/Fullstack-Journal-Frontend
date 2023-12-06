@@ -18,8 +18,11 @@ cardStyle {
 }
 
 .image-size {
-  width: 500px;
-  height: auto;
+  padding: 10px;
+  width: auto;
+  max-width: 1280px;
+  max-height: 720px;
+  background-color: black;
 }
 
 
