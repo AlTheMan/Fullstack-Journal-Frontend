@@ -8,9 +8,7 @@ import { useNavigate } from "react-router-dom";
 import DoctorButton from "../components/DoctorButton";
 
 const EncounterPage: React.FC = () => {
-  const [encounters, setEncounters] = useState<Encounter[] | null>(
-    null
-  );
+  const [encounters, setEncounters] = useState<Encounter[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
@@ -18,7 +16,7 @@ const EncounterPage: React.FC = () => {
 
   const handleEncounterButton = () => {
     navigate("/AddEncounter");
-  }
+  };
 
   useEffect(() => {
     const storedPatient = localStorage.getItem("currentPatient");
@@ -75,7 +73,7 @@ const EncounterPage: React.FC = () => {
       encounter.reason,
       encounter.priority,
       encounter.status,
-      encounter.doctor.firstName + encounter.doctor.lastName
+      encounter.doctor.firstName + encounter.doctor.lastName,
     ],
   }));
 
@@ -85,7 +83,8 @@ const EncounterPage: React.FC = () => {
       <div className="horizontalCenterWithTopMargin">
         <DoctorButton
           children="Add Encounter"
-          onClick={handleEncounterButton}/>
+          onClick={handleEncounterButton}
+        />
       </div>
       {loading || encounters === null ? (
         <LoadingSpinner />

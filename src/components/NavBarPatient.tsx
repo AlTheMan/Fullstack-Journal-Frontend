@@ -30,6 +30,11 @@ const NavBarPatient = () => {
                 <Button onClick={() => console.log('Observation clicked')}>Observation</Button>
               </Link>
             </li>
+            <li className="nav-item">
+              <Link to="/ImagePage" className="nav-link">
+                <Button onClick={() => console.log('Image clicked')}>Images</Button>
+              </Link>
+            </li>
           </ul>
         </div>
         <Link to="/LoginPage" className="nav-link">

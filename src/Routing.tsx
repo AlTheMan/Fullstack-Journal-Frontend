@@ -39,6 +39,7 @@ export const Routing=()=>{
           <Route path="/AddEncounter" element={<AddEncounter />} />
           <Route path="/AddCondition" element={<AddCondition />} />
           <Route path="/ImagePage" element={<ImagePage/>} />
+          
 
         </Routes>
       </Router>
