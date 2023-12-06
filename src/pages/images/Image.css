@@ -5,3 +5,16 @@
     max-height: 720px;
     background-color: black;
   }
+
+
+.button-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Adjust the gap as needed */
+    margin-top: 20px; /* Adjust the top margin as needed */
+}
+
+.button-width {
+    width: 200px;
+}
