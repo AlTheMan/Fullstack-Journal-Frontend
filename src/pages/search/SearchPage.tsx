@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { fetchConditions } from "../api/PatientConditionsApi";
-import NavBar from "../components/NavBar";
-import GenericTable from "../components/GenericTable";
-import LoadingSpinner from "../components/LoadingSpinner";
-import DoctorButton from "../components/DoctorButton";
+import { fetchConditions } from "../../api/PatientConditionsApi";
+import NavBar from "../../components/NavBar";
+import GenericTable from "../../components/GenericTable";
+import LoadingSpinner from "../../components/LoadingSpinner";
+import DoctorButton from "../../components/DoctorButton";
 import "../App.css"
 import { useNavigate } from "react-router-dom";
 
@@ -53,9 +53,9 @@ const SearchPage: React.FC = () => {
 
   if (error) return <>{error}</>;
 
-  let conditionList = conditions ?? [];
+  const conditionList = conditions ?? [];
 
-  let columns: TableColumn[] = [
+  const columns: TableColumn[] = [
     { id: "code", label: "Condition code" },
     { id: "bodySite", label: "Body Site" },
     { id: "clinicalStatus", label: "Clinical Status" },
