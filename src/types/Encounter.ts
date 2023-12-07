@@ -5,4 +5,5 @@ interface Encounter {
     reason: string;
     priority: string;
     doctor: Doctor;
+    date: Date;
 }

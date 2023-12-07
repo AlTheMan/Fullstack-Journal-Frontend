@@ -91,7 +91,7 @@ const EncounterPage: React.FC = () => {
       ) : (
         <>
           <div style={{ margin: "20px" }}>
-            <h2>Patient Conditions</h2>
+            <h2>Patient Encounter</h2>
           </div>
 
           <GenericTable columns={columns} data={data} />
