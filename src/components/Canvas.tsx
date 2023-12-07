@@ -4,13 +4,13 @@ import "../pages/images/Image.css";
 interface CanvasComponentProps {
   imageUrl: string;
   addText: boolean;
-  hexColor: string
+  hexColor: string;
 }
 
 const CanvasComponent: React.FC<CanvasComponentProps> = ({
   imageUrl,
   addText,
-  hexColor
+  hexColor,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
@@ -19,8 +19,6 @@ const CanvasComponent: React.FC<CanvasComponentProps> = ({
   const isDrawingRef = useRef(false);
   const lastPointRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const [loaded, setLoaded] = useState(false);
-
-
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -51,22 +49,16 @@ const CanvasComponent: React.FC<CanvasComponentProps> = ({
     };
   }, [imageUrl]);
 
-
   useEffect(() => {
-
     if (!loaded) return;
 
     const context = contextRef.current;
     if (!context) return;
-    const canvas = canvasRef.current
+    const canvas = canvasRef.current;
     if (!canvas) return;
 
     context.strokeStyle = hexColor;
     context.fillStyle = hexColor;
-
-    
-    
-
 
     const getMousePosition = (canvas: HTMLCanvasElement, event: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
@@ -120,21 +112,17 @@ const CanvasComponent: React.FC<CanvasComponentProps> = ({
         window.removeEventListener("mouseup", handleMouseUp);
       };
     } else {
-
       const showTextField = (event: MouseEvent) => {
         if (!isTextShown.current) {
-          const relMousePos = getMousePosition(canvas, event)
+          const relMousePos = getMousePosition(canvas, event);
           textInputRef.current = document.createElement("input");
 
           textInputRef.current.type = "text";
           textInputRef.current.style.position = "absolute";
           textInputRef.current.style.left = `${event.clientX}px`;
           textInputRef.current.style.top = `${event.clientY}px`;
-          lastPointRef.current.x = relMousePos.x
-          lastPointRef.current.y = relMousePos.y
-
-          console.log(lastPointRef.current.x);
-          console.log(lastPointRef.current.y);
+          lastPointRef.current.x = relMousePos.x;
+          lastPointRef.current.y = relMousePos.y;
 
           document.body.appendChild(textInputRef.current);
 
@@ -142,28 +130,23 @@ const CanvasComponent: React.FC<CanvasComponentProps> = ({
           isTextShown.current = true;
         } else {
           if (textInputRef.current) {
-            const fontSize = (canvas.height/100 * canvas.width/100) / 10
+            const fontSize = ((canvas.height / 100) * canvas.width) / 100 / 10;
             const fontFamily = "Arial"; // Set the font family as needed
-            
+
             const text = textInputRef.current.value;
-            
-            console.log(text);
-            console.log(lastPointRef.current.x);
-            console.log(lastPointRef.current.y);
             context.textAlign = "left";
             context.textBaseline = "top";
 
-            context.fillStyle = hexColor;
             context.font = `${fontSize}px ${fontFamily}`;
             context.fillText(
               text,
               lastPointRef.current.x,
               lastPointRef.current.y
             );
-            if (document.body.contains(textInputRef.current)){
+            if (document.body.contains(textInputRef.current)) {
               document.body.removeChild(textInputRef.current);
             }
-              
+
             textInputRef.current = null;
           }
           isTextShown.current = false;
