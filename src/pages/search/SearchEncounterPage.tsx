@@ -13,8 +13,6 @@ const SearchEncounterPage: React.FC = () => {
   const [encounters, setEncounters] = useState<Encounter[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
-  const navigate = useNavigate();
   const [inputDate, setInputDate] = useState('');
 
   // Function to update state when the date changes
@@ -76,11 +74,11 @@ const SearchEncounterPage: React.FC = () => {
         </form>
       </div>
       {loading || encounters === null ? (
-        <LoadingSpinner />
+        <div /> 
       ) : (
         <>
           <div style={{ margin: "20px" }}>
-            <h2>Patient Conditions</h2>
+            <h2>Patient Encounters</h2>
           </div>
 
           <GenericTable columns={columns} data={data} />
