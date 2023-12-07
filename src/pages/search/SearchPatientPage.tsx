@@ -9,12 +9,14 @@ import PatientList from "./PatientList";
 import NavBar from "../../components/NavBar";
 import { Button } from "react-bootstrap";
 import { getPatientsByDoctorId } from "../../api/GetPatientsByDoctorId";
+import { getPatientsByConditionCode } from "../../api/GetPatientsByConditionCode";
 
 const SearchPatientPage: React.FC = () => {
   const [doctor, setDoctor] = useState<Staff | null>(null);
 
   const id: number = Number(localStorage.getItem("id")) || -1;
-  const [searchInput, setSearchInput] = useState<string>("");
+  const [searchInputPatientName, setSearchInputPatientName] = useState<string>("");
+  const [searchInputConditionCode, setSearchInputConditionCode] = useState<string>("");
 
 
   useEffect(() => {
@@ -47,8 +49,12 @@ const SearchPatientPage: React.FC = () => {
    
   };
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchInput(e.target.value);
+  const handleSearchChangePatientName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInputPatientName(e.target.value);
+  };
+
+  const handleSearchChangeConditionCode = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInputConditionCode(e.target.value);
   };
 
   function setPatientData(patientData: Patient[] | null){
@@ -59,9 +65,15 @@ const SearchPatientPage: React.FC = () => {
       }
   }
 
-  const handleSearchSubmit = async (e: React.FormEvent) => {
+  const handleSearchSubmitPatientName = async (e: React.FormEvent) => {
     e.preventDefault();
-    const patientData = await getPatientsByName(searchInput);
+    const patientData = await getPatientsByName(searchInputPatientName);
+    setPatientData(patientData);
+  };
+
+  const handleSearchSubmitConditionCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const patientData = await getPatientsByConditionCode(searchInputConditionCode);
     setPatientData(patientData);
   };
 
@@ -79,8 +91,12 @@ const SearchPatientPage: React.FC = () => {
       <Button onClick={handleRetreiveDoctorPatients}>  
         Retreive my patients
       </Button>
-      <form onSubmit={handleSearchSubmit}>
-        <input type="text" value={searchInput} onChange={handleSearchChange} placeholder="Search Patient" />
+      <form onSubmit={handleSearchSubmitPatientName}>
+        <input type="text" value={searchInputPatientName} onChange={handleSearchChangePatientName} placeholder="Patient name" />
+        <button type="submit">Search</button>
+      </form>
+      <form onSubmit={handleSearchSubmitConditionCode}>
+        <input type="text" value={searchInputConditionCode} onChange={handleSearchChangeConditionCode} placeholder="Condition code" />
         <button type="submit">Search</button>
       </form>
       <PatientList patients={patients} onSelectPerson={handleSelectPerson} />
