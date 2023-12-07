@@ -11,6 +11,7 @@ import { Button } from "react-bootstrap";
 import { getPatientsByDoctorId } from "../../api/GetPatientsByDoctorId";
 import { getPatientsByConditionCode } from "../../api/GetPatientsByConditionCode";
 import { getPatientsByConditionBodySite } from "../../api/getPatientsByConditionBodySite";
+import { getPatientsByConditionCategory } from "../../api/GetPatientsByConditionCategory";
 
 const SearchPatientPage: React.FC = () => {
   const [doctor, setDoctor] = useState<Staff | null>(null);
@@ -19,6 +20,7 @@ const SearchPatientPage: React.FC = () => {
   const [searchInputPatientName, setSearchInputPatientName] = useState<string>("");
   const [searchInputConditionCode, setSearchInputConditionCode] = useState<string>("");
   const [searchInputConditionBodySite, setSearchInputConditionBodySite] = useState<string>("");
+  const [searchInputConditionCategory, setSearchInputConditionCategory] = useState<string>("");
 
 
   useEffect(() => {
@@ -61,6 +63,9 @@ const SearchPatientPage: React.FC = () => {
   const handleSearchChangeConditionBodySite = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInputConditionBodySite(e.target.value);
   };
+  const handleSearchChangeConditionCategory = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInputConditionCategory(e.target.value);
+  };
 
   function setPatientData(patientData: Patient[] | null){
     if (patientData) {
@@ -88,11 +93,19 @@ const SearchPatientPage: React.FC = () => {
     setPatientData(patientData);
   };
 
+  const handleSearchSubmitConditionCategory = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const patientData = await getPatientsByConditionCategory(searchInputConditionCategory);
+    setPatientData(patientData);
+  };
+
   const handleRetreiveDoctorPatients = async (e: React.FormEvent) => {
     e.preventDefault();
     const patientData = await getPatientsByDoctorId(id);
     setPatientData(patientData);
   };
+
+  
 
   return (
     <>
@@ -112,6 +125,10 @@ const SearchPatientPage: React.FC = () => {
       </form>
       <form onSubmit={handleSearchSubmitConditionBodySite}>
         <input type="text" value={searchInputConditionBodySite} onChange={handleSearchChangeConditionBodySite} placeholder="Condition body site" />
+        <button type="submit">Search</button>
+      </form>
+      <form onSubmit={handleSearchSubmitConditionCategory}>
+        <input type="text" value={searchInputConditionCategory} onChange={handleSearchChangeConditionCategory} placeholder="Condition category" />
         <button type="submit">Search</button>
       </form>
       <PatientList patients={patients} onSelectPerson={handleSelectPerson} />
