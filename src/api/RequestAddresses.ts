@@ -33,3 +33,8 @@ export const imageApiAddress = () => {
     const address = 'http://localhost:3000'
     return address;
 }
+
+export const quarkusApiAddress = () => {
+    const address = 'http://localhost:8080'
+    return address;
+}

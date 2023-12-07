@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ListGroupGeneric from "../../components/ListGroupGeneric";
 import fetchData from "../../api/NamedPersonApi";
-import { fetchAllPatients } from "../../api/GetAllPatientsTimerApi";
 import { RequestTimer } from "../../api/RequestTimer";
+import { getPatientsByName } from "../../api/GetPatientsByName";
 
 const SearchPatientPage: React.FC = () => {
   const [doctor, setDoctor] = useState<Staff | null>(null);
@@ -50,7 +50,7 @@ const SearchPatientPage: React.FC = () => {
     } 
     if (canMakeRequest) {
       const getPatients = async () => {
-        const patientData = await fetchAllPatients();
+        const patientData = await getPatientsByName("Emil");
         if (patientData){
           setPatients(patientData)
         } else {
