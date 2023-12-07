@@ -1,12 +1,12 @@
 import axios from "axios";
 import { quarkusApiAddress } from "./RequestAddresses";
 
-export const getPatientsByConditionCode = async (
-    conditionCode: String
+export const getPatientsByConditionBodySite = async (
+    bodySite: String
   ): Promise<Patient[] | null> => {
     try {
-      const response = await axios.get(quarkusApiAddress() + '/search/patient/getByCondition/code', {
-        params: { conditionCode }
+      const response = await axios.get(quarkusApiAddress() + '/search/patient/getByCondition/bodySite', {
+        params: { bodySite }
       });
   
       if (response.status === 200) {
