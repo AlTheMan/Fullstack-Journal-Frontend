@@ -5,7 +5,7 @@ export const getPatientsByName = async (
     name: String
   ): Promise<Patient[] | null> => {
     try {
-      const response = await axios.get(quarkusApiAddress() + '/findby', {
+      const response = await axios.get(quarkusApiAddress() + '/patient/findby', {
         params: { name }
       });
   

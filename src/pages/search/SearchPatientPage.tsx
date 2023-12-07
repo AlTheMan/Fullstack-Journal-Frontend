@@ -5,11 +5,14 @@ import ListGroupGeneric from "../../components/ListGroupGeneric";
 import fetchData from "../../api/NamedPersonApi";
 import { RequestTimer } from "../../api/RequestTimer";
 import { getPatientsByName } from "../../api/GetPatientsByName";
+import PatientList from "./PatientList";
 
 const SearchPatientPage: React.FC = () => {
   const [doctor, setDoctor] = useState<Staff | null>(null);
 
   const id: number = Number(localStorage.getItem("id")) || -1;
+  const [searchInput, setSearchInput] = useState<string>("");
+
 
   useEffect(() => {
     const loadDoctor = async () => {
@@ -41,50 +44,28 @@ const SearchPatientPage: React.FC = () => {
    
   };
 
-  useEffect(() => {
-    const canMakeRequest = RequestTimer()
-    const storedPatients = localStorage.getItem("patients");
-    if (storedPatients) {
-      const patientData: Patient[] = JSON.parse(storedPatients);
-      setPatients(patientData);
-    } 
-    if (canMakeRequest) {
-      const getPatients = async () => {
-        const patientData = await getPatientsByName("Emil");
-        if (patientData){
-          setPatients(patientData)
-        } else {
-          setPatients([])
-        }
-      };
-      getPatients();
-     
-    }
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+  };
 
-  }, []);
+  const handleSearchSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const patientData = await getPatientsByName(searchInput);
+    if (patientData) {
+      setPatients(patientData);
+    } else {
+      setPatients([]);
+    }
+  };
 
   return (
     <div>
-      <h1>
-        Welcome: {doctor?.firstName} {doctor?.lastName}
-      </h1>
-       <div style={{ paddingBottom: '100px', backgroundColor: 'transparent'}}> {/* Add padding to bottom equal to the height of the fixed form */}
-        <h2>List of Patients:</h2>
-        <div style={{ overflowY: "auto", height: "calc(100vh - 100px)" }}>
-          {" "}
-          {/* Make this div scrollable */}
-          <ul>
-            <ListGroupGeneric<Patient>
-              items={patients}
-              getKey={(patient) => patient.id.toString()}
-              getLabel={(patient) =>
-                `${patient.firstName} ${patient.lastName} (ID: ${patient.id})`
-              }
-              onSelectItem={(patient) => handleSelectPerson(patient)}
-            />
-          </ul>
-        </div>
-      </div>
+      <h1>Welcome: {doctor?.firstName} {doctor?.lastName}</h1>
+      <form onSubmit={handleSearchSubmit}>
+        <input type="text" value={searchInput} onChange={handleSearchChange} placeholder="Search Patient" />
+        <button type="submit">Search</button>
+      </form>
+      <PatientList patients={patients} onSelectPerson={handleSelectPerson} />
     </div>
   );
 };
