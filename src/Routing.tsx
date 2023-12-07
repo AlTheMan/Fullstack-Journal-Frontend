@@ -16,6 +16,7 @@ import AddObservation from './pages/AddObservation';
 import AddEncounter from './pages/AddEncounter';
 import AddCondition from './pages/AddCondition';
 import ImagePage from './pages/images/ImagePage';
+import SearchPage from './pages/search/SearchPage';
 
 export const Routing=()=>{
     return(
@@ -39,6 +40,7 @@ export const Routing=()=>{
           <Route path="/AddEncounter" element={<AddEncounter />} />
           <Route path="/AddCondition" element={<AddCondition />} />
           <Route path="/ImagePage" element={<ImagePage/>} />
+          <Route path="/SearchPage" element={<SearchPage/>} />
           
 
         </Routes>

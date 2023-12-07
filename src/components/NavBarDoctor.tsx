@@ -15,6 +15,11 @@ const NavBarDoctor = () => {
                 <Button onClick={() => console.log('Messages clicked')}>Messages</Button>
               </Link>
             </li>
+            <li>
+            <Link to="/SearchPage" className="nav-link">
+                <Button onClick={() => console.log('SearchPage clicked')}>Search</Button>
+              </Link>
+              </li>
           </ul>
         </div>
         <Link to="/LoginPage" className="nav-link">
