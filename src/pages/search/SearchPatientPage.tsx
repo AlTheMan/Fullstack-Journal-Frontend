@@ -7,6 +7,8 @@ import { RequestTimer } from "../../api/RequestTimer";
 import { getPatientsByName } from "../../api/GetPatientsByName";
 import PatientList from "./PatientList";
 import NavBar from "../../components/NavBar";
+import { Button } from "react-bootstrap";
+import { getPatientsByDoctorId } from "../../api/GetPatientsByDoctorId";
 
 const SearchPatientPage: React.FC = () => {
   const [doctor, setDoctor] = useState<Staff | null>(null);
@@ -49,14 +51,24 @@ const SearchPatientPage: React.FC = () => {
     setSearchInput(e.target.value);
   };
 
+  function setPatientData(patientData: Patient[] | null){
+    if (patientData) {
+        setPatients(patientData);
+      } else {
+        setPatients([]);
+      }
+  }
+
   const handleSearchSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const patientData = await getPatientsByName(searchInput);
-    if (patientData) {
-      setPatients(patientData);
-    } else {
-      setPatients([]);
-    }
+    setPatientData(patientData);
+  };
+
+  const handleRetreiveDoctorPatients = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const patientData = await getPatientsByDoctorId(id);
+    setPatientData(patientData);
   };
 
   return (
@@ -64,6 +76,9 @@ const SearchPatientPage: React.FC = () => {
     <NavBar></NavBar>
     <div>
       <h1>Welcome: {doctor?.firstName} {doctor?.lastName}</h1>
+      <Button onClick={handleRetreiveDoctorPatients}>  
+        Retreive my patients
+      </Button>
       <form onSubmit={handleSearchSubmit}>
         <input type="text" value={searchInput} onChange={handleSearchChange} placeholder="Search Patient" />
         <button type="submit">Search</button>

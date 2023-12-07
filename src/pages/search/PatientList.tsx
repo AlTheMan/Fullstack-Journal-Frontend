@@ -4,7 +4,7 @@ import ListGroupGeneric from "../../components/ListGroupGeneric";
 // Define the structure of the props
 interface PatientListProps {
   patients: Patient[]; 
-  onSelectPerson: (patient: Patient) => void; // Replace `Patient` with the appropriate type
+  onSelectPerson: (patient: Patient) => void;
 }
 
 const PatientList: React.FC<PatientListProps> = ({ patients, onSelectPerson }) => {
