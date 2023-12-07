@@ -17,6 +17,8 @@ import AddEncounter from './pages/AddEncounter';
 import AddCondition from './pages/AddCondition';
 import ImagePage from './pages/images/ImagePage';
 import SearchPage from './pages/search/SearchPage';
+import SearchPatientPage from './pages/search/SearchPatientPage';
+import SearchEncounterPage from './pages/search/SearchEncounterPage';
 
 export const Routing=()=>{
     return(
@@ -41,6 +43,9 @@ export const Routing=()=>{
           <Route path="/AddCondition" element={<AddCondition />} />
           <Route path="/ImagePage" element={<ImagePage/>} />
           <Route path="/SearchPage" element={<SearchPage/>} />
+          <Route path="/SearchPatientPage" element={<SearchPatientPage/>} />
+          <Route path="/SearchEncounterPage" element={<SearchEncounterPage/>} />
+
           
 
         </Routes>
