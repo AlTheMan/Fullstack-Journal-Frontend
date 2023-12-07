@@ -6,6 +6,7 @@ import fetchData from "../../api/NamedPersonApi";
 import { RequestTimer } from "../../api/RequestTimer";
 import { getPatientsByName } from "../../api/GetPatientsByName";
 import PatientList from "./PatientList";
+import NavBar from "../../components/NavBar";
 
 const SearchPatientPage: React.FC = () => {
   const [doctor, setDoctor] = useState<Staff | null>(null);
@@ -59,6 +60,8 @@ const SearchPatientPage: React.FC = () => {
   };
 
   return (
+    <>
+    <NavBar></NavBar>
     <div>
       <h1>Welcome: {doctor?.firstName} {doctor?.lastName}</h1>
       <form onSubmit={handleSearchSubmit}>
@@ -67,6 +70,7 @@ const SearchPatientPage: React.FC = () => {
       </form>
       <PatientList patients={patients} onSelectPerson={handleSelectPerson} />
     </div>
+    </>
   );
 };
 
