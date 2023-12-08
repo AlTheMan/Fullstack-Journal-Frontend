@@ -30,7 +30,7 @@ export const messageApiAddress = () => {
 
 
 export const imageApiAddress = () => {
-    const address = 'http://localhost:3000'
+    const address = 'https://image-api.app.cloud.cbh.kth.se/'
     return address;
 }
 

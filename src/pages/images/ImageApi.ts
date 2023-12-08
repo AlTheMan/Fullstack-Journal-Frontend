@@ -2,7 +2,7 @@ import axios from "axios";
 import { imageApiAddress } from "../../api/RequestAddresses";
 
 export const fetchImageMetadata = async (patientId: number) => {
-  const requestUri = imageApiAddress() + "/image_data";
+  const requestUri = imageApiAddress() + "image_data";
 
   try {
     const response = await axios.get<ImageMetadata>(requestUri, {
@@ -23,7 +23,7 @@ export const fetchImageMetadata = async (patientId: number) => {
 };
 
 export const fetchImage = async (imageId: string, mongoId: string) => {
-  const requestUri = imageApiAddress() + "/image";
+  const requestUri = imageApiAddress() + "image";
   try {
     const response = await axios.get<EncodedImage>(requestUri, {
       params: { mongoId, imageId },
@@ -56,7 +56,7 @@ export const addImageToDb = async (
   formData.append("patientId", patientId);
   formData.append("description", description);
 
-  const requestUri = imageApiAddress() + "/image";
+  const requestUri = imageApiAddress() + "image";
 
   await axios
     .post(requestUri, formData, {
@@ -80,7 +80,6 @@ export const putImageToDb = async (
     imageId: string
   ) => {
     if (!imageData || !patientId || !description || !imageId) return;
-    console.log("PUTTING2")
     const response = await fetch(imageData);
     const blob = await response.blob();
   
@@ -90,7 +89,7 @@ export const putImageToDb = async (
     formData.append("description", description);
     formData.append("imageId", imageId);
   
-    const requestUri = imageApiAddress() + "/image";
+    const requestUri = imageApiAddress() + "image";
   
     await axios
       .put(requestUri, formData, {
