@@ -12,15 +12,16 @@
     display: flex;
     justify-content: center; /* Center the children horizontally */
     align-items: center;     /* Center the children vertically */
-    height: 90vh;           /* Full viewport height */
-    position: relative;      /* Establish a positioning context */
+    height: 80vh;           /* Full viewport height */
 }
 
 
 
 .color-picker {
+    display: flexbox;
+    margin-left: 100px;
     position: absolute; /* Positioning it absolutely */
-    right: 0;           /* Align to the right edge of the container */
+    right: 10rem;           /* Align to the right edge of the container */
     top: 50%;           /* Align to the vertical center */
     transform: translateY(-50%); /* Offset the div by half its height */
 }

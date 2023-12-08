@@ -2,17 +2,20 @@ import React, { useEffect, useRef, useState } from "react";
 import "../pages/images/Image.css";
 
 interface CanvasComponentProps {
+  canvasRef: React.RefObject<HTMLCanvasElement>
   imageUrl: string;
-  addText: boolean;
+  draw: boolean;
   hexColor: string;
+  allowEdit: boolean
 }
 
 const CanvasComponent: React.FC<CanvasComponentProps> = ({
+  canvasRef,
   imageUrl,
-  addText,
+  draw,
   hexColor,
+  allowEdit
 }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
   const textInputRef = useRef<HTMLInputElement | null>(null);
   const isTextShown = useRef(false);
@@ -50,8 +53,8 @@ const CanvasComponent: React.FC<CanvasComponentProps> = ({
   }, [imageUrl]);
 
   useEffect(() => {
-    if (!loaded) return;
 
+    if (!loaded) return;
     const context = contextRef.current;
     if (!context) return;
     const canvas = canvasRef.current;
@@ -59,6 +62,8 @@ const CanvasComponent: React.FC<CanvasComponentProps> = ({
 
     context.strokeStyle = hexColor;
     context.fillStyle = hexColor;
+
+   
 
     const getMousePosition = (canvas: HTMLCanvasElement, event: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
@@ -70,8 +75,12 @@ const CanvasComponent: React.FC<CanvasComponentProps> = ({
         y: (event.clientY - rect.top) * scaleY, // been adjusted to be relative to element
       };
     };
-    if (addText) {
+
+
+
+    if (allowEdit && draw) {
       const drawLine = (x1: number, y1: number, x2: number, y2: number) => {
+        console.log("Drawing")
         context.beginPath();
         context.lineWidth = 10; // Change as needed
         context.moveTo(x1, y1);
@@ -105,13 +114,12 @@ const CanvasComponent: React.FC<CanvasComponentProps> = ({
       canvas.addEventListener("mousedown", handleMouseDown);
       canvas.addEventListener("mousemove", handleMouseMove);
       window.addEventListener("mouseup", handleMouseUp);
-
       return () => {
         canvas.removeEventListener("mousedown", handleMouseDown);
         canvas.removeEventListener("mousemove", handleMouseMove);
         window.removeEventListener("mouseup", handleMouseUp);
       };
-    } else {
+    } else if (!draw && allowEdit){
       const showTextField = (event: MouseEvent) => {
         if (!isTextShown.current) {
           const relMousePos = getMousePosition(canvas, event);
@@ -130,14 +138,14 @@ const CanvasComponent: React.FC<CanvasComponentProps> = ({
           isTextShown.current = true;
         } else {
           if (textInputRef.current) {
-            const fontSize = ((canvas.height / 100) * canvas.width) / 100 / 10;
+            const fontSize = Math.sqrt(Math.sqrt(canvas.width * canvas.height)) /10;
             const fontFamily = "Arial"; // Set the font family as needed
 
             const text = textInputRef.current.value;
             context.textAlign = "left";
             context.textBaseline = "top";
 
-            context.font = `${fontSize}px ${fontFamily}`;
+            context.font = `${fontSize}rem ${fontFamily}`;
             context.fillText(
               text,
               lastPointRef.current.x,
@@ -154,15 +162,18 @@ const CanvasComponent: React.FC<CanvasComponentProps> = ({
       };
 
       canvas.addEventListener("click", showTextField);
-
       return () => {
         canvas.removeEventListener("click", showTextField);
         if (textInputRef.current) {
           document.body.removeChild(textInputRef.current);
         }
       };
+      
     }
-  }, [hexColor]);
+
+   
+
+  }, [hexColor, draw, allowEdit]);
 
   return (
     <div>

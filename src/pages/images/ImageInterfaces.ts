@@ -18,3 +18,10 @@ interface imageData {
     description: string,
     contentType: string
 }
+
+interface SendImageData {
+    patientId: number,
+    description: string,
+    contentType: string,
+    imageData: string
+}
