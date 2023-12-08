@@ -1,9 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ListGroupGeneric from "../../components/ListGroupGeneric";
 import fetchData from "../../api/NamedPersonApi";
-import { RequestTimer } from "../../api/RequestTimer";
 import { getPatientsByName } from "../../api/GetPatientsByName";
 import PatientList from "./PatientList";
 import NavBar from "../../components/NavBar";

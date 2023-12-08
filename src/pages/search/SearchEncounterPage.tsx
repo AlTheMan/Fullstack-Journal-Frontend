@@ -1,11 +1,7 @@
-import { useEffect, useState } from "react";
-import fetchEncounters from "../../api/PatientEncountersApi";
+import { useState } from "react";
 import "../../App.css";
-import LoadingSpinner from "../../components/LoadingSpinner";
 import GenericTable from "../../components/GenericTable";
 import NavBar from "../../components/NavBar";
-import { useNavigate } from "react-router-dom";
-import DoctorButton from "../../components/DoctorButton";
 import { getEncountersByDate } from "../../api/GetÉncountersByDate";
 
 const SearchEncounterPage: React.FC = () => {
@@ -24,8 +20,6 @@ const SearchEncounterPage: React.FC = () => {
   // Function to handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Selected Date:', inputDate);
-    const date = new Date(inputDate);
     const encounterData = await getEncountersByDate(id, inputDate);
     if (encounterData) {
         console.log("successfully retreived encounters");
