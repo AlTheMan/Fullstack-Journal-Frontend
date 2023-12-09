@@ -3,7 +3,7 @@ import "./Components.css";
 
 interface PopupProps {
   isVisible: boolean;
-  onClose: () => void;
+  onReset: () => void;
   onSubmit: () => void;
   onTextChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   textValue: string;
@@ -12,7 +12,7 @@ interface PopupProps {
 
 export const Popup: React.FC<PopupProps> = ({
   isVisible,
-  onClose,
+  onReset,
   onSubmit,
   onTextChange,
   textValue,
@@ -31,8 +31,10 @@ export const Popup: React.FC<PopupProps> = ({
         onChange={onTextChange}
         className="popup-input"
       />
-      <button onClick={onSubmit}>Submit</button>
-      <button onClick={onClose}>Close</button>
+      <div style={{ display: "flex", justifyContent: "space-around" }}>
+        <button onClick={onSubmit}>Submit</button>
+        <button onClick={onReset}>Reset</button>
+      </div>
       {inputError && (
         <>
           <div style={{ color: "red" }}>{inputError}</div>

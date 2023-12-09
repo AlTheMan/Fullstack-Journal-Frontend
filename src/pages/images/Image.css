@@ -1,27 +1,35 @@
 .image-size {
-    padding: 10px;
     width: auto;
     height: auto;
     max-width: 800px;
     max-height: 800px;
-    background-color: black;
   }
 
 
 .container {
     display: flex;
+    position: relative;
     justify-content: center; /* Center the children horizontally */
     align-items: center;     /* Center the children vertically */
     height: 80vh;           /* Full viewport height */
 }
 
+.information-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+   
+  }
+
 
 
 .color-picker {
     display: flexbox;
-    margin-left: 100px;
-    position: absolute; /* Positioning it absolutely */
-    right: 10rem;           /* Align to the right edge of the container */
+    flex-grow: 1;
+    margin: 10px;
+    position: fixed; /* Positioning it absolutely */
+    right: 5rem;           /* Align to the right edge of the container */
     top: 50%;           /* Align to the vertical center */
     transform: translateY(-50%); /* Offset the div by half its height */
 }

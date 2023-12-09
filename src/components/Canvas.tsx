@@ -2,11 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import "../pages/images/Image.css";
 
 interface CanvasComponentProps {
-  canvasRef: React.RefObject<HTMLCanvasElement>
+  canvasRef: React.RefObject<HTMLCanvasElement>;
   imageUrl: string;
   draw: boolean;
   hexColor: string;
-  allowEdit: boolean
+  allowEdit: boolean;
+  resetImage: boolean;
 }
 
 const CanvasComponent: React.FC<CanvasComponentProps> = ({
@@ -14,7 +15,8 @@ const CanvasComponent: React.FC<CanvasComponentProps> = ({
   imageUrl,
   draw,
   hexColor,
-  allowEdit
+  allowEdit,
+  resetImage,
 }) => {
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
   const textInputRef = useRef<HTMLInputElement | null>(null);
@@ -50,10 +52,9 @@ const CanvasComponent: React.FC<CanvasComponentProps> = ({
       context.drawImage(image, 0, 0, image.naturalWidth, image.naturalHeight);
       setLoaded(true); // Indicates that the image is loaded and drawn
     };
-  }, [imageUrl]);
+  }, [imageUrl, resetImage]);
 
   useEffect(() => {
-
     if (!loaded) return;
     const context = contextRef.current;
     if (!context) return;
@@ -62,8 +63,6 @@ const CanvasComponent: React.FC<CanvasComponentProps> = ({
 
     context.strokeStyle = hexColor;
     context.fillStyle = hexColor;
-
-   
 
     const getMousePosition = (canvas: HTMLCanvasElement, event: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
@@ -76,11 +75,9 @@ const CanvasComponent: React.FC<CanvasComponentProps> = ({
       };
     };
 
-
-
     if (allowEdit && draw) {
       const drawLine = (x1: number, y1: number, x2: number, y2: number) => {
-        console.log("Drawing")
+        console.log("Drawing");
         context.beginPath();
         context.lineWidth = 10; // Change as needed
         context.moveTo(x1, y1);
@@ -119,7 +116,7 @@ const CanvasComponent: React.FC<CanvasComponentProps> = ({
         canvas.removeEventListener("mousemove", handleMouseMove);
         window.removeEventListener("mouseup", handleMouseUp);
       };
-    } else if (!draw && allowEdit){
+    } else if (!draw && allowEdit) {
       const showTextField = (event: MouseEvent) => {
         if (!isTextShown.current) {
           const relMousePos = getMousePosition(canvas, event);
@@ -138,7 +135,8 @@ const CanvasComponent: React.FC<CanvasComponentProps> = ({
           isTextShown.current = true;
         } else {
           if (textInputRef.current) {
-            const fontSize = Math.sqrt(Math.sqrt(canvas.width * canvas.height)) /10;
+            const fontSize =
+              Math.sqrt(Math.sqrt(canvas.width * canvas.height)) / 10;
             const fontFamily = "Arial"; // Set the font family as needed
 
             const text = textInputRef.current.value;
@@ -168,18 +166,10 @@ const CanvasComponent: React.FC<CanvasComponentProps> = ({
           document.body.removeChild(textInputRef.current);
         }
       };
-      
     }
-
-   
-
   }, [hexColor, draw, allowEdit]);
 
-  return (
-    <div>
-      <canvas ref={canvasRef} className="image-size" />
-    </div>
-  );
+  return <canvas ref={canvasRef} className="image-size" />;
 };
 
 export default CanvasComponent;

@@ -1,15 +1,21 @@
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import React, { useEffect, useState, useRef, ChangeEvent } from "react";
-import { fetchImage, fetchImageMetadata, addImageToDb, putImageToDb } from "./ImageApi";
+import {
+  fetchImage,
+  fetchImageMetadata,
+  addImageToDb,
+  putImageToDb,
+} from "./ImageApi";
 import LoadingSpinner from "../../components/LoadingSpinner";
-import NavBarDoctor from "../../components/NavBarDoctor";
 import "./Image.css";
 import CanvasComponent from "../../components/Canvas";
 import { Button } from "react-bootstrap";
 import { ColorResult, CompactPicker } from "react-color";
 import TwoRadioButtons from "../../components/RadioButton";
 import { Popup } from "../../components/SaveImagePopup";
+import { InformationPopup } from "../../components/InformationPopup";
+import NavBar from "../../components/NavBar";
 
 const ImagesPage: React.FC = () => {
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
@@ -23,7 +29,6 @@ const ImagesPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [imageSrc, setImageSrc] = useState<string>("");
   const [showImage, setShowImage] = useState<boolean>(false);
-  const [showSaveButton, setShowSaveButton] = useState<boolean>(false);
   const [isDoctor, setIsDoctor] = useState<boolean>(false);
   const [canvasColor, setCanvasColor] = useState<string>("#000000");
   const [selectedOption, setSelectedOption] = useState<boolean>(true);
@@ -34,8 +39,19 @@ const ImagesPage: React.FC = () => {
   const [inputError, setInputError] = useState<string | null>("");
   const [refreshMetadata, setRefreshMetadata] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [informationPopupText, setInformationPopupText] = useState<string>("");
+  const [informationPopupVisible, setInformationPopupVisible] = useState<boolean>(false);
+  const [resetImage, setResetImage] = useState<boolean>(false);
 
-  const handleClosePopup = () => setShowPopup(false);
+  const handleResetPopup = () => {
+    setResetImage(!resetImage);
+  }
+  const handleCloseInformationPopup = () => {
+    setInformationPopupText("");
+    setInformationPopupVisible(false);
+  }
+
+
 
   const handleSubmit = async () => {
     if (!canvasRef.current) return;
@@ -43,29 +59,39 @@ const ImagesPage: React.FC = () => {
     if (!selectedPatient) return;
     if (currentImageId === null) return;
 
-
-    if (!inputText || inputText.length < 3){
-        setInputError("Please enter atleast 3 characters")
-        return;
+    if (!inputText || inputText.length < 3) {
+      setInputError("Please enter atleast 3 characters");
+      return;
     } else if (inputText.length > 30) {
-        setInputError("Please enter less than 30 characters")
-        return;
+      setInputError("Please enter less than 30 characters");
+      return;
     }
-   
-    if (currentImageId.length === 0) { // image loaded from file
-        addImageToDb(imageData, selectedPatient.id.toString(), inputText);
-    } else {    // image loaded from db, put
-        console.log("PUT")
-        putImageToDb(imageData, selectedPatient.id.toString(), inputText, currentImageId);
+    let isSuccess = false;
+    if (currentImageId.length === 0) {
+      // image loaded from file, post
+      isSuccess = await addImageToDb(imageData, selectedPatient.id.toString(), inputText);
+    } else {
+      // image loaded from db, put
+      isSuccess = await putImageToDb(
+        imageData,
+        selectedPatient.id.toString(),
+        inputText,
+        currentImageId
+      );
+    }
+
+    if (isSuccess) {
+      setInformationPopupText("Uploaded image successfully!")
+    } else {
+      setInformationPopupText("Could not upload image.")
     }
     
+    setInformationPopupVisible(true);
+    setInputText("");
     setShowPopup(false);
-    setAllowEdit(false)
-    setShowSaveButton(false)
-    setInputError(null)
+    setAllowEdit(false);
+    setInputError(null);
   };
-
-
 
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setInputText(event.target.value);
@@ -80,6 +106,7 @@ const ImagesPage: React.FC = () => {
       setShowImage(true);
       setImageSrc(URL.createObjectURL(file));
       setAllowEdit(false);
+      setShowPopup(true)
       setCurrentImageId("");
     } else {
       console.error("File is not an image.");
@@ -99,13 +126,10 @@ const ImagesPage: React.FC = () => {
     }
   };
 
-  const handleSaveImage = () => {
-    setShowPopup(true);
-  };
 
   const handleEditImage = () => {
-    setAllowEdit(true)
-    setShowSaveButton(true);
+    setShowPopup(true);
+    setAllowEdit(true);
   };
 
   const handleDropdownItemClick = async (itemId: string) => {
@@ -118,9 +142,9 @@ const ImagesPage: React.FC = () => {
           const fullImageSrc = "data:" + contentType + ";base64," + base64Image;
           setImageSrc(fullImageSrc);
           setShowImage(true);
-          setShowSaveButton(false);
           setAllowEdit(false);
           setCurrentImageId(itemId);
+          setShowPopup(false);
         }
       } catch (error) {
         console.error("An error occurred: ", error);
@@ -133,6 +157,7 @@ const ImagesPage: React.FC = () => {
     setCanvasColor(color.hex);
   };
 
+  // Setting the patient and privilege from local storage
   useEffect(() => {
     const storedPatient = localStorage.getItem("currentPatient");
     const privilege = localStorage.getItem("privilege");
@@ -148,17 +173,15 @@ const ImagesPage: React.FC = () => {
     }
   }, [selectedPatient]);
 
+  // Fetching information about all images (no images)
+
   useEffect(() => {
-    console.log("First");
     if (selectedPatient) {
-        console.log("Second");
       const loadImages = async () => {
         setLoading(true);
         try {
-            console.log("Third");
           const metadata = await fetchImageMetadata(selectedPatient.id);
           if (metadata && metadata.images) {
-            console.log("Metadata fetched");
             setImagesMetaData(metadata);
             setImageMeta(metadata.images);
           } else {
@@ -174,11 +197,9 @@ const ImagesPage: React.FC = () => {
     }
   }, [selectedPatient, refreshMetadata]);
 
-   
-
   return (
     <>
-      <NavBarDoctor />
+      <NavBar />
       {loading ? (
         <LoadingSpinner />
       ) : (
@@ -191,13 +212,13 @@ const ImagesPage: React.FC = () => {
             accept=".jpg, .jpeg, .png"
           />
           <div className="button-row">
-          <Button
-                id="refresh-images-button"
-                title="Refresh Button"
-                onClick={() => setRefreshMetadata(refreshMetadata + 1)}
-              >
-                Refresh
-              </Button>
+            <Button
+              id="refresh-images-button"
+              title="Refresh Button"
+              onClick={() => setRefreshMetadata(refreshMetadata + 1)}
+            >
+              Refresh
+            </Button>
             <DropdownButton id="dropdown-basic-button" title="Choose image">
               {imageMeta.map((item) => (
                 <Dropdown.Item
@@ -225,57 +246,56 @@ const ImagesPage: React.FC = () => {
                 Edit image
               </Button>
             )}
-
-            {showSaveButton && (
-              <Button
-                id="save-image-button"
-                title="Save image"
-                onClick={handleSaveImage}
-              >
-                Save image
-              </Button>
-            )}
           </div>
         </>
       )}
 
       {showImage && (
         <div className="container">
+         <div>
+          <div className="information-popup">
+         <InformationPopup textValue = {informationPopupText} isVisible={informationPopupVisible} onClose={handleCloseInformationPopup}></InformationPopup>
+         </div>
           <CanvasComponent
-            canvasRef = {canvasRef}
+            canvasRef={canvasRef}
             imageUrl={imageSrc}
             draw={selectedOption}
             hexColor={canvasColor}
             allowEdit={allowEdit}
-          ></CanvasComponent>
-          {allowEdit && (
+            resetImage={resetImage}
+          >
+          </CanvasComponent>
+          </div>
           <div className="color-picker">
             <div>
               <Popup
                 isVisible={showPopup}
-                onClose={handleClosePopup}
+                onReset={handleResetPopup}
                 onSubmit={handleSubmit}
                 onTextChange={handleTextChange}
                 textValue={inputText}
                 inputError={inputError}
               ></Popup>
             </div>
-            <div style={{margin: "1rem"}}>
-              <CompactPicker
-                color={canvasColor}
-                onChangeComplete={handleChangeComplete}
-              ></CompactPicker>
-            </div>
-            <div style={{ marginTop: "1rem" }}>
-              <TwoRadioButtons
-                firstButtonName="Draw"
-                seconButtonName="Write"
-                handleOptionChange={handleRadioButtonChange}
-                activeButton={selectedOption}
-              ></TwoRadioButtons>
-            </div>
+            {allowEdit && (
+              <>
+                <div style={{ margin: "1rem" }}>
+                  <CompactPicker
+                    color={canvasColor}
+                    onChangeComplete={handleChangeComplete}
+                  ></CompactPicker>
+                </div>
+                <div style={{ marginTop: "1rem" }}>
+                  <TwoRadioButtons
+                    firstButtonName="Draw"
+                    seconButtonName="Write"
+                    handleOptionChange={handleRadioButtonChange}
+                    activeButton={selectedOption}
+                  ></TwoRadioButtons>
+                </div>
+              </>
+            )}
           </div>
-          )}
         </div>
       )}
     </>
