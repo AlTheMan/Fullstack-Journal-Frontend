@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import "../pages/images/Image.css";
 
 interface CanvasComponentProps {
@@ -8,6 +8,7 @@ interface CanvasComponentProps {
   hexColor: string;
   allowEdit: boolean;
   resetImage: boolean;
+  children?: React.ReactNode
 }
 
 const CanvasComponent: React.FC<CanvasComponentProps> = ({
@@ -23,7 +24,6 @@ const CanvasComponent: React.FC<CanvasComponentProps> = ({
   const isTextShown = useRef(false);
   const isDrawingRef = useRef(false);
   const lastPointRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
-  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -50,12 +50,10 @@ const CanvasComponent: React.FC<CanvasComponentProps> = ({
       canvas.width = image.naturalWidth;
       canvas.height = image.naturalHeight;
       context.drawImage(image, 0, 0, image.naturalWidth, image.naturalHeight);
-      setLoaded(true); // Indicates that the image is loaded and drawn
     };
   }, [imageUrl, resetImage]);
 
   useEffect(() => {
-    if (!loaded) return;
     const context = contextRef.current;
     if (!context) return;
     const canvas = canvasRef.current;
@@ -79,7 +77,7 @@ const CanvasComponent: React.FC<CanvasComponentProps> = ({
       const drawLine = (x1: number, y1: number, x2: number, y2: number) => {
         console.log("Drawing");
         context.beginPath();
-        context.lineWidth = 10; // Change as needed
+        context.lineWidth = 10;
         context.moveTo(x1, y1);
         context.lineTo(x2, y2);
         context.stroke();
@@ -169,7 +167,10 @@ const CanvasComponent: React.FC<CanvasComponentProps> = ({
     }
   }, [hexColor, draw, allowEdit]);
 
-  return <canvas ref={canvasRef} className="image-size" />;
+
+  return (<div>
+    <canvas ref={canvasRef}/>
+    </div>);
 };
 
 export default CanvasComponent;

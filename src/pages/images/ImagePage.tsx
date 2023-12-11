@@ -256,6 +256,7 @@ const ImagesPage: React.FC = () => {
           <div className="information-popup">
          <InformationPopup textValue = {informationPopupText} isVisible={informationPopupVisible} onClose={handleCloseInformationPopup}></InformationPopup>
          </div>
+         <div className="image-size">
           <CanvasComponent
             canvasRef={canvasRef}
             imageUrl={imageSrc}
@@ -265,6 +266,7 @@ const ImagesPage: React.FC = () => {
             resetImage={resetImage}
           >
           </CanvasComponent>
+          </div>
           </div>
           <div className="color-picker">
             <div>

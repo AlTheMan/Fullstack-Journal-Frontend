@@ -17,15 +17,6 @@ cardStyle {
     margin-top: 20px;
 }
 
-.image-size {
-  padding: 10px;
-  width: auto;
-  max-width: 1280px;
-  max-height: 720px;
-  background-color: black;
-}
-
-
 
 .noteBoxesAlignment {
     margin: 5%;
