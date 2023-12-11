@@ -11,7 +11,7 @@ ENV PATH /react/node_modules/.bin:$PATH
 COPY package*.json ./
 RUN npm install
 COPY . ./
-RUN npm install
+RUN npm run build
   
 FROM nginx:1.19.0
 WORKDIR /usr/share/nginx/html
