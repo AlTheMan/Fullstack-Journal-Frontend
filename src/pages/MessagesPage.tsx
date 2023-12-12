@@ -151,9 +151,9 @@ const MessagesPage = () => {
     
 
     const privilege: string = localStorage.getItem("privilege") || "";
-    if(privilege=="PATIENT"){
+    
         useEffect(() => {
-
+          if(privilege=="PATIENT"){
             const fetchData = async () => {
                 const response = await axios.get(messageApiAddress + '/getAllStaff');
                 if (response.status === 200) {
@@ -168,31 +168,28 @@ const MessagesPage = () => {
             };
         
             fetchData();
-          }, []); // Empty dependency array to run the effect only once (equivalent to componentDidMount)        
-    }
-    else{
-      useEffect(() => {
-        const canMakeRequest = RequestTimer()
-        const storedPatients = localStorage.getItem("patients");
-        if (storedPatients) {
-          const patientData: Patient[] = JSON.parse(storedPatients);
-          setPatients(patientData);
-        } 
-        if(canMakeRequest) {
-          const getPatients = async () => {
-            const patientData = await fetchAllPatients()
-            if (patientData){
-              setPatients(patientData)
-            } else {
-              setPatients([])
+          }
+          else{
+            const canMakeRequest = RequestTimer()
+            const storedPatients = localStorage.getItem("patients");
+            if (storedPatients) {
+              const patientData: Patient[] = JSON.parse(storedPatients);
+              setPatients(patientData);
+            } 
+            if(canMakeRequest) {
+              const getPatients = async () => {
+                const patientData = await fetchAllPatients()
+                if (patientData){
+                  setPatients(patientData)
+                } else {
+                  setPatients([])
+                }
+              };
+              getPatients();
             }
-          };
-          getPatients();
+          }
+      }, []); // Empty dependency array to run the effect only once (equivalent to componentDidMount)        
          
-        }
-    
-      }, []);        
-    }
  
    
 
