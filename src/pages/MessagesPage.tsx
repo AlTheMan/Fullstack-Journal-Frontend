@@ -1,7 +1,6 @@
 // MessagesPage.tsx
 import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import Message from '../components/Message';
 import NavBar from "../components/NavBar";
 import MessageForm from '../components/MessageForm';
 import ListGroupGeneric from '../components/ListGroupGeneric';
@@ -85,12 +84,14 @@ const MessagesPage = () => {
                 },
             });
             if (response.status === 200) {
+              console.log("response=200");
                 console.log("API Response:"+ response.data);
                 //console.log("messages: " + response.data);
                 const messageData: Message[] = response.data;
                 setMessages(messageData);
                 console.log("messages: " + messages);
             }else{
+              console.log("error retreiving data: ")
               console.log("error retreiving data: " + response.status)
             }
         }
@@ -152,43 +153,43 @@ const MessagesPage = () => {
 
     const privilege: string = localStorage.getItem("privilege") || "";
     
-        useEffect(() => {
-          if(privilege=="PATIENT"){
-            const fetchData = async () => {
-                const response = await axios.get(messageApiAddress + '/getAllStaff');
-                if (response.status === 200) {
-                  console.log(response.data);
-                  const doctorData: Doctor[] = response.data;
-                  setDoctors(doctorData);
-                }
-                else{
-                  console.log("error fetching staff: " + response.status)
-                  console.log("response data: " + response.data)
-                }
-            };
-        
-            fetchData();
-          }
-          else{
-            const canMakeRequest = RequestTimer()
-            const storedPatients = localStorage.getItem("patients");
-            if (storedPatients) {
-              const patientData: Patient[] = JSON.parse(storedPatients);
-              setPatients(patientData);
-            } 
-            if(canMakeRequest) {
-              const getPatients = async () => {
-                const patientData = await fetchAllPatients()
-                if (patientData){
-                  setPatients(patientData)
-                } else {
-                  setPatients([])
-                }
-              };
-              getPatients();
+    useEffect(() => {
+      if(privilege=="PATIENT"){
+        const fetchData = async () => {
+            const response = await axios.get(messageApiAddress + '/getAllStaff');
+            if (response.status === 200) {
+              console.log(response.data);
+              const doctorData: Doctor[] = response.data;
+              setDoctors(doctorData);
             }
-          }
-      }, []); // Empty dependency array to run the effect only once (equivalent to componentDidMount)        
+            else{
+              console.log("error fetching staff: " + response.status)
+              console.log("response data: " + response.data)
+            }
+        };
+    
+        fetchData();
+      }
+      else{
+        const canMakeRequest = RequestTimer()
+        const storedPatients = localStorage.getItem("patients");
+        if (storedPatients) {
+          const patientData: Patient[] = JSON.parse(storedPatients);
+          setPatients(patientData);
+        } 
+        if(canMakeRequest) {
+          const getPatients = async () => {
+            const patientData = await fetchAllPatients()
+            if (patientData){
+              setPatients(patientData)
+            } else {
+              setPatients([])
+            }
+          };
+          getPatients();
+        }
+      }
+    }, []); // Empty dependency array to run the effect only once (equivalent to componentDidMount)        
          
  
    
