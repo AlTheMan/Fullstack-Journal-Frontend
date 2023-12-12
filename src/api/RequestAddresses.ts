@@ -35,6 +35,6 @@ export const imageApiAddress = () => {
 }
 
 export const quarkusApiAddress = () => {
-    const address = 'http://localhost:8080'
+    const address = 'https://reactivesearch-api.app.cloud.cbh.kth.se'
     return address;
 }
