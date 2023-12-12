@@ -152,7 +152,7 @@ const MessagesPage = () => {
         useEffect(() => {
 
             const fetchData = async () => {
-                const response = await axios.get(messageApiAddress + '/getAllStaff');
+                const response = await axios.get(messageApiAddress() + '/getAllStaff');
                 if (response.status === 200) {
                   console.log(response.data);
                   const doctorData: Doctor[] = response.data;
