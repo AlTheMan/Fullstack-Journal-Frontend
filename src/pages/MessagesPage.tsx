@@ -85,10 +85,13 @@ const MessagesPage = () => {
                 },
             });
             if (response.status === 200) {
+                console.log("API Response:"+ response.data);
                 //console.log("messages: " + response.data);
                 const messageData: Message[] = response.data;
                 setMessages(messageData);
                 console.log("messages: " + messages);
+            }else{
+              console.log("error retreiving data: " + response.status)
             }
         }
 
@@ -158,6 +161,10 @@ const MessagesPage = () => {
                   const doctorData: Doctor[] = response.data;
                   setDoctors(doctorData);
                 }
+                else{
+                  console.log("error fetching staff: " + response.status)
+                  console.log("response data: " + response.data)
+                }
             };
         
             fetchData();
@@ -217,7 +224,7 @@ const MessagesPage = () => {
       </ul>
       <ul>
         {/* Render messages here */}
-        {messages.map((message) => (
+        {Array.isArray(messages) && messages.map((message) => ( //kollar om messages är en array
           <li key={message.id} style={{
             listStyleType: 'none',
             padding: '12px',
