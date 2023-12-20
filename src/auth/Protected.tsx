@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 interface ProtectedProps {
-  token: string;
+  token: string | null;
 }
 
 const Protected: React.FC<ProtectedProps> = ({ token }) => {

@@ -8,7 +8,7 @@ const client = new Keycloak({
 });
 
 
-const UseAuth = () => {
+const UseAuth = (): [boolean, string | null] => {
     const isRun = useRef(false);
     const [token, setToken] = useState<string | null>(null);
     const [isLogin, setLogin] = useState<boolean>(false);
