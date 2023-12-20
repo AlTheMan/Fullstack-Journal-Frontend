@@ -1,4 +1,9 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
+import useAuth from './auth/UseAuth';
+import Protected from ' /auth/Protected';
+import Public from './auth/Public';
+
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/login/LoginPage';
 import MessagesPage from './pages/MessagesPage';
