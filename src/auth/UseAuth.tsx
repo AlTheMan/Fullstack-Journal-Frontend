@@ -2,15 +2,15 @@ import { useState, useEffect, useRef } from "react";
 import Keycloak from "keycloak-js";
 
 const client = new Keycloak({
-  url: import.meta.env.VITE_KEYCLOAK_URL,
+  url: 'https://keycloak-dev.vm-app.cloud.cbh.kth.se/',
   realm: import.meta.env.VITE_KEYCLOAK_REALM,
   clientId: import.meta.env.VITE_KEYCLOAK_CLIENT,
 });
 
 
-const UseAuth = (): [boolean, string | null] => {
+const UseAuth = (): [boolean, Keycloak | null] => {
     const isRun = useRef(false);
-    const [token, setToken] = useState<string | null>(null);
+    const [, setToken] = useState<string | null>(null);
     const [isLogin, setLogin] = useState<boolean>(false);
   
     useEffect(() => {
@@ -25,10 +25,12 @@ const UseAuth = (): [boolean, string | null] => {
           setLogin(res);
           setToken(client.token ? client.token : null);
 
+          console.log(client.token)
+
         });
     }, []);
   
-    return [isLogin, token];
+    return [isLogin, client];
   };
   
   export default UseAuth;

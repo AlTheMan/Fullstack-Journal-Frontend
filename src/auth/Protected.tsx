@@ -1,13 +1,29 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import Keycloak from "keycloak-js";
+
 
 interface ProtectedProps {
-  token: string | null;
+  client: Keycloak | null;
 }
 
-const Protected: React.FC<ProtectedProps> = ({ token }) => {
+const Protected: React.FC<ProtectedProps> = ({ client }) => {
   const isRun = useRef(false);
   const [data, setData] = useState<string[] | null>(null);
+
+  const clientInfo = async () => {
+    
+    await client?.loadUserProfile().then(function(profile) {
+        console.log(profile.id)
+    })
+
+    console.log(client?.hasRealmRole("Patient"))
+
+  }
+
+  useEffect(() => {
+    clientInfo();
+  })
 
   useEffect(() => {
     if (isRun.current) return;
@@ -15,7 +31,7 @@ const Protected: React.FC<ProtectedProps> = ({ token }) => {
 
     const config = {
       headers: {
-        authorization: `Bearer ${token}`,
+        authorization: `Bearer ${client?.token}`,
       },
     };
 
@@ -23,7 +39,7 @@ const Protected: React.FC<ProtectedProps> = ({ token }) => {
       .get("/documents", config)
       .then((res) => setData(res.data))
       .catch((err) => console.error(err));
-  }, [token]); // Added token as a dependency here
+  }, [client?.token]); // Added token as a dependency here
 
   return data ? (
     <>

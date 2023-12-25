@@ -1,12 +1,11 @@
-import Routing from './Routing';
 import Protected from './auth/Protected';
 import Public from './auth/Public';
 import UseAuth from "./auth/UseAuth.tsx";
 
 function App() {
 
-  const [isLogin, token] = UseAuth();
-  return isLogin ? <Protected token={token} /> : <Public />;
+  const [isLogin, client] = UseAuth();
+  return isLogin ? <Protected client={client} /> : <Public />;
   
   //return (
   //  
