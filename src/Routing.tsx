@@ -25,8 +25,8 @@ export const Routing=()=>{
     return(
         <Router>
         <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/HomePage" element={<HomePage />} />
+          
+          <Route path="/" element={<HomePage />} />
           <Route path="/MessagesPage" element={<MessagesPage />} />
           <Route path='/ConditionPage' element={<ConditionPage />} />
           <Route path='/EncounterPage' element={<EncounterPage/>} />
@@ -46,6 +46,7 @@ export const Routing=()=>{
           <Route path="/SearchPage" element={<SearchPage/>} />
           <Route path="/SearchPatientPage" element={<SearchPatientPage/>} />
           <Route path="/SearchEncounterPage" element={<SearchEncounterPage/>} />
+          
 
           
 

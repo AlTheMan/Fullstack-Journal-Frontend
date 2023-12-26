@@ -1,37 +1,44 @@
 import { useState, useEffect, useRef } from "react";
 import Keycloak from "keycloak-js";
 
-const client = new Keycloak({
-  url: 'https://keycloak-dev.vm-app.cloud.cbh.kth.se/', // import.meta.env.VITE_KEYCLOAK_URL
-  realm: 'journalrealm', //import.meta.env.VITE_KEYCLOAK_REALM,
-  clientId: 'testclient2' //import.meta.env.VITE_KEYCLOAK_CLIENT,
-});
+const keycloakConfig = {
+  url: 'http://localhost:8080/',
+  realm: 'journalrealm',
+  clientId: 'testclient2',
+  onLoad: 'check-sso', // check-sso | login-required
+  KeycloakResponseType: 'code',
+};
 
+const keycloak = new Keycloak(keycloakConfig);
 
-const UseAuth = (): [boolean, Keycloak | null] => {
-    const isRun = useRef(false);
-    const [, setToken] = useState<string | null>(null);
-    const [isLogin, setLogin] = useState<boolean>(false);
-  
-    useEffect(() => {
-     
-      if (isRun.current) return;
-     
-      isRun.current = true;
-      client
-        .init({
-          onLoad: "login-required",
-        })
-        .then((res) => {
-          setLogin(res);
-          setToken(client.token ? client.token : null);
+const useAuth = () : [Boolean, Keycloak | null]=>  {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const isRun = useRef(false)
 
-          console.log(client.token)
-          console.log(client.refreshToken)
+  useEffect(() => {
+    if (isRun.current) return;
+    isRun.current = true
+    keycloak.init({
+      onLoad: 'login-required',
+      //silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
+      pkceMethod: 'S256'
+    }).then((authenticated) => {
+      setIsAuthenticated(authenticated);
+      if (authenticated) {
+        console.log('Authenticated');
+        // Store the tokens securely or dispatch them to your state management
+      } else {
+        console.log('Not authenticated');
+        keycloak.login();
+      }
+    }).catch(console.error);
 
-        });
-    }, []);
-    return [isLogin, client];
-  };
-  
-  export default UseAuth;
+    
+
+    // Token refresh logic could be implemented here or elsewhere in your application logic
+  }, []);
+
+  return [isAuthenticated, keycloak];
+};
+
+export default useAuth
