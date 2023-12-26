@@ -5,7 +5,7 @@ const NavBarDoctor = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
-        <Link to="/HomePage" className="navbar-brand">
+        <Link to="/" className="navbar-brand">
           <Button onClick={() => console.log('Home clicked')}>Home</Button>
         </Link>
         <div className="collapse navbar-collapse" id="navbarNav">

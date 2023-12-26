@@ -4,6 +4,8 @@ import UseAuth from "./auth/UseAuth.tsx";
 
 function App() {
 
+
+  localStorage.setItem("privilege", "")
   const [isLogin, client] = UseAuth();
   return isLogin ? <Protected client={client} /> : <Public />;
   
