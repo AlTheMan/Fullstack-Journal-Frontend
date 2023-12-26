@@ -5,8 +5,7 @@ const keycloakConfig = {
   url: 'https://keycloak-dev.vm-app.cloud.cbh.kth.se/', //'http://localhost:8080/',
   realm: 'journalrealm',
   clientId: 'testclient2',
-  onLoad: 'check-sso', // check-sso | login-required
-  KeycloakResponseType: 'code',
+  //KeycloakResponseType: 'code',
 };
 
 const keycloak = new Keycloak(keycloakConfig);
@@ -21,7 +20,7 @@ const useAuth = () : [Boolean, Keycloak | null]=>  {
     keycloak.init({
       onLoad: 'login-required',
       //silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
-      pkceMethod: 'S256'
+      //pkceMethod: 'S256'
     }).then((authenticated) => {
       setIsAuthenticated(authenticated);
       if (authenticated) {
