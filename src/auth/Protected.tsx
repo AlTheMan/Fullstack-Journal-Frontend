@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
+import React, { useEffect } from "react";
+//import axios from "axios";
 import Keycloak from "keycloak-js";
 
 
@@ -8,8 +8,8 @@ interface ProtectedProps {
 }
 
 const Protected: React.FC<ProtectedProps> = ({ client }) => {
-  const isRun = useRef(false);
-  const [data, setData] = useState<string[] | null>(null);
+  //const isRun = useRef(false);
+  //const [data, setData] = useState<string[] | null>(null);
 
   const clientInfo = async () => {
     
@@ -25,7 +25,7 @@ const Protected: React.FC<ProtectedProps> = ({ client }) => {
     clientInfo();
   })
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (isRun.current) return;
     isRun.current = true;
 
@@ -39,15 +39,9 @@ const Protected: React.FC<ProtectedProps> = ({ client }) => {
       .get("/documents", config)
       .then((res) => setData(res.data))
       .catch((err) => console.error(err));
-  }, [client?.token]); // Added token as a dependency here
+  }, [client?.token]); // Added token as a dependency here*/
 
-  return data ? (
-    <>
-      {data.map((rec: string, i: number) => (
-        <h3 key={i}>{rec}</h3>
-      ))}
-    </>
-  ) : (
+  return (
     <div>Protected</div>
   );
 };
