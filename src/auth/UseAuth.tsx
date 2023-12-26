@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import Keycloak from "keycloak-js";
 
 const keycloakConfig = {
-  url: 'http://localhost:8080/',
+  url: 'https://keycloak-dev.vm-app.cloud.cbh.kth.se/', //'http://localhost:8080/',
   realm: 'journalrealm',
   clientId: 'testclient2',
   onLoad: 'check-sso', // check-sso | login-required
@@ -33,7 +33,7 @@ const useAuth = () : [Boolean, Keycloak | null]=>  {
       }
     }).catch(console.error);
 
-    
+
 
     // Token refresh logic could be implemented here or elsewhere in your application logic
   }, []);
