@@ -54,6 +54,10 @@ const Protected: React.FC<ProtectedProps> = ({ client }) => {
         console.log('Role was null');
         logout(); // Logout if the role is null
       }
+      if (fetchedRole) {
+        localStorage.setItem("privilege", fetchedRole)
+      }
+
     };
 
     fetchRole();
