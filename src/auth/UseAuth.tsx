@@ -14,8 +14,9 @@ const UseAuth = (): [boolean, Keycloak | null] => {
     const [isLogin, setLogin] = useState<boolean>(false);
   
     useEffect(() => {
+     
       if (isRun.current) return;
-  
+     
       isRun.current = true;
       client
         .init({
@@ -26,10 +27,10 @@ const UseAuth = (): [boolean, Keycloak | null] => {
           setToken(client.token ? client.token : null);
 
           console.log(client.token)
+          console.log(client.refreshToken)
 
         });
     }, []);
-  
     return [isLogin, client];
   };
   
