@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Keycloak, {  } from 'keycloak-js';
+import Keycloak from 'keycloak-js';
 import Routing from '../Routing';
 
 interface ProtectedProps {
@@ -7,42 +7,39 @@ interface ProtectedProps {
 }
 
 const Protected: React.FC<ProtectedProps> = ({ client }) => {
-
   const isRun = useRef(false);
-  const [role, setRole] = useState<string | null>(null)
+  const [role, setRole] = useState<string | null>(null);
 
   const getRole = async (): Promise<string | null> => {
     if (!client) return null;
 
     try {
-      const profile = await client.loadUserProfile(); // Use await to wait for the profile
+      const profile = await client.loadUserProfile();
       if (profile) {
         if (!profile.email) {
-          return null
+          return null;
         }
-        localStorage.setItem("username", profile.email)
-        localStorage.setItem("keycloakProfile", JSON.stringify(profile))
+        localStorage.setItem("username", profile.email);
+        localStorage.setItem("keycloakProfile", JSON.stringify(profile));
       }
     } catch (error) {
       console.error('Error loading user profile:', error);
+      return null;
     }
 
     if (client.hasRealmRole('patient')) {
-      console.log('PATIENT');
       return 'PATIENT';
     }
     if (client.hasRealmRole('doctor')) {
-      console.log('DOCTOR');
       return 'DOCTOR';
     }
     if (client.hasRealmRole('staff')) {
-      console.log('STAFF');
       return 'STAFF';
     }
     return null;
   };
 
-  const logout = async () => {
+  const logout = () => {
     client?.logout();
   };
 
@@ -51,23 +48,21 @@ const Protected: React.FC<ProtectedProps> = ({ client }) => {
     isRun.current = true;
 
     const fetchRole = async () => {
-      setRole(await getRole());
-      if (!role) {
+      const fetchedRole = await getRole();
+      setRole(fetchedRole); // Set the role in state
+      if (!fetchedRole) {
         console.log('Role was null');
-        logout()
+        logout(); // Logout if the role is null
       }
-      
-      console.log(localStorage.getItem("username"))
-
     };
 
     fetchRole();
-    
-  }, []); // Removed username from the dependency array
+  }, [client]); // Depend on client
 
+  // Conditionally render the <Routing /> component if role is not null
   return (
     <>
-    {role} && <Routing />
+      {role && <Routing />}
     </>
   );
 };
