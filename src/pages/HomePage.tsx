@@ -7,7 +7,7 @@ import NavBar from '../components/NavBar';
 const HomePage: React.FC = () => {
   const privilege: string = localStorage.getItem("privilege") || ""; 
 
-  console.log(privilege);
+  console.log("Privilege in Homepage: ", privilege);
 
   const performActionBasedOnPrivilege = () => {
     switch (privilege) {

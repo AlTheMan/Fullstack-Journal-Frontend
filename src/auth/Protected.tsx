@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Keycloak, {  } from 'keycloak-js';
 import Routing from '../Routing';
 
@@ -9,6 +9,7 @@ interface ProtectedProps {
 const Protected: React.FC<ProtectedProps> = ({ client }) => {
 
   const isRun = useRef(false);
+  const [role, setRole] = useState<string | null>(null)
 
   const getRole = async (): Promise<string | null> => {
     if (!client) return null;
@@ -50,7 +51,7 @@ const Protected: React.FC<ProtectedProps> = ({ client }) => {
     isRun.current = true;
 
     const fetchRole = async () => {
-      const role = await getRole();
+      setRole(await getRole());
       if (!role) {
         console.log('Role was null');
         logout()
@@ -61,11 +62,12 @@ const Protected: React.FC<ProtectedProps> = ({ client }) => {
     };
 
     fetchRole();
+    
   }, []); // Removed username from the dependency array
 
   return (
     <>
-      <Routing />
+    {role} && <Routing />
     </>
   );
 };
