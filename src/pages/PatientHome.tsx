@@ -1,5 +1,5 @@
 import { fetchData } from "../api/PatientApi";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import fetchNotes from "../api/NotesApi";
 import "../App.css";
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -8,14 +8,19 @@ import Note from "../components/Note";
 const PatientHome: React.FC = () => {
   const [patient, setPatient] = useState<Patient | null>(null);
   const [notes, setNotes] = useState<Note[] | null>(null);
+  const patientRun = useRef(false)
+  const notesRun = useRef(false)
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const id: number = Number(localStorage.getItem("id")) || -1;
+  const [id] = useState<number | null>(Number(localStorage.getItem("id")))
+  //const id: number = Number(localStorage.getItem("id")) || -1;
   const username: string = String(localStorage.getItem("username") || "");
 
   // Fetching patient name from db
   useEffect(() => {
+    if (!id || patientRun.current) return
+    patientRun.current = true
     const loadPatient = async () => {
       setLoading(true);
       try {
@@ -38,13 +43,14 @@ const PatientHome: React.FC = () => {
 
   // fetching notes
   useEffect(() => {
+    if (!id || notesRun.current) return
+    notesRun.current = true;
+    console.log(id)
     const loadNotes = async () => {
       setLoading(true);
       try {
-        console.log("hello");
         const noteData = await fetchNotes(id);
         if (noteData) {
-          console.log("notes fetched");
           setNotes(noteData);
         } else {
           console.log("notes else");
