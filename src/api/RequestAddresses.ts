@@ -11,8 +11,8 @@ export const patientApiAddress = () => {
 
 export const userApiAddress = () => {
     // 8083
-    //const port = 8083;
-    //const address = 'http://localhost:'+ port +'/user';
+   // const port = 8083;
+   // const address = 'http://localhost:'+ port +'/user';
 
     const address = 'https://user-api.app.cloud.cbh.kth.se/' + 'user'
 
