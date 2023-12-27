@@ -66,3 +66,32 @@ export const fetchPatientIdFromEmail = async (
     }
   };
 
+  export const addNewPatient = async (
+    newPatient: NewPatientProps
+  ): Promise<ReturnedPatientProps | null> => {
+    try {
+
+        console.log(newPatient)
+        const userId = newPatient.userId
+        const firstName = newPatient.firstName
+        const lastName = newPatient.lastName
+        const sex = newPatient.sex
+        const birthdate = newPatient.birthdate
+
+        const response = await axios.post(patientApiAddress() + '/add', {
+          userId, firstName, lastName, sex, birthdate
+        });
+    
+        if (response.status === 200) {
+          console.log(response.data);
+          return response.data;
+        } else {
+          console.error("Failed to fetch patient id from user name:", response.status);
+          return null;
+        }
+      } catch (error) {
+        console.error('An error occured while fetching patient id from username', error)
+        return null
+      }
+  }
+
