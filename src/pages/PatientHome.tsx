@@ -19,7 +19,12 @@ const PatientHome: React.FC = () => {
 
   // Fetching patient name from db
   useEffect(() => {
+    console.log("Getting patient info")
+    console.log(id)
+    console.log(patientRun.current)
     if (!id || patientRun.current) return
+
+
     patientRun.current = true
     const loadPatient = async () => {
       setLoading(true);
@@ -44,6 +49,7 @@ const PatientHome: React.FC = () => {
   // fetching notes
   useEffect(() => {
     if (!id || notesRun.current) return
+    console.log("Getting notes")
     notesRun.current = true;
     console.log(id)
     const loadNotes = async () => {

@@ -2,10 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import Keycloak, { KeycloakProfile } from "keycloak-js";
 import Routing from "../Routing";
 import {
-  fetchPatientIdFromUserId,
-  fetchPatientIdFromEmail,
-  updateUserIdInDb,
-  addNewPatient
+  fetchPersonIdByUserId,
+  addNewPatient,
+  addNewStaff
 } from "./AuthApi";
 import NewPatientPage from "./NewPatientPage";
 
@@ -17,13 +16,11 @@ const Protected: React.FC<ProtectedProps> = ({ client }) => {
   const isRun = useRef(false);
   const userId = useRef<string | null>(null);
   const email = useRef<string | null>(null);
-  const [id, setId] = useState<string | null>(null);
+  const [id, setId] = useState<string | null>("");
   const keycloakProfile = useRef<KeycloakProfile | null>(null);
-
 
   const getRole = async (): Promise<string | null> => {
     if (!client) return null;
-
     try {
       const profile = await client.loadUserProfile();
       if (profile) {
@@ -33,13 +30,12 @@ const Protected: React.FC<ProtectedProps> = ({ client }) => {
         keycloakProfile.current = profile;
         userId.current = profile.id;
         email.current = profile.email;
-        //localStorage.setItem("username", profile.email);
-        //localStorage.setItem("userId", profile.id)
       }
     } catch (error) {
       console.error("Error loading user profile:", error);
       return null;
     }
+
 
     if (client.hasRealmRole("patient")) {
       return "PATIENT";
@@ -53,86 +49,78 @@ const Protected: React.FC<ProtectedProps> = ({ client }) => {
     return null;
   };
 
+  // This function add a new patient to patientdb and adds a new user to the user db
   const handleNewPatientSubmit = async (newPatient: NewPatientProps) => {
-    const patient = await addNewPatient(newPatient)
-    if (patient){
-      localStorage.setItem("id", patient.id.toString())
-      setId(patient.id.toString())
+    const patient = await addNewPatient(newPatient);
+    if (patient) {
+      localStorage.setItem("id", patient.id.toString());
+      setId(patient.id.toString());
     }
-  }
-
-  const getPatientIdFromUserId = async (): Promise<string | null> => {
-    if (userId.current) {
-      return fetchPatientIdFromUserId(userId.current);
-    }
-    return null;
   };
 
-  const getPatientIdFromEmail = async (): Promise<string | null> => {
-    if (email.current) {
-      return fetchPatientIdFromEmail(email.current);
-    }
-    return null;
-  };
+  const handleStaff = async (privilege: string) => {
+    const firstName = keycloakProfile.current?.firstName;
+    const lastName = keycloakProfile.current?.lastName;
+    const userId = keycloakProfile.current?.id
+    console.log(userId)
 
-  const updateUserId = async (patientId: string, userId: string | null) => {
-    if (userId) {
-      return updateUserIdInDb(patientId, userId);
+    if (firstName && lastName && userId) {
+      const staff = await addNewStaff(firstName, lastName, userId, privilege);
+      if (staff){
+        localStorage.setItem("id", staff.id.toString())
+        setId(staff.id.toString())
+      }
     }
   };
 
   useEffect(() => {
     if (isRun.current) return;
     isRun.current = true;
-    localStorage.clear();
+
+
+
     const fetchRole = async () => {
       const fetchedRole = await getRole();
       if (!fetchedRole) {
         console.log("Role was null");
         client?.logout();
       }
+      console.log(fetchedRole)
+      const personId = await fetchPersonIdByUserId(userId.current);
+      if (!personId) {
+        if (fetchedRole === "PATIENT") {
+          setId(null); // Sets id to null so it redirects to new patient page
+        } else if (fetchedRole === "STAFF" || fetchedRole === "DOCTOR") {
+          await handleStaff(fetchedRole);
+        }
+      } else {
+        localStorage.setItem("id", personId);
+        setId(personId);
+      }
+
       if (fetchedRole) {
-        let patientId = await getPatientIdFromUserId();
-
-        // Patient have no user in patient db
-        if (!patientId) {
-          // check if patient has user in user db ()
-          patientId = await getPatientIdFromEmail();
-          if (patientId) {
-            // update the patient db with keycloak id
-            await updateUserId(patientId, userId.current);
-          }
-        }
-        if (patientId) {
-          localStorage.setItem("id", patientId);
-        }
-        setId(patientId);
-        console.log("UserId: ", userId.current);
-        console.log("PatientId: ", patientId);
-
         localStorage.setItem("privilege", fetchedRole);
+      }
 
-        if (email.current) {
-          localStorage.setItem("username", email.current);
-        }
+      if (email.current) {
+        localStorage.setItem("username", email.current);
       }
     };
     fetchRole();
-  }, [client, id]); 
+  }, [client, id]);
 
   // Conditionally render the <Routing /> component if id is not null
 
-  
   const firstName = keycloakProfile.current?.firstName;
   const lastName = keycloakProfile.current?.lastName;
 
   // If 'id' is not set and we have the necessary user details, show the new patient page.
-  if (!id && userId.current && firstName && lastName) {
+  if (id === null && userId.current && firstName && lastName) {
     return (
-      <NewPatientPage 
-        userId={userId.current} 
-        firstName={firstName} 
-        lastName={lastName} 
+      <NewPatientPage
+        userId={userId.current}
+        firstName={firstName}
+        lastName={lastName}
         submitNewPatient={handleNewPatientSubmit}
       />
     );

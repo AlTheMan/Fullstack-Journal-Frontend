@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import Keycloak from "keycloak-js";
 
 const keycloakConfig = {
-  url: 'https://keycloak-dev.vm-app.cloud.cbh.kth.se/', //'http://localhost:8080/', //https://keycloak-dev.vm-app.cloud.cbh.kth.se/
+  url: 'http://localhost:8080/', //'http://localhost:8080/', //https://keycloak-dev.vm-app.cloud.cbh.kth.se/
   realm: 'journalrealm',
   clientId: 'testclient2',
   //KeycloakResponseType: 'code',
