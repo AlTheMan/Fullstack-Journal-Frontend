@@ -1,7 +1,8 @@
+import LoadingSpinner from "../components/LoadingSpinner";
 
 
 const Public = () => {
-  return <div>Public</div>;
+  return <LoadingSpinner></LoadingSpinner>;
 };
 
 export default Public;

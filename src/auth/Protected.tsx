@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import Keycloak, { KeycloakProfile } from "keycloak-js";
 import Routing from "../Routing";
+import { useLocalStorage } from "../hooks/useLocalStorage";
+
+
 import {
   fetchPersonIdByUserId,
   addNewPatient,
@@ -18,6 +21,7 @@ const Protected: React.FC<ProtectedProps> = ({ client }) => {
   const email = useRef<string | null>(null);
   const [id, setId] = useState<string | null>("");
   const keycloakProfile = useRef<KeycloakProfile | null>(null);
+  const { setItem } = useLocalStorage();
 
   const getRole = async (): Promise<string | null> => {
     if (!client) return null;
@@ -53,7 +57,7 @@ const Protected: React.FC<ProtectedProps> = ({ client }) => {
   const handleNewPatientSubmit = async (newPatient: NewPatientProps) => {
     const patient = await addNewPatient(newPatient);
     if (patient) {
-      localStorage.setItem("id", patient.id.toString());
+      setItem("id", patient.id.toString());
       setId(patient.id.toString());
     }
   };
@@ -67,7 +71,7 @@ const Protected: React.FC<ProtectedProps> = ({ client }) => {
     if (firstName && lastName && userId) {
       const staff = await addNewStaff(firstName, lastName, userId, privilege);
       if (staff){
-        localStorage.setItem("id", staff.id.toString())
+        setItem("id", staff.id.toString())
         setId(staff.id.toString())
       }
     }
@@ -99,11 +103,11 @@ const Protected: React.FC<ProtectedProps> = ({ client }) => {
       }
 
       if (fetchedRole) {
-        localStorage.setItem("privilege", fetchedRole);
+        setItem("privilege", fetchedRole);
       }
 
       if (email.current) {
-        localStorage.setItem("username", email.current);
+        setItem("username", email.current);
       }
     };
     fetchRole();

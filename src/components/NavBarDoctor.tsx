@@ -1,7 +1,15 @@
+import { useContext } from 'react';
 import Button from '../components/Button';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../auth/AuthContext';
+
 
 const NavBarDoctor = () => {
+
+  const { client } = useContext(AuthContext)
+
+
+  
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
@@ -22,9 +30,9 @@ const NavBarDoctor = () => {
               </li>
           </ul>
         </div>
-        <Link to="/LoginPage" className="nav-link">
-            <Button onClick={() => console.log('Logout clicked')}>Logout</Button>
-        </Link>
+       
+            <Button onClick={() =>{client?.logout()}}>Logout</Button>
+    
       </div>
     </nav>
   );

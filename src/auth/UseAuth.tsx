@@ -1,43 +1,37 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Keycloak from "keycloak-js";
 
 const keycloakConfig = {
-  url: 'https://keycloak-dev.vm-app.cloud.cbh.kth.se/', //'http://localhost:8080/', //https://keycloak-dev.vm-app.cloud.cbh.kth.se/
-  realm: 'journalrealm',
-  clientId: 'testclient2',
-  //KeycloakResponseType: 'code',
+  url: "https://keycloak-dev.vm-app.cloud.cbh.kth.se/",
+  realm: "journalrealm",
+  clientId: "testclient2",
 };
 
+// Initialize Keycloak instance
 const keycloak = new Keycloak(keycloakConfig);
 
-const useAuth = () : [Boolean, Keycloak | null]=>  {
+const useAuth = (): [Boolean, Keycloak | null] => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const isRun = useRef(false)
-
   useEffect(() => {
-    if (isRun.current) return;
-    isRun.current = true
-    keycloak.init({
-      onLoad: 'login-required',
-      //silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
-      //pkceMethod: 'S256'
-    }).then((authenticated) => {
-      setIsAuthenticated(authenticated);
-      if (authenticated) {
-        console.log('Authenticated');
-        // Store the tokens securely or dispatch them to your state management
-      } else {
-        console.log('Not authenticated');
-        keycloak.login();
-      }
-    }).catch(console.error);
+      // Initialization and authentication check
+      keycloak
+        .init({ onLoad: "login-required" })
+        .then((authenticated) => {
+          setIsAuthenticated(authenticated);
+          if (!authenticated) {
+            keycloak.login();
+          }
+        })
+        .catch(console.error);
 
-
-
-    // Token refresh logic could be implemented here or elsewhere in your application logic
+      // Cleanup
+      return () => {
+       
+        // Add cleanup code if needed
+      };
   }, []);
 
   return [isAuthenticated, keycloak];
 };
 
-export default useAuth
+export default useAuth;
