@@ -14,7 +14,7 @@ export const userApiAddress = () => {
     //const port = 8083;
    //const address = 'http://localhost:'+ port;
 
-    const address = 'https://user-api.app.cloud.cbh.kth.se/'
+    const address = 'https://user-api.app.cloud.cbh.kth.se'
 
     return address;
 }
