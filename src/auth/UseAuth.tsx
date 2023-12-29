@@ -10,7 +10,7 @@ const keycloakConfig = {
 // Initialize Keycloak instance
 const keycloak = new Keycloak(keycloakConfig);
 
-const useAuth = (): [Boolean, Keycloak | null] => {
+const useAuth = (): [boolean, Keycloak | null] => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   useEffect(() => {
       // Initialization and authentication check
@@ -18,6 +18,7 @@ const useAuth = (): [Boolean, Keycloak | null] => {
         .init({ onLoad: "login-required" })
         .then((authenticated) => {
           setIsAuthenticated(authenticated);
+
           if (!authenticated) {
             keycloak.login();
           }

@@ -4,7 +4,7 @@ import axios from 'axios';
 import NavBar from "../components/NavBar";
 import MessageForm from '../components/MessageForm';
 import ListGroupGeneric from '../components/ListGroupGeneric';
-import { fetchAllPatients } from '../api/GetAllPatientsTimerApi';
+import { fetchAllPatients } from '../api/GetAllPatientsTimerApi.tsx';
 import { RequestTimer } from '../api/RequestTimer';
 import { messageApiAddress } from '../api/RequestAddresses';
 

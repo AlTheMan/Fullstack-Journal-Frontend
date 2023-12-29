@@ -1,12 +1,12 @@
-import { useContext } from 'react';
+
 import Button from '../components/Button';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../auth/AuthContext';
+import { useKeycloak } from '@react-keycloak/web';
 
 
 const NavBarDoctor = () => {
 
-  const { client } = useContext(AuthContext)
+  const { keycloak } = useKeycloak()
 
 
   
@@ -31,7 +31,7 @@ const NavBarDoctor = () => {
           </ul>
         </div>
        
-            <Button onClick={() =>{client?.logout()}}>Logout</Button>
+            <Button onClick={() =>{keycloak.logout()}}>Logout</Button>
     
       </div>
     </nav>

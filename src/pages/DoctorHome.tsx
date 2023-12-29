@@ -3,11 +3,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ListGroupGeneric from "../components/ListGroupGeneric";
 import fetchData from "../api/NamedPersonApi";
-import { fetchAllPatients } from "../api/GetAllPatientsTimerApi";
+import { fetchAllPatients } from "../api/GetAllPatientsTimerApi.tsx";
 import { RequestTimer } from "../api/RequestTimer";
 
 const DoctorHome: React.FC = () => {
   const [doctor, setDoctor] = useState<Staff | null>(null);
+
 
   const id: number = Number(localStorage.getItem("id")) || -1;
 

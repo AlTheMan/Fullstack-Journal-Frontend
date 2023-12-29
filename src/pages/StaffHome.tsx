@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import ListGroupGeneric from '../components/ListGroupGeneric';
 import NavBarDoctor from '../components/NavBarDoctor';
-import { fetchAllPatients } from '../api/GetAllPatientsTimerApi';
+import { fetchAllPatients } from '../api/GetAllPatientsTimerApi.tsx';
 import { RequestTimer } from '../api/RequestTimer';
 
 
