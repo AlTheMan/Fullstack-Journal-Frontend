@@ -1,7 +1,7 @@
 
 import {useNavigate} from "react-router-dom";
 import ListGroupGeneric from "../components/ListGroupGeneric";
-import {useFetchAllPatients} from "../api/UseFetchAllPatients.tsx";
+import {useFetchAllPatients} from "../api/patient/UseFetchAllPatients.tsx";
 import {useFetchStaffData} from "../api/staff/UseFetchStaffData.ts";
 import React, {useEffect, useState} from "react";
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import TokenHandler from '../auth/UseTokenHandler.tsx';
-import {patientApiAddress} from "./RequestAddresses.ts";
+import TokenHandler from '../../auth/UseTokenHandler.tsx';
+import {patientApiAddress} from "../RequestAddresses.ts";
 
 export const useFetchAllPatients = () => {
   const [patients, setPatients] = useState<Patient[]>([]);
