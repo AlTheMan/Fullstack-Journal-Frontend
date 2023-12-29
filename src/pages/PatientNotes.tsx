@@ -11,9 +11,6 @@ const PatientNotes: React.FC = () => {
   const [patient, setPatient] = useState<Patient | null>(null)
   const noteData = useFetchNotes(patient?.id)
   const [notes, setNotes] = useState<Note[] | null>(null);
-
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
 
@@ -43,9 +40,7 @@ useEffect(() => {
     
   }, [noteData, patient]);
 
-  if (error) return (<>Error</>)
-
-  let noteList = notes ?? []
+  const noteList = notes ?? []
 
   return (
     <>

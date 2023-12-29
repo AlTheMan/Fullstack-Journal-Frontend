@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
-import fetchObservations from "../api/PatientObservationsApi";
 import GenericTable from "../components/GenericTable";
 import LoadingSpinner from "../components/LoadingSpinner";
 import DoctorButton from "../components/DoctorButton";
 import { useNavigate } from "react-router-dom";
+import {useFetchObservations} from "../api/patient/observations/UseFetchObservations.ts";
 
 
 const ObservationPage: React.FC = () => {
+  
+  
+  
   const [observations, setObservations] =
     useState<Observation[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
-
+  const observationData = useFetchObservations(selectedPatient?.id)
   const navigate = useNavigate();
 
   const handleObservationButton = () => {
@@ -29,38 +31,13 @@ const ObservationPage: React.FC = () => {
 }, []);
 
   useEffect(() => {
-    if (selectedPatient) {
-      const id = Number(selectedPatient?.id);
-      const username = String(localStorage.getItem("username") || null);
-  
-      if (id === -1 || username === null) {
-        setError("Invalid ID or Username");
-        return;
-      }
-  
-      const loadObservations = async () => {
-        setLoading(true);
-        try {
-          const observationData = await fetchObservations(username, id);
-          if (observationData) {
-            setObservations(observationData);
-          } else {
-            //setError("Data not found");
-          }
-        } catch (error) {
-          //setError("An error occured while fetching data");
-        } finally {
-          setLoading(false);
-        }
-      };
-  
-      loadObservations();
+    setLoading(true)
+    if (observationData){
+      setObservations(observationData)
     }
-    
-   
-  }, [selectedPatient?.id]);
+    setLoading(false)
+  }, [observationData, selectedPatient]);
 
-  if (error) return <>Error + {error}</>;
 
   const observationList = observations ?? [];
 

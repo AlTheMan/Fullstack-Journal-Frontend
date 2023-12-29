@@ -1,5 +1,5 @@
 import axios from "axios"
-import { patientApiAddress } from "./RequestAddresses";
+import {patientApiAddress} from "./RequestAddresses";
 
 export const fetchEncounters = async (
     patientId: number
@@ -16,8 +16,7 @@ export const fetchEncounters = async (
     console.log("Fetching encounters...");
     if (response.status === 200) {
         console.log("Encounters fetched")
-        const encounterData = response.data;
-        return encounterData
+        return response.data
     } else {
         console.error("Failed to get patient encounters");
         return null
