@@ -1,7 +1,7 @@
 //RegisterPage.tsx
 
 import NewPatientForm from "./NewPatientForm";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 interface NewPatientPageProps {
   userId: string;

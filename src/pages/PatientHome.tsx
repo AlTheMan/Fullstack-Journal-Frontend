@@ -4,12 +4,14 @@ import fetchNotes from "../api/NotesApi";
 import "../App.css";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Note from "../components/Note";
+import { useKeycloak } from "@react-keycloak/web";
 
 const PatientHome: React.FC = () => {
   const [patient, setPatient] = useState<Patient | null>(null);
   const [notes, setNotes] = useState<Note[] | null>(null);
   const patientRun = useRef(false)
   const notesRun = useRef(false)
+  const {keycloak} = useKeycloak()
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -29,7 +31,10 @@ const PatientHome: React.FC = () => {
     const loadPatient = async () => {
       setLoading(true);
       try {
-        const patientData = await fetchData(id);
+        keycloak.updateToken(30)
+        console.log(keycloak.token)
+        const patientData = await fetchData(id, keycloak.token);
+        
         if (patientData) {
           setPatient(patientData);
           localStorage.setItem("currentPatient", JSON.stringify(patientData))

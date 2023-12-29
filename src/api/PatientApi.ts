@@ -2,12 +2,15 @@ import axios from "axios";
 import { patientApiAddress } from "./RequestAddresses";
 
 export const fetchData = async (
-  patientId: number
+  patientId: number,
+  token: string | undefined
 ): Promise<Patient | null> => {
   try {
     const response = await axios.get(patientApiAddress() + '/get', {
-      params: { patientId }
-    });
+      params: { patientId }, headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }, );
 
     if (response.status === 200) {
       console.log(response.data);

@@ -1,10 +1,9 @@
 import Button from "./Button";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../auth/AuthContext";
-import { useContext } from "react";
+import { useKeycloak } from "@react-keycloak/web";
 
 const NavBarPatient = () => {
-  const { client } = useContext(AuthContext);
+  const { keycloak } = useKeycloak()
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -51,7 +50,7 @@ const NavBarPatient = () => {
             </li>
           </ul>
         </div>
-        <Button onClick={() => client?.logout()}>Logout</Button>
+        <Button onClick={() => keycloak.logout()}>Logout</Button>
       </div>
     </nav>
   );

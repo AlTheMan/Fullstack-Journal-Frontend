@@ -1,14 +1,19 @@
-import { AuthContext } from "./auth/AuthContext.tsx";
+//import { AuthContext } from "./auth/AuthContext.tsx";
 import Protected from "./auth/Protected";
 import Public from "./auth/Public";
-import UseAuth from "./auth/UseAuth.tsx";
+//import UseAuth from "./auth/UseAuth.tsx";
+import { useKeycloak } from "@react-keycloak/web";
 
 function App() {
-  const [isLogin, client] = UseAuth();
+  //const [isLogin, client] = UseAuth();
+
+  const {keycloak} = useKeycloak()
+
+
   return (
-    <AuthContext.Provider value={{ client, isLogin }}>
-      {isLogin ? <Protected client={client} /> : <Public />}
-    </AuthContext.Provider>
+    
+      keycloak.authenticated ? <Protected client={keycloak} /> : <Public />
+    
   );
 }
 

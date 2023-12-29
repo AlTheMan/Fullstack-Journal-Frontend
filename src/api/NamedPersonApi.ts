@@ -5,21 +5,6 @@ export const fetchData = async (
   id: number
 ): Promise<Staff | null> => {
 
-    //const privilege: string = localStorage.getItem("privilege") || "";
-
-    /*let requestUri = "";
-
-    switch (privilege){
-        case "DOCTOR": requestUri = "http://localhost:8080/staff/get_doctor"; break;
-        case "STAFF": requestUri = "http://localhost:8080/staff/get_staff"; break;
-        default: break;
-    }
-    
-    if (requestUri.length == 0) {
-        console.log("Request URI was 0, wrong privilege?")
-        return null;
-    }*/
-
     const requestUri = userApiAddress() + '/get_staff';
 
 
