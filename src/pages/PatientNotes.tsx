@@ -1,14 +1,15 @@
-import fetchNotes from "../api/NotesApi";
+
 import React, { useState, useEffect } from "react";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Note from "../components/Note";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import NavBarDoctor from "../components/NavBarDoctor";
+import {useFetchNotes} from "../api/patient/notes/UseFetchNotes.ts";
 
 const PatientNotes: React.FC = () => {
   const [patient, setPatient] = useState<Patient | null>(null)
-
+  const noteData = useFetchNotes(patient?.id)
   const [notes, setNotes] = useState<Note[] | null>(null);
 
   const [error, setError] = useState<string | null>(null);
@@ -35,25 +36,12 @@ const handleAddNoteButton = () => {
 useEffect(() => {
   if(patient) {
     const loadNotes = async () => {
-      setLoading(true);
-      try {
-        const noteData = await fetchNotes(patient?.id);
-        if (noteData) {
-          console.log("notes fetched");
-          setNotes(noteData);
-        } else {
-          setError("Couldn't get notes");
-        }
-      } catch (error) {
-        setError("An error occured while fetching patient notes");
-      } finally {
-        setLoading(false);
-      }
+      setNotes(noteData)
     };
     loadNotes();
   }
     
-  }, [patient]);
+  }, [noteData, patient]);
 
   if (error) return (<>Error</>)
 
@@ -68,7 +56,7 @@ useEffect(() => {
            <Button onClick={handleAddNoteButton}>Add note</Button>
       </div>
 
-      {loading && <LoadingSpinner />}
+      {!notes && <LoadingSpinner />}
       {noteList && (
         <div className="noteBoxesAlignment">
           {noteList.map((noteItem, index) => {

@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import ListGroupGeneric from '../components/ListGroupGeneric';
 import NavBarDoctor from '../components/NavBarDoctor';
-import { fetchAllPatients } from '../api/GetAllPatientsTimerApi.tsx';
+import { useFetchAllPatients } from '../api/UseFetchAllPatients.tsx';
 import { RequestTimer } from '../api/RequestTimer';
 
 
@@ -31,7 +31,7 @@ const MessagesPage = () => {
         } 
         if (canMakeRequest){
           const getPatients = async () => {
-            const patientData = await fetchAllPatients();
+            const patientData = await useFetchAllPatients();
             if (patientData){
               setPatients(patientData)
             } else {

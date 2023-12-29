@@ -4,7 +4,7 @@ import axios from 'axios';
 import NavBar from "../components/NavBar";
 import MessageForm from '../components/MessageForm';
 import ListGroupGeneric from '../components/ListGroupGeneric';
-import { fetchAllPatients } from '../api/GetAllPatientsTimerApi.tsx';
+import { useFetchAllPatients } from '../api/UseFetchAllPatients.tsx';
 import { RequestTimer } from '../api/RequestTimer';
 import { messageApiAddress } from '../api/RequestAddresses';
 
@@ -179,7 +179,7 @@ const MessagesPage = () => {
         } 
         if(canMakeRequest) {
           const getPatients = async () => {
-            const patientData = await fetchAllPatients()
+            const patientData = await useFetchAllPatients()
             if (patientData){
               setPatients(patientData)
             } else {
