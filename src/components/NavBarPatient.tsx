@@ -1,9 +1,10 @@
 import Button from "./Button";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
 
 const NavBarPatient = () => {
   const { keycloak } = useKeycloak()
+  const navigate = useNavigate()
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -50,11 +51,12 @@ const NavBarPatient = () => {
             </li>
           </ul>
         </div>
-        <Link to= "/">
-          <Button onClick={() =>{
-            keycloak.logout().then(() => keycloak.clearToken())
-          }}>Logout</Button>
-        </Link>
+        <Button onClick={() =>{
+          navigate("/")
+          keycloak.logout().then(() => {
+            keycloak.clearToken()
+          })
+        }}>Logout</Button>
       </div>
     </nav>
   );
