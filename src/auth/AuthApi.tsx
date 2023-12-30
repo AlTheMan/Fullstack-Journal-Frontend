@@ -17,7 +17,7 @@ export const fetchPatientIdFromUserId = async (
       return null;
     }
   } catch (error) {
-    console.error('An error occured while fetching patient id from user id', error)
+    console.error('An error occurred while fetching patient id from user id', error)
     return null
   }
 };
@@ -39,7 +39,7 @@ export const fetchPatientIdFromEmail = async (
         return null;
       }
     } catch (error) {
-      console.error('An error occured while fetching patient id from username', error)
+      console.error('An error occurred while fetching patient id from username', error)
       return null
     }
   };
@@ -61,7 +61,7 @@ export const fetchPatientIdFromEmail = async (
         return null;
       }
     } catch (error) {
-      console.error('An error occured while fetching patient id from username', error)
+      console.error('An error occurred while fetching patient id from username', error)
       return null
     }
   };
@@ -102,73 +102,12 @@ export const fetchPatientIdFromEmail = async (
           return null;
         }
       } catch (error) {
-        console.error('An error occured while fetching patient id from username', error)
+        console.error('An error occurred while fetching patient id from username', error)
         return null
       }
   }
 
 
-  export const fetchPersonIdByUserId = async (
-    userId: string | null
-  ): Promise<string | null> => {
-    try {
-      const response = await axios.get(userApiAddress() + '/get-id', {
-        params: { userId }
-      });
-  
-      if (response.status === 200) {
-        console.log(response.data);
-        return response.data;
-      } else {
-        console.error("Failed to fetch patient id from user id:", response.status);
-        return null;
-      }
-    } catch (error) {
-      console.error('An error occured while fetching patient id from user id', error)
-      return null
-    }
-  };
-
-
-
-  export const addNewStaff = async (
-    firstName: string,
-    lastName: string,
-    userId: string,
-    privilege: string
-
-  ): Promise<ReturnedStaffProps | null> => {
-    try {
-
-        const addedStaff = await axios.post(patientApiAddress() + '/add-staff', {
-          firstName, lastName, privilege, userId
-        });
-    
-        if (addedStaff.status === 200) {
-          console.log(addedStaff.data);
-
-          const data: ReturnedStaffProps = addedStaff.data;
-          const personId = data.id
-
-          const addedUser = await axios.post(userApiAddress() + '/add', {
-                userId, personId
-          });
-
-          if (addedUser.status !== 200){
-            console.error("Failed to add user")
-            return null
-          }
-
-          return addedStaff.data
-        } else {
-          console.error("Failed to fetch patient id from user name:", addedStaff.status);
-          return null;
-        }
-      } catch (error) {
-        console.error('An error occured while fetching patient id from username', error)
-        return null
-      }
-  };
 
 
 
