@@ -1,13 +1,13 @@
 
 import React, { useState, useEffect } from "react";
-import LoadingSpinner from "../components/LoadingSpinner";
-import Note from "../components/Note";
-import Button from "../components/Button";
+import LoadingSpinner from "../../components/LoadingSpinner.tsx";
+import Note from "../../components/Note.tsx";
+import Button from "../../components/Button.tsx";
 import { useNavigate } from "react-router-dom";
-import NavBarDoctor from "../components/NavBarDoctor";
-import {useFetchNotes} from "../api/patient/notes/UseFetchNotes.ts";
+import NavBarDoctor from "../../components/NavBarDoctor.tsx";
+import {useFetchNotes} from "../../api/patient/notes/UseFetchNotes.ts";
 
-const PatientNotes: React.FC = () => {
+const Notes: React.FC = () => {
   const [patient, setPatient] = useState<Patient | null>(null)
   const noteData = useFetchNotes(patient?.id)
   const [notes, setNotes] = useState<Note[] | null>(null);
@@ -26,7 +26,7 @@ const PatientNotes: React.FC = () => {
 
 
 const handleAddNoteButton = () => {
-  navigate("/NotePage")
+  navigate("/AddNote")
 }
 
 
@@ -75,4 +75,4 @@ useEffect(() => {
   );
 };
 
-export default PatientNotes
+export default Notes

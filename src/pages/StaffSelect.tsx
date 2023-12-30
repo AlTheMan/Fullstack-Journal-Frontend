@@ -19,7 +19,7 @@ const DoctorSelect: React.FC = () => {
     }, []);
 
     const handleClick = () =>{
-        navigate("/PatientNotes")
+        navigate("/Notes")
     }
 
     return (

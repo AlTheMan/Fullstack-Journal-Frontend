@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { postNote } from "../api/patient/notes/PostNote.ts";
-import NavBar from "../components/NavBar";
+import { postNote } from "../../api/patient/notes/PostNote.ts";
+import NavBar from "../../components/NavBar.tsx";
 import { useNavigate } from "react-router-dom";
 import {useKeycloak} from "@react-keycloak/web";
 
-const NotePage: React.FC = () => {
+const AddNote: React.FC = () => {
   
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null)
   const [validationError, setValidationError] = useState("");
@@ -114,4 +114,4 @@ const NotePage: React.FC = () => {
   );
 };
 
-export default NotePage;
+export default AddNote;

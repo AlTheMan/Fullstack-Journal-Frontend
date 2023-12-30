@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import NavBar from "../components/NavBar";
-import GenericTable from "../components/GenericTable";
-import LoadingSpinner from "../components/LoadingSpinner";
-import DoctorButton from "../components/DoctorButton";
-import "../App.css"
+import NavBar from "../../components/NavBar.tsx";
+import GenericTable from "../../components/GenericTable.tsx";
+import LoadingSpinner from "../../components/LoadingSpinner.tsx";
+import DoctorButton from "../../components/DoctorButton.tsx";
+import "../../App.css"
 import { useNavigate } from "react-router-dom";
-import {useFetchConditions} from "../api/patient/conditions/UseFetchConditions.ts";
+import {useFetchConditions} from "../../api/patient/conditions/UseFetchConditions.ts";
 
 
 const ConditionPage: React.FC = () => {
