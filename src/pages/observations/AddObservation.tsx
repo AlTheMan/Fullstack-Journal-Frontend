@@ -1,7 +1,7 @@
 import React, {useState} from "react";
-import NavBar from "../components/NavBar";
+import NavBar from "../../components/NavBar.tsx";
 import {useKeycloak} from "@react-keycloak/web";
-import {postObservation} from "../api/patient/observations/PostObservation.ts";
+import {postObservation} from "../../api/patient/observations/PostObservation.ts";
 import {useNavigate} from "react-router-dom";
 
 

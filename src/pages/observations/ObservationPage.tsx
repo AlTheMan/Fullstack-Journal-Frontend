@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import NavBar from "../components/NavBar";
-import GenericTable from "../components/GenericTable";
-import LoadingSpinner from "../components/LoadingSpinner";
-import DoctorButton from "../components/DoctorButton";
+import NavBar from "../../components/NavBar.tsx";
+import GenericTable from "../../components/GenericTable.tsx";
+import LoadingSpinner from "../../components/LoadingSpinner.tsx";
+import DoctorButton from "../../components/DoctorButton.tsx";
 import { useNavigate } from "react-router-dom";
-import {useFetchObservations} from "../api/patient/observations/UseFetchObservations.ts";
+import {useFetchObservations} from "../../api/patient/observations/UseFetchObservations.ts";
 
 
 const ObservationPage: React.FC = () => {

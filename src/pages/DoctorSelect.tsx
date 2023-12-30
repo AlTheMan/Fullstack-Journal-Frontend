@@ -31,7 +31,7 @@ const DoctorSelect: React.FC = () => {
       </div>
 
       <div className="horizontalCenterWithTopMargin">
-        <Button onClick={() => handleNavigate("/PatientNotes")}>Notes</Button>
+        <Button onClick={() => handleNavigate("/Notes")}>Notes</Button>
         <Button onClick={() => handleNavigate("/ConditionPage")}>Conditions</Button>
         <Button onClick={() => handleNavigate("/EncounterPage")}>Encounters</Button>
         <Button onClick={() => handleNavigate("/ObservationPage")}>Observations</Button>

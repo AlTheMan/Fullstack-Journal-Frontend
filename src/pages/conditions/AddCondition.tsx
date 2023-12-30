@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import NavBar from "../components/NavBar";
-import {postCondition} from "../api/patient/conditions/PostCondition.ts"
+import NavBar from "../../components/NavBar.tsx";
+import {postCondition} from "../../api/patient/conditions/PostCondition.ts"
 import {useKeycloak} from "@react-keycloak/web";
 import {useNavigate} from "react-router-dom";
 

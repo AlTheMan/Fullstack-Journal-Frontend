@@ -1,7 +1,7 @@
 import React, {useState} from "react";
-import NavBar from "../components/NavBar";
+import NavBar from "../../components/NavBar.tsx";
 import {useKeycloak} from "@react-keycloak/web";
-import {postEncounter} from "../api/patient/encounters/PostEncounter.ts";
+import {postEncounter} from "../../api/patient/encounters/PostEncounter.ts";
 import {useNavigate} from "react-router-dom";
 
 const AddEncounter: React.FC = () => {
