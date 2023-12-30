@@ -13,7 +13,7 @@ export const addNewPatient = async (
         const sex = newPatient.sex
         const birthdate = newPatient.birthdate
 
-        const addedPatient = await axios.post(patientApiAddress() + '/add', {
+        const addedPatient = await axios.post(patientApiAddress() + 'add', {
             userId, firstName, lastName, sex, birthdate
         }, {
             headers: {
