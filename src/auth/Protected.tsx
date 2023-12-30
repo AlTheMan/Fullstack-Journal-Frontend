@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import Keycloak, { KeycloakProfile } from "keycloak-js";
+import { KeycloakProfile } from "keycloak-js";
 import Routing from "../Routing";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
@@ -10,23 +10,23 @@ import {
   addNewStaff
 } from "./AuthApi";
 import NewPatientPage from "./NewPatientPage";
+import {useKeycloak} from "@react-keycloak/web";
 
-interface ProtectedProps {
-  client: Keycloak | null;
-}
 
-const Protected: React.FC<ProtectedProps> = ({ client }) => {
+
+const Protected: React.FC = () => {
   const isRun = useRef(false);
   const userId = useRef<string | null>(null);
   const email = useRef<string | null>(null);
   const [id, setId] = useState<string | null>("");
   const keycloakProfile = useRef<KeycloakProfile | null>(null);
   const { setItem } = useLocalStorage();
+  const {keycloak: keycloak} = useKeycloak()
 
   const getRole = async (): Promise<string | null> => {
-    if (!client) return null;
+    if (!keycloak) return null;
     try {
-      const profile = await client.loadUserProfile();
+      const profile = await keycloak.loadUserProfile();
       if (profile) {
         if (!profile.email || !profile.id) {
           return null;
@@ -41,19 +41,19 @@ const Protected: React.FC<ProtectedProps> = ({ client }) => {
     }
 
 
-    if (client.hasRealmRole("patient")) {
+    if (keycloak.hasRealmRole("patient")) {
       return "PATIENT";
     }
-    if (client.hasRealmRole("doctor")) {
+    if (keycloak.hasRealmRole("doctor")) {
       return "DOCTOR";
     }
-    if (client.hasRealmRole("staff")) {
+    if (keycloak.hasRealmRole("staff")) {
       return "STAFF";
     }
     return null;
   };
 
-  // This function add a new patient to patientdb and adds a new user to the user db
+  // This function add a new patient to patientDB and adds a new user to the user db
   const handleNewPatientSubmit = async (newPatient: NewPatientProps) => {
     const patient = await addNewPatient(newPatient);
     if (patient) {
@@ -81,19 +81,17 @@ const Protected: React.FC<ProtectedProps> = ({ client }) => {
     if (isRun.current) return;
     isRun.current = true;
 
-
-
     const fetchRole = async () => {
       const fetchedRole = await getRole();
       if (!fetchedRole) {
         console.log("Role was null");
-        client?.logout();
+        keycloak?.logout();
       }
       console.log(fetchedRole)
       const personId = await fetchPersonIdByUserId(userId.current);
       if (!personId) {
         if (fetchedRole === "PATIENT") {
-          setId(null); // Sets id to null so it redirects to new patient page
+          setId(null); // Sets id to null, so it redirects to new patient page
         } else if (fetchedRole === "STAFF" || fetchedRole === "DOCTOR") {
           await handleStaff(fetchedRole);
         }
@@ -101,6 +99,8 @@ const Protected: React.FC<ProtectedProps> = ({ client }) => {
         localStorage.setItem("id", personId);
         setId(personId);
       }
+
+      console.log("Patient id is ", localStorage.getItem("id"))
 
       if (fetchedRole) {
         setItem("privilege", fetchedRole);
@@ -111,14 +111,13 @@ const Protected: React.FC<ProtectedProps> = ({ client }) => {
       }
     };
     fetchRole();
-  }, [client, id]);
+  }, [keycloak, id]);
 
-  // Conditionally render the <Routing /> component if id is not null
 
   const firstName = keycloakProfile.current?.firstName;
   const lastName = keycloakProfile.current?.lastName;
 
-  // If 'id' is not set and we have the necessary user details, show the new patient page.
+  // If 'id' is not set, and we have the necessary user details, show the new patient page.
   if (id === null && userId.current && firstName && lastName) {
     return (
       <NewPatientPage
@@ -131,6 +130,7 @@ const Protected: React.FC<ProtectedProps> = ({ client }) => {
   }
 
   // If we have an 'id', render the Routing component, otherwise null.
+
   return id ? <Routing /> : null;
 };
 

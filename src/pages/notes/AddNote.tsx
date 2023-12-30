@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { postNote } from "../api/NotesApi";
-import NavBar from "../components/NavBar";
+import { postNote } from "../../api/patient/notes/PostNote.ts";
+import NavBar from "../../components/NavBar.tsx";
 import { useNavigate } from "react-router-dom";
+import {useKeycloak} from "@react-keycloak/web";
 
-const NotePage: React.FC = () => {
+const AddNote: React.FC = () => {
   
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null)
   const [validationError, setValidationError] = useState("");
@@ -12,6 +13,7 @@ const NotePage: React.FC = () => {
   const remainingCharacters = maxLength - note.length;
   const writtenById = localStorage.getItem("id");
   const navigate = useNavigate()
+  const {keycloak} = useKeycloak()
 
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNote(event.target.value);
@@ -43,9 +45,14 @@ const NotePage: React.FC = () => {
       setValidationError("Author id not found")
       return;
     }
+    keycloak.updateToken(5).then(function() {
+    }).catch(function() {
+      alert('Failed to refresh token, or the session has expired');
+      return
+    });
     setValidationError("");
-    
-    await postNote(note, selectedPatient?.id, Number(writtenById));
+
+    await postNote(note, selectedPatient?.id, Number(writtenById), keycloak.token);
     clearText();
     navigate("/PatientNotes")
   };
@@ -107,4 +114,4 @@ const NotePage: React.FC = () => {
   );
 };
 
-export default NotePage;
+export default AddNote;

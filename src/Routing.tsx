@@ -3,19 +3,19 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/login/LoginPage";
 import MessagesPage from "./pages/MessagesPage";
-import ConditionPage from "./pages/ConditionPage";
-import ObservationPage from "./pages/ObservationPage";
+import ConditionPage from "./pages/conditions/ConditionPage.tsx";
+import ObservationPage from "./pages/observations/ObservationPage.tsx";
 import RegisterPage from "./pages/login/RegisterPage";
-import EncounterPage from "./pages/EncounterPage";
+import EncounterPage from "./pages/encounters/EncounterPage.tsx";
 import RegisterPatientPage from "./pages/login/RegisterPatientPage";
 import RegisterStaffPage from "./pages/login/RegisterStaffPage";
-import NotePage from "./pages/NotePage";
+import AddNote from "./pages/notes/AddNote.tsx";
 import DoctorSelect from "./pages/DoctorSelect";
 import StaffSelect from "./pages/StaffSelect";
-import PatientNotes from "./pages/PatientNotes";
-import AddObservation from "./pages/AddObservation";
-import AddEncounter from "./pages/AddEncounter";
-import AddCondition from "./pages/AddCondition";
+import Notes from "./pages/notes/Notes.tsx";
+import AddObservation from "./pages/observations/AddObservation.tsx";
+import AddEncounter from "./pages/encounters/AddEncounter.tsx";
+import AddCondition from "./pages/conditions/AddCondition.tsx";
 import ImagePage from "./pages/images/ImagePage";
 import SearchPage from "./pages/search/SearchPage";
 import SearchPatientPage from "./pages/search/SearchPatientPage";
@@ -30,7 +30,7 @@ export const Routing = () => {
         <Route path="/MessagesPage" element={<ChatRoom />} />
         <Route path="/ConditionPage" element={<ConditionPage />} />
         <Route path="/EncounterPage" element={<EncounterPage />} />
-        <Route path="/NotePage" element={<NotePage />} />
+        <Route path="/AddNote" element={<AddNote />} />
         <Route path="/ObservationPage" element={<ObservationPage />} />
         <Route path="/LoginPage" element={<LoginPage />} />
         <Route path="/RegisterPage" element={<RegisterPage />} />
@@ -38,7 +38,7 @@ export const Routing = () => {
         <Route path="/RegisterStaffPage" element={<RegisterStaffPage />} />
         <Route path="/DoctorSelect" element={<DoctorSelect />} />
         <Route path="/StaffSelect" element={<StaffSelect />} />
-        <Route path="/PatientNotes" element={<PatientNotes />} />
+        <Route path="/Notes" element={<Notes />} />
         <Route path="/AddObservation" element={<AddObservation />} />
         <Route path="/AddEncounter" element={<AddEncounter />} />
         <Route path="/AddCondition" element={<AddCondition />} />

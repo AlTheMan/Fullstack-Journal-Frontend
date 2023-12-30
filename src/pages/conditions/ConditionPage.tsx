@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { fetchConditions } from "../api/PatientConditionsApi";
-import NavBar from "../components/NavBar";
-import GenericTable from "../components/GenericTable";
-import LoadingSpinner from "../components/LoadingSpinner";
-import DoctorButton from "../components/DoctorButton";
-import "../App.css"
+import NavBar from "../../components/NavBar.tsx";
+import GenericTable from "../../components/GenericTable.tsx";
+import LoadingSpinner from "../../components/LoadingSpinner.tsx";
+import DoctorButton from "../../components/DoctorButton.tsx";
+import "../../App.css"
 import { useNavigate } from "react-router-dom";
+import {useFetchConditions} from "../../api/patient/conditions/UseFetchConditions.ts";
 
 
 const ConditionPage: React.FC = () => {
-  const [conditions, setConditions] = useState<Condition[] | null>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
+  const conditionData = useFetchConditions(selectedPatient?.id)
+
+  const [conditions, setConditions] = useState<Condition[] | null>([]);
+  
   const navigate = useNavigate();
 
   const handleConditionButton = () => {
@@ -29,33 +30,16 @@ const ConditionPage: React.FC = () => {
 }, []);
 
   useEffect(() => {
-    if (selectedPatient){
-      const id = Number(selectedPatient?.id)
-      const username = localStorage.getItem("username") || "";
-  
-      if (id === -1 || username.length === 0) {
-        setError("Invalid ID or Username");
-        return;
-      }
-  
-      const loadConditions = async () => {
-        setLoading(true);
-        const conditionData = await fetchConditions(id);
-        setConditions(conditionData)
-        setLoading(false)
-      };
-      loadConditions();
+    if (conditionData) {
+      setConditions(conditionData)
     }
+  }, [conditionData, selectedPatient]);
 
 
-   
-  }, [selectedPatient]); // Add any dependencies here if necessary
 
-  if (error) return <>{error}</>;
+  const conditionList = conditions ?? [];
 
-  let conditionList = conditions ?? [];
-
-  let columns: TableColumn[] = [
+  const columns: TableColumn[] = [
     { id: "code", label: "Condition code" },
     { id: "bodySite", label: "Body Site" },
     { id: "clinicalStatus", label: "Clinical Status" },
@@ -86,7 +70,7 @@ const ConditionPage: React.FC = () => {
           children="Add Condition"
           onClick={handleConditionButton}/>
       </div>
-      {loading || conditions === null ? (
+      {!conditions ? (
         <LoadingSpinner />
       ) : (
         <>
