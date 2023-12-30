@@ -4,7 +4,7 @@ import axios from 'axios';
 import NavBar from "../components/NavBar";
 import MessageForm from '../components/MessageForm';
 import ListGroupGeneric from '../components/ListGroupGeneric';
-import { useFetchAllPatients } from '../api/patient/UseFetchAllPatients.tsx';
+import { fetchAllPatients } from '../api/GetAllPatientsTimerApi';
 import { RequestTimer } from '../api/RequestTimer';
 import { messageApiAddress } from '../api/RequestAddresses';
 
@@ -21,9 +21,8 @@ type Doctor = {
 type Message ={
     id: number;
     time: Date;
-    employeeId: number;
-    patientId: number;
-    sentById: number;
+    senderId: number;
+    receiverId: number;
     message: string;
 };
 
@@ -33,13 +32,41 @@ type MyIdType={
 
 
 
-const MessagesPage = () => {
+// Function to setup SSE connection
+const setupSseConnection = (setMessages: React.Dispatch<React.SetStateAction<Message[]>>) => {
+  const eventSource = new EventSource(messageApiAddress()+'/stream/'); // Adjust the URL to your SSE endpoint
+
+  eventSource.onmessage = event => {
+      const newMessage = JSON.parse(event.data) as Message;
+      setMessages(prevMessages => [...prevMessages, newMessage]);
+  };
+
+  eventSource.onerror = error => {
+      console.error('SSE error:', error);
+      eventSource.close();
+  };
+
+  return eventSource;
+};
+
+
+const MessagesPage2 = () => {
    
     const [doctors, setDoctors] = useState<Doctor[]>([]);
     const [patients, setPatients] = useState<Patient[]>([]);
     const [messages, setMessages] = useState<Message[]>([]);
     const [myId, setMyId] = useState<MyIdType | undefined>(undefined);
     const messagesEndRef = useRef<null | HTMLDivElement>(null);
+
+
+     // Setup SSE connection
+     useEffect(() => {
+      const eventSource = setupSseConnection(setMessages);
+
+      return () => {
+          eventSource.close();
+      };
+  }, []);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth"});
@@ -74,35 +101,25 @@ const MessagesPage = () => {
         console.log("my id: " + myId)
         localStorage.setItem("otherId", otherId.toString());
         
-        const fetchMessages = async (employeeIdInput: number, patientIdInput:number) => {
-
-
+        const fetchMessages = async (myId: number, otherId:number) => {
             const response = await axios.get(messageApiAddress() + '/get',{
                 params: {
-                    employeeId: employeeIdInput,
-                    patientId: patientIdInput,
+                    id1: myId,
+                    id2: otherId,
                 },
             });
             if (response.status === 200) {
               console.log("response=200");
                 console.log("API Response:"+ response.data);
-                //console.log("messages: " + response.data);
                 const messageData: Message[] = response.data;
                 setMessages(messageData);
                 console.log("messages: " + messages);
             }else{
-              console.log("error retreiving data: ")
               console.log("error retreiving data: " + response.status)
             }
         }
-
-        const privilege: string = localStorage.getItem("privilege") || "";
-        if(privilege=="PATIENT"){
-            fetchMessages(otherId, myId); //ordningen är egentligen inte viktig.
-        }
-        else if(privilege=="DOCTOR" || privilege=="STAFF"){
-            fetchMessages(myId, otherId);
-        }
+        fetchMessages(myId, otherId);
+        
     }
 
 
@@ -110,41 +127,23 @@ const MessagesPage = () => {
 
         const myId: number = Number(localStorage.getItem("id")) || -1; //ifall att numret är null så sätts värdet till "-1"
         const otherId: number = Number(localStorage.getItem("otherId")) || -1; //ifall att numret är null så sätts värdet till "-1"
-        const privilege: string = localStorage.getItem("privilege") || "";
        
         //TODO: egentligen borde man bara behöva en request-body istället för två, om man ändrar lite i back-enden. Man borde ha en "senderId" och "receiverId" istället för "employeeId" och "patientId"
         // Define the data to be sent in the request body
-        const requestDataPatient = {
-            employeeId: otherId,
-            patientId: myId,
-            message: message,
-            senderId: myId
-        };
-        const requestDataDoctor = {
-            employeeId: myId,
-            patientId: otherId,
-            message: message,
-            senderId: myId
+        const requestData = {
+            senderId: myId,
+            receiverId: otherId,
+            message: message
         };
 
         console.log("other id:" + otherId);
         console.log("my id: " + myId)
         
         const sendMessage = async () => {
-            
-            if(privilege=="PATIENT"){
-                const response = await axios.post(messageApiAddress() + '/send',requestDataPatient);
-                console.log("status: "+response.status);
-                if(response.status==200){
-                    handleSelectPerson(otherId);
-                }
-            }
-            else{
-                const response = await axios.post(messageApiAddress() + '/send',requestDataDoctor);
-                console.log("status: "+response.status);
-                if (response.status === 200) {
-                    handleSelectPerson(otherId);
-                }
+            const response = await axios.post(messageApiAddress() + '/send/',requestData);
+            console.log("status: "+response.status);
+            if(response.status==200){
+                handleSelectPerson(otherId);
             }
         }
         sendMessage()
@@ -179,7 +178,7 @@ const MessagesPage = () => {
         } 
         if(canMakeRequest) {
           const getPatients = async () => {
-            const patientData = await useFetchAllPatients()
+            const patientData = await fetchAllPatients()
             if (patientData){
               setPatients(patientData)
             } else {
@@ -210,6 +209,7 @@ const MessagesPage = () => {
             getLabel={(doctor) => `${doctor.firstName} ${doctor.lastName} (ID: ${doctor.id}) ${doctor.privilege}`}
             onSelectItem={(doctor) => handleSelectPerson(doctor.id)}
           />
+          
         ) : (
           //Visar patientlista
           <ListGroupGeneric<Patient>
@@ -227,8 +227,8 @@ const MessagesPage = () => {
             listStyleType: 'none',
             padding: '12px',
             marginRight: '32px',
-            textAlign: message.sentById == myId?.id ? 'right' : 'left',
-            backgroundColor: message.sentById == myId?.id ? '#cce5ff' : '#f0f0f0',
+            textAlign: message.senderId == myId?.id ? 'right' : 'left',
+            backgroundColor: message.receiverId == myId?.id ? '#cce5ff' : '#f0f0f0',
           }}>
             {message.message} <br />
           </li>
@@ -256,7 +256,7 @@ const MessagesPage = () => {
   );
 };
 
-export default MessagesPage;
+export default MessagesPage2;
 
 
 

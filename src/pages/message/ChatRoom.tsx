@@ -5,6 +5,9 @@ import SockJS from 'sockjs-client';
 var stompClient: any = null;
 
 const ChatRoom: React.FC = () => {
+    const myId: number = Number(localStorage.getItem("id")) || -1; //ifall att numret är null så sätts värdet till "-1"
+    const privilege: string = localStorage.getItem("privilege") || "";
+
     const [privateChats, setPrivateChats] = useState<PrivateChats>(new Map());
     const [publicChats, setPublicChats] = useState<ChatMessage[]>([]);
     const [tab, setTab] = useState<string>("CHATROOM");
@@ -19,8 +22,12 @@ const ChatRoom: React.FC = () => {
       console.log(userData);
     }, [userData]);
 
+    useEffect(()=>{
+        connect()
+    },[]);
+
     const connect =()=>{
-        let Sock = new SockJS('http://localhost:8080/ws');
+        let Sock = new SockJS('http://localhost:8084/ws');
         stompClient = over(Sock);
         stompClient.connect({},onConnected, onError);
     }
@@ -174,18 +181,8 @@ const ChatRoom: React.FC = () => {
             </div>}
         </div>
         :
-        <div className="register">
-            <input
-                id="user-name"
-                placeholder="Enter your name"
-                name="userName"
-                value={userData.username}
-                onChange={handleUsername}
-                style={{ margin: 'normal' }} // Use style attribute for inline CSS
-                />
-              <button type="button" onClick={registerUser}>
-                    connect
-              </button> 
+        <div className="connecting">
+            <p> connecting </p>
         </div>}
     </div>
     )
