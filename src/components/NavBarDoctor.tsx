@@ -30,8 +30,14 @@ const NavBarDoctor = () => {
               </li>
           </ul>
         </div>
-       
-            <Button onClick={() =>{keycloak.logout()}}>Logout</Button>
+
+        <Link to= "/">
+          <Button onClick={() =>{
+            keycloak.logout().then(() => keycloak.clearToken())
+          }}>Logout</Button>
+
+        </Link>
+
     
       </div>
     </nav>

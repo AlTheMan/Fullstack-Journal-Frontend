@@ -3,7 +3,7 @@ import axios from "axios";
 import UseTokenHandler from "../../../auth/UseTokenHandler.tsx";
 import {useEffect, useState} from "react";
 
-export const useFetchNotes = (patientId: number | undefined) => {
+export const useFetchNotes = (patientId: number | undefined | null) => {
     const token = UseTokenHandler()
     const [notes, setNotes] = useState<Note[]>([])
     const requestUri = patientApiAddress() + 'note';

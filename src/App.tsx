@@ -11,9 +11,7 @@ function App() {
 
 
   return (
-    
-      keycloak.authenticated ? <Protected client={keycloak} /> : <Public />
-    
+      keycloak.authenticated ? <Protected/> : <Public />
   );
 }
 
