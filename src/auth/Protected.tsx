@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {KeycloakProfile} from "keycloak-js";
 import Routing from "../Routing";
-import {useLocalStorage} from "../hooks/useLocalStorage";
+import {useLocalStorage} from "../hooks/UseLocalStorage.ts";
 import NewPatientPage from "./NewPatientPage";
 import {useKeycloak} from "@react-keycloak/web";
 import {fetchPersonIdByUserId} from "../api/auth/FetchPersonIdByUserId.ts";

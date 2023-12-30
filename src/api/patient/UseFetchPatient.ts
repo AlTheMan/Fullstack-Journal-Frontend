@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import axios from 'axios';
 import TokenHandler from '../../auth/UseTokenHandler.tsx';
 import {patientApiAddress} from "../RequestAddresses.ts";
-import {useLocalStorage} from "../../hooks/useLocalStorage.ts";
+import {useLocalStorage} from "../../hooks/UseLocalStorage.ts";
 
 export const useFetchPatient = (
     patientId: number | null
