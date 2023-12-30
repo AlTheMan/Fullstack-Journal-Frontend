@@ -20,13 +20,14 @@ import ImagePage from "./pages/images/ImagePage";
 import SearchPage from "./pages/search/SearchPage";
 import SearchPatientPage from "./pages/search/SearchPatientPage";
 import SearchEncounterPage from "./pages/search/SearchEncounterPage";
+import ChatRoom from "./pages/message/ChatRoom";
 
 export const Routing = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/MessagesPage" element={<MessagesPage />} />
+        <Route path="/MessagesPage" element={<ChatRoom />} />
         <Route path="/ConditionPage" element={<ConditionPage />} />
         <Route path="/EncounterPage" element={<EncounterPage />} />
         <Route path="/NotePage" element={<NotePage />} />

@@ -21,10 +21,10 @@ export const userApiAddress = () => {
 
 export const messageApiAddress = () => {
 
-    //8082
-    //const port = 8080;
-    //const address = 'http://localhost:'+ port +'/messages';
-    const address = 'https://message-api.app.cloud.cbh.kth.se/' + 'messages'
+    //8084
+    const port = 8084;
+    const address = 'http://localhost:'+ port +'/messages';
+    //const address = 'https://message-api.app.cloud.cbh.kth.se/' + 'messages'
     return address;
 }
 
