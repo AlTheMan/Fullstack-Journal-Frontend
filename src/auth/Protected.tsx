@@ -17,8 +17,6 @@ const Protected: React.FC = () => {
     const keycloakProfile = useRef<KeycloakProfile | null>(null);
     const {setItem} = useLocalStorage();
     const token = useTokenHandler();
-
-
     const [id, setId] = useState<string | null>("");
 
 

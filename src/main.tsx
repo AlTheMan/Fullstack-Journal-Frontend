@@ -7,7 +7,10 @@ import keycloakConfig from "./auth/KeycloakConfig.tsx";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <ReactKeycloakProvider
     authClient={keycloakConfig}
-    initOptions={{ onLoad: "login-required" }}
+    initOptions={{ enableLogging: true,
+      checkLoginIframe: false,
+      flow: 'standard',
+      onLoad: 'check-sso',}}
   >
     <App />
   </ReactKeycloakProvider>
