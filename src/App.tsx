@@ -5,7 +5,7 @@ import Public from "./auth/Public";
 import { useKeycloak } from "@react-keycloak/web";
 
 function App() {
-  const {keycloak, initialized} = useKeycloak()
+  const {keycloak} = useKeycloak()
 
 
 
