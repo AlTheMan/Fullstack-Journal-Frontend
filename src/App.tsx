@@ -5,12 +5,12 @@ import Public from "./auth/Public";
 import { useKeycloak } from "@react-keycloak/web";
 
 function App() {
-  //const [isLogin, client] = UseAuth();
-
   const {keycloak} = useKeycloak()
 
 
+
   return (
+
       keycloak.authenticated ? <Protected/> : <Public />
   );
 }
