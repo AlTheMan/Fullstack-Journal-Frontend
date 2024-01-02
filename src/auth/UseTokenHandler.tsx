@@ -18,7 +18,7 @@ const useTokenHandler = () => {
         };
 
         updateToken();
-    },);
+    },[]);
 
     return token;
 };

@@ -2,14 +2,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import fetchData from "../../api/NamedPersonApi";
-import { getPatientsByName } from "../../api/GetPatientsByName";
 import PatientList from "./PatientList";
 import NavBar from "../../components/NavBar";
 import { Button } from "react-bootstrap";
-import { getPatientsByDoctorId } from "../../api/GetPatientsByDoctorId";
-import { getPatientsByConditionCode } from "../../api/GetPatientsByConditionCode";
-import { getPatientsByConditionBodySite } from "../../api/getPatientsByConditionBodySite";
-import { getPatientsByConditionCategory } from "../../api/GetPatientsByConditionCategory";
+import { searchPatientsByName } from "../../api/search/SearchPatientsByName";
+import { searchPatientsByDoctorId } from "../../api/search/SearchPatientsByDoctorId";
+import { searchPatientsByConditionCode } from "../../api/search/SearchPatientsByConditionCode";
+import { searchPatientsByConditionBodySite } from "../../api/search/SearchPatientsByConditionBodySite";
+import { searchPatientsByConditionCategory } from "../../api/search/SearchPatientsByConditionCategory";
+import { useKeycloak } from "@react-keycloak/web";
 
 const SearchPatientPage: React.FC = () => {
   const [doctor, setDoctor] = useState<Staff | null>(null);
@@ -19,6 +20,8 @@ const SearchPatientPage: React.FC = () => {
   const [searchInputConditionCode, setSearchInputConditionCode] = useState<string>("");
   const [searchInputConditionBodySite, setSearchInputConditionBodySite] = useState<string>("");
   const [searchInputConditionCategory, setSearchInputConditionCategory] = useState<string>("");
+  const { keycloak } = useKeycloak();
+
 
 
   useEffect(() => {
@@ -32,7 +35,7 @@ const SearchPatientPage: React.FC = () => {
     loadDoctor();
   }, [id]);
 
- 
+
   const [patients, setPatients] = useState<Patient[]>([]);
 
 
@@ -42,13 +45,13 @@ const SearchPatientPage: React.FC = () => {
     const privilege: string = localStorage.getItem("privilege") || "";
     localStorage.setItem("currentPatient", JSON.stringify(patient))
     console.log("patient id in doctor home: " + patient.id.toString()); // patient id is a number
-    if(privilege=="DOCTOR"){
+    if (privilege == "DOCTOR") {
       navigate("/DoctorSelect");
     }
-    if(privilege=="STAFF"){
+    if (privilege == "STAFF") {
       navigate("/StaffSelect", { state: { patient } });
     }
-   
+
   };
 
   const handleSearchChangePatientName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,72 +68,85 @@ const SearchPatientPage: React.FC = () => {
     setSearchInputConditionCategory(e.target.value);
   };
 
-  function setPatientData(patientData: Patient[] | null){
+  function setPatientData(patientData: Patient[] | null) {
     if (patientData) {
-        setPatients(patientData);
-      } else {
-        setPatients([]);
-      }
+      setPatients(patientData);
+    } else {
+      setPatients([]);
+    }
+  }
+
+  const handleToken = () => {
+    keycloak.updateToken(30).then(function () {
+    }).catch(function () {
+      alert('Failed to refresh token, or the session has expired');
+      return
+    });
   }
 
   const handleSearchSubmitPatientName = async (e: React.FormEvent) => {
     e.preventDefault();
-    const patientData = await getPatientsByName(searchInputPatientName);
+    handleToken()
+    const patientData = await searchPatientsByName(searchInputPatientName, keycloak.token);
     setPatientData(patientData);
   };
 
   const handleSearchSubmitConditionCode = async (e: React.FormEvent) => {
     e.preventDefault();
-    const patientData = await getPatientsByConditionCode(searchInputConditionCode);
+    handleToken()
+    const patientData = await searchPatientsByConditionCode(searchInputConditionCode, keycloak.token);
     setPatientData(patientData);
   };
 
   const handleSearchSubmitConditionBodySite = async (e: React.FormEvent) => {
     e.preventDefault();
-    const patientData = await getPatientsByConditionBodySite(searchInputConditionBodySite);
+    handleToken()
+    const patientData = await searchPatientsByConditionBodySite(searchInputConditionBodySite, keycloak.token);
     setPatientData(patientData);
   };
 
   const handleSearchSubmitConditionCategory = async (e: React.FormEvent) => {
     e.preventDefault();
-    const patientData = await getPatientsByConditionCategory(searchInputConditionCategory);
+    handleToken()
+    const patientData = await searchPatientsByConditionCategory(searchInputConditionCategory, keycloak.token);
     setPatientData(patientData);
   };
 
   const handleRetreiveDoctorPatients = async (e: React.FormEvent) => {
     e.preventDefault();
-    const patientData = await getPatientsByDoctorId(id);
+    handleToken()
+    const patientData = await searchPatientsByDoctorId(id, keycloak.token);
     setPatientData(patientData);
   };
 
-  
+
 
   return (
     <>
-    <NavBar></NavBar>
-    <div>
-      <h1>Welcome: {doctor?.firstName} {doctor?.lastName}</h1>
-      <Button onClick={handleRetreiveDoctorPatients}>  
-        Retreive my patients
-      </Button>
-      <form onSubmit={handleSearchSubmitPatientName}>
-        <input type="text" value={searchInputPatientName} onChange={handleSearchChangePatientName} placeholder="Patient name" />
-        <button type="submit">Search</button>
-      </form>
-      <form onSubmit={handleSearchSubmitConditionCode}>
-        <input type="text" value={searchInputConditionCode} onChange={handleSearchChangeConditionCode} placeholder="Condition code" />
-        <button type="submit">Search</button>
-      </form>
-      <form onSubmit={handleSearchSubmitConditionBodySite}>
-        <input type="text" value={searchInputConditionBodySite} onChange={handleSearchChangeConditionBodySite} placeholder="Condition body site" />
-        <button type="submit">Search</button>
-      </form>
-      <form onSubmit={handleSearchSubmitConditionCategory}>
-        <input type="text" value={searchInputConditionCategory} onChange={handleSearchChangeConditionCategory} placeholder="Condition category" />
-        <button type="submit">Search</button>
-      </form>
-      <PatientList patients={patients} onSelectPerson={handleSelectPerson} />
-    </div>
+      <NavBar></NavBar>
+      <div>
+        <h1>Welcome: {doctor?.firstName} {doctor?.lastName}</h1>
+        <Button onClick={handleRetreiveDoctorPatients}>
+          Retreive my patients
+        </Button>
+        <form onSubmit={handleSearchSubmitPatientName}>
+          <input type="text" value={searchInputPatientName} onChange={handleSearchChangePatientName} placeholder="Patient name" />
+          <button type="submit">Search</button>
+        </form>
+        <form onSubmit={handleSearchSubmitConditionCode}>
+          <input type="text" value={searchInputConditionCode} onChange={handleSearchChangeConditionCode} placeholder="Condition code" />
+          <button type="submit">Search</button>
+        </form>
+        <form onSubmit={handleSearchSubmitConditionBodySite}>
+          <input type="text" value={searchInputConditionBodySite} onChange={handleSearchChangeConditionBodySite} placeholder="Condition body site" />
+          <button type="submit">Search</button>
+        </form>
+        <form onSubmit={handleSearchSubmitConditionCategory}>
+          <input type="text" value={searchInputConditionCategory} onChange={handleSearchChangeConditionCategory} placeholder="Condition category" />
+          <button type="submit">Search</button>
+        </form>
+        <PatientList patients={patients} onSelectPerson={handleSelectPerson} />
+      </div>
     </>
   );
 };
