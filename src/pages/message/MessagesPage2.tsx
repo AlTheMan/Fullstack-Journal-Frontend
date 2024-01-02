@@ -68,7 +68,7 @@ const MessagesPage2 = () => {
 
     const onNewMessage = (payload: any) => {
         const payloadData = JSON.parse(payload.body);
-        console.log("data received: " + payloadData);
+        console.log("data received via socket: " + payloadData);
         // Update messages state based on the new message received
         setMessages(prevMessages => [...prevMessages, payloadData]);
     };
@@ -167,7 +167,7 @@ const MessagesPage2 = () => {
             const response = await axios.post(messageApiAddress() + '/send/',requestData);
             console.log("status: "+response.status);
             if(response.status==200){
-                handleSelectPerson(otherId);
+                //handleSelectPerson(otherId);
             }
         }
         sendMessage()
@@ -176,12 +176,14 @@ const MessagesPage2 = () => {
 
     const privilege: string = localStorage.getItem("privilege") || "";
     
+    const staffData = useFetchAllStaff()
+    const patientData = useFetchAllPatients()
+
     useEffect(() => {
       if(privilege=="PATIENT"){
         const getAllStaff = async () => {
-          const patientData = useFetchAllStaff()
-          if (patientData){
-            setDoctors(patientData)
+          if (staffData){
+            setDoctors(staffData)
           } else {
             setDoctors([])
           }
@@ -197,7 +199,6 @@ const MessagesPage2 = () => {
         } 
         if(canMakeRequest) {
           const getPatients = async () => {
-            const patientData = useFetchAllPatients()
             if (patientData){
               setPatients(patientData)
             } else {
@@ -207,7 +208,7 @@ const MessagesPage2 = () => {
           getPatients();
         }
       }
-    }, []); // Empty dependency array to run the effect only once (equivalent to componentDidMount)        
+    }, [staffData, patientData]); // dependencies to these hooks' outputs
          
  
    
@@ -241,8 +242,8 @@ const MessagesPage2 = () => {
       </ul>
       <ul>
         {/* Render messages here */}
-        {Array.isArray(messages) && messages.map((message) => ( //kollar om messages är en array
-          <li key={message.id} style={{
+        {Array.isArray(messages) && messages.map((message, index) => ( //kollar om messages är en array
+          <li key={message.id || index} style={{ //egentligen bör man inte använda index som nyckel, utan man bör  använda id, men eftersom API:et inte returnerar id på alla DTOer avnänder jag index som nyckel.
             listStyleType: 'none',
             padding: '12px',
             marginRight: '32px',
