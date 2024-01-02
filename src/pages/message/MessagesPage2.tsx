@@ -1,21 +1,18 @@
 // MessagesPage.tsx
 import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import NavBar from "../components/NavBar";
-import MessageForm from '../components/MessageForm';
-import ListGroupGeneric from '../components/ListGroupGeneric';
-import { fetchAllPatients } from '../api/GetAllPatientsTimerApi';
-import { RequestTimer } from '../api/RequestTimer';
-import { messageApiAddress } from '../api/RequestAddresses';
+import NavBar from "../../components/NavBar";
+import MessageForm from '../../components/MessageForm';
+import ListGroupGeneric from '../../components/ListGroupGeneric';
+//import { fetchAllPatients } from '../api/GetAllPatientsTimerApi';
+import { RequestTimer } from '../../api/RequestTimer';
+import { messageApiAddress } from '../../api/RequestAddresses';
+import { useFetchAllPatients } from '../../api/patient/UseFetchAllPatients';
+import { useFetchAllStaff } from '../../api/staff/UseFetchAllStaff';
 
+import { over } from 'stompjs';
+import SockJS from 'sockjs-client';
 
-
-type Doctor = {
-    id: number; 
-    firstName: string;
-    lastName: string;
-    privilege: 'STAFF' | 'DOCTOR';
-};
 
 
 type Message ={
@@ -32,41 +29,55 @@ type MyIdType={
 
 
 
-// Function to setup SSE connection
-const setupSseConnection = (setMessages: React.Dispatch<React.SetStateAction<Message[]>>) => {
-  const eventSource = new EventSource(messageApiAddress()+'/stream/'); // Adjust the URL to your SSE endpoint
-
-  eventSource.onmessage = event => {
-      const newMessage = JSON.parse(event.data) as Message;
-      setMessages(prevMessages => [...prevMessages, newMessage]);
-  };
-
-  eventSource.onerror = error => {
-      console.error('SSE error:', error);
-      eventSource.close();
-  };
-
-  return eventSource;
-};
-
 
 const MessagesPage2 = () => {
    
-    const [doctors, setDoctors] = useState<Doctor[]>([]);
+    const [doctors, setDoctors] = useState<ReturnedStaffProps[]>([]);
     const [patients, setPatients] = useState<Patient[]>([]);
     const [messages, setMessages] = useState<Message[]>([]);
     const [myId, setMyId] = useState<MyIdType | undefined>(undefined);
     const messagesEndRef = useRef<null | HTMLDivElement>(null);
+    const myId2: number = Number(localStorage.getItem("id")) || -1; //ifall att numret är null så sätts värdet till "-1"
+    const privilege2: string = localStorage.getItem("privilege") || "";
 
 
-     // Setup SSE connection
-     useEffect(() => {
-      const eventSource = setupSseConnection(setMessages);
+    const [socketConnected, setSocketConnected] = useState(false);
 
-      return () => {
-          eventSource.close();
-      };
-  }, []);
+    const stompClient = useRef<any>(null); //Man måste använda useRef för att värdet ska sparas mellan instanser (alltså om sidan uppdateras), annars sätts värdet till stompClient till null varje gång. Tidigare använde jag: "var stompClient: any = null;" men det funkade  alltså inte.
+
+    useEffect(() => {
+        connectSocket();
+    }, []);
+
+    const connectSocket = () => {
+        let Sock = new SockJS('http://localhost:8084/ws');
+        stompClient.current = over(Sock);
+        stompClient.current.connect({}, onSocketConnected, onSocketError);
+        if(stompClient==null){
+          console.log("stompclient is null on startup")
+        }else{
+          console.log("stompclient is NOT null on startup")
+        }
+    };
+
+    const onSocketConnected = () => {
+        setSocketConnected(true);
+        // Subscribe to a relevant channel for receiving messages
+        stompClient.current.subscribe('/user/' + myId2 + '/private', onNewMessage);
+    };
+
+    const onNewMessage = (payload: any) => {
+        const payloadData = JSON.parse(payload.body);
+        console.log("data received: " + payloadData);
+        // Update messages state based on the new message received
+        setMessages(prevMessages => [...prevMessages, payloadData]);
+    };
+
+    const onSocketError = (err: Error) => {
+      console.log(err);
+    };
+
+
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth"});
@@ -102,23 +113,36 @@ const MessagesPage2 = () => {
         localStorage.setItem("otherId", otherId.toString());
         
         const fetchMessages = async (myId: number, otherId:number) => {
-            const response = await axios.get(messageApiAddress() + '/get',{
+          
+          const response = await axios.get(messageApiAddress() + '/get',{
                 params: {
                     id1: myId,
                     id2: otherId,
                 },
-            });
+            }); 
+            
             if (response.status === 200) {
               console.log("response=200");
                 console.log("API Response:"+ response.data);
                 const messageData: Message[] = response.data;
                 setMessages(messageData);
                 console.log("messages: " + messages);
+                //console.log("API Response:", JSON.stringify(messageData, null, 2));
+
             }else{
               console.log("error retreiving data: " + response.status)
             }
         }
         fetchMessages(myId, otherId);
+
+        // Additionally, subscribe to private messages with the selected person
+        //TODO: subscribe to your and the others id at the same time.
+        if (socketConnected && stompClient!=null) {
+          stompClient.current.subscribe('/user/' + otherId + '/private', onNewMessage);
+        }
+        if(stompClient==null){
+          console.log("stompclient is null");
+        }
         
     }
 
@@ -154,20 +178,15 @@ const MessagesPage2 = () => {
     
     useEffect(() => {
       if(privilege=="PATIENT"){
-        const fetchData = async () => {
-            const response = await axios.get(messageApiAddress() + '/getAllStaff');
-            if (response.status === 200) {
-              console.log(response.data);
-              const doctorData: Doctor[] = response.data;
-              setDoctors(doctorData);
-            }
-            else{
-              console.log("error fetching staff: " + response.status)
-              console.log("response data: " + response.data)
-            }
+        const getAllStaff = async () => {
+          const patientData = useFetchAllStaff()
+          if (patientData){
+            setDoctors(patientData)
+          } else {
+            setDoctors([])
+          }
         };
-    
-        fetchData();
+        getAllStaff();
       }
       else{
         const canMakeRequest = RequestTimer()
@@ -178,7 +197,7 @@ const MessagesPage2 = () => {
         } 
         if(canMakeRequest) {
           const getPatients = async () => {
-            const patientData = await fetchAllPatients()
+            const patientData = useFetchAllPatients()
             if (patientData){
               setPatients(patientData)
             } else {
@@ -206,7 +225,7 @@ const MessagesPage2 = () => {
           <ListGroupGeneric<Doctor>
             items={doctors}
             getKey={(doctor) => doctor.id.toString()}
-            getLabel={(doctor) => `${doctor.firstName} ${doctor.lastName} (ID: ${doctor.id}) ${doctor.privilege}`}
+            getLabel={(doctor) => `${doctor.firstName} ${doctor.lastName} (ID: ${doctor.id})`}
             onSelectItem={(doctor) => handleSelectPerson(doctor.id)}
           />
           

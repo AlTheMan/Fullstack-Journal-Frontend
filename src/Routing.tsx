@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/login/LoginPage";
-import MessagesPage from "./pages/MessagesPage";
+import MessagesPage from "./pages/message/MessagesPage.tsx";
 import ConditionPage from "./pages/conditions/ConditionPage.tsx";
 import ObservationPage from "./pages/observations/ObservationPage.tsx";
 import RegisterPage from "./pages/login/RegisterPage";
@@ -21,13 +21,14 @@ import SearchPage from "./pages/search/SearchPage";
 import SearchPatientPage from "./pages/search/SearchPatientPage";
 import SearchEncounterPage from "./pages/search/SearchEncounterPage";
 import ChatRoom from "./pages/message/ChatRoom";
+import MessagesPage2 from "./pages/message/MessagesPage2.tsx";
 
 export const Routing = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/MessagesPage" element={<ChatRoom />} />
+        <Route path="/MessagesPage" element={<MessagesPage2 />} />
         <Route path="/ConditionPage" element={<ConditionPage />} />
         <Route path="/EncounterPage" element={<EncounterPage />} />
         <Route path="/AddNote" element={<AddNote />} />

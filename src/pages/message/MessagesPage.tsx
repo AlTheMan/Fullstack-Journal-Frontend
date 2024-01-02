@@ -1,12 +1,12 @@
 // MessagesPage.tsx
 import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import NavBar from "../components/NavBar";
-import MessageForm from '../components/MessageForm';
-import ListGroupGeneric from '../components/ListGroupGeneric';
-import { useFetchAllPatients } from '../api/patient/UseFetchAllPatients.tsx';
-import { RequestTimer } from '../api/RequestTimer';
-import { messageApiAddress } from '../api/RequestAddresses';
+import NavBar from "../../components/NavBar.tsx";
+import MessageForm from '../../components/MessageForm.tsx';
+import ListGroupGeneric from '../../components/ListGroupGeneric.tsx';
+import { useFetchAllPatients } from '../../api/patient/UseFetchAllPatients.tsx';
+import { RequestTimer } from '../../api/RequestTimer.ts';
+import { messageApiAddress } from '../../api/RequestAddresses.ts';
 
 
 
