@@ -1,13 +1,12 @@
 interface ChatMessage {
-    senderName: string;
-    receiverName?: string;
+    senderId: number;
+    receiverId: number;
     message: string;
     status: "JOIN" | "MESSAGE";
 }
 
 interface UserData {
-    username: string;
-    receivername: string;
+    myId: number;
     connected: boolean;
     message: string;
 }
