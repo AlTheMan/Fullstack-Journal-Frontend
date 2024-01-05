@@ -1,10 +1,9 @@
 
 
-interface ImageMetadata {
+interface ImageMetaData {
     mongoId: string
     patientId: number,
-    images: imageData[]
-
+    images: ImageData[]
 }
 
 interface EncodedImage {
@@ -13,7 +12,7 @@ interface EncodedImage {
 }
 
 
-interface imageData {
+interface ImageData {
     imageId: string,
     description: string,
     contentType: string

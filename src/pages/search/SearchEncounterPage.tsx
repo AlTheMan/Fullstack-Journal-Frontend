@@ -1,8 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "../../App.css";
 import GenericTable from "../../components/GenericTable";
 import NavBar from "../../components/NavBar";
-import { getEncountersByDate } from "../../api/GetÉncountersByDate";
+import {searchEncountersByDate} from "../../api/search/SearchEncountersByDate.ts";
+import {useKeycloak} from "@react-keycloak/web";
 
 const SearchEncounterPage: React.FC = () => {
     const id: number = Number(localStorage.getItem("id")) || -1;
@@ -10,6 +11,7 @@ const SearchEncounterPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [inputDate, setInputDate] = useState('');
+  const {keycloak} = useKeycloak()
 
   // Function to update state when the date changes
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,7 +22,7 @@ const SearchEncounterPage: React.FC = () => {
   // Function to handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const encounterData = await getEncountersByDate(id, inputDate);
+    const encounterData = await searchEncountersByDate(id, inputDate, keycloak.token)
     if (encounterData) {
         console.log("successfully retreived encounters");
         setEncounters(encounterData);

@@ -1,7 +1,6 @@
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import fetchData from "../../api/NamedPersonApi";
 import PatientList from "./PatientList";
 import NavBar from "../../components/NavBar";
 import { Button } from "react-bootstrap";
@@ -11,9 +10,10 @@ import { searchPatientsByConditionCode } from "../../api/search/SearchPatientsBy
 import { searchPatientsByConditionBodySite } from "../../api/search/SearchPatientsByConditionBodySite";
 import { searchPatientsByConditionCategory } from "../../api/search/SearchPatientsByConditionCategory";
 import { useKeycloak } from "@react-keycloak/web";
+import {useFetchStaffData} from "../../api/staff/UseFetchStaffData.ts";
 
 const SearchPatientPage: React.FC = () => {
-  const [doctor, setDoctor] = useState<Staff | null>(null);
+  const [doctor, setDoctor] = useState<ReturnedStaffProps | null>(null);
 
   const id: number = Number(localStorage.getItem("id")) || -1;
   const [searchInputPatientName, setSearchInputPatientName] = useState<string>("");
@@ -21,25 +21,22 @@ const SearchPatientPage: React.FC = () => {
   const [searchInputConditionBodySite, setSearchInputConditionBodySite] = useState<string>("");
   const [searchInputConditionCategory, setSearchInputConditionCategory] = useState<string>("");
   const { keycloak } = useKeycloak();
+  const staffData = useFetchStaffData(id)
+  const navigate = useNavigate();
+
 
 
 
   useEffect(() => {
-    const loadDoctor = async () => {
-      const doctorData = await fetchData(id);
-      if (doctorData) {
-        setDoctor(doctorData);
-      }
-    };
-
-    loadDoctor();
-  }, [id]);
+    if (staffData){
+      setDoctor(staffData)
+    }
+  }, [id, staffData]);
 
 
   const [patients, setPatients] = useState<Patient[]>([]);
 
 
-  const navigate = useNavigate();
 
   const handleSelectPerson = (patient: Patient) => {
     const privilege: string = localStorage.getItem("privilege") || "";
@@ -112,7 +109,7 @@ const SearchPatientPage: React.FC = () => {
     setPatientData(patientData);
   };
 
-  const handleRetreiveDoctorPatients = async (e: React.FormEvent) => {
+  const handleRetrieveDoctorPatients = async (e: React.FormEvent) => {
     e.preventDefault();
     handleToken()
     const patientData = await searchPatientsByDoctorId(id, keycloak.token);
@@ -126,8 +123,8 @@ const SearchPatientPage: React.FC = () => {
       <NavBar></NavBar>
       <div>
         <h1>Welcome: {doctor?.firstName} {doctor?.lastName}</h1>
-        <Button onClick={handleRetreiveDoctorPatients}>
-          Retreive my patients
+        <Button onClick={handleRetrieveDoctorPatients}>
+          Retrieve my patients
         </Button>
         <form onSubmit={handleSearchSubmitPatientName}>
           <input type="text" value={searchInputPatientName} onChange={handleSearchChangePatientName} placeholder="Patient name" />
