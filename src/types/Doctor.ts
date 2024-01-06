@@ -1,5 +1,5 @@
 interface Doctor {
-    id: Number;
+    id: number;
     firstName: string,
     lastName: string
 }

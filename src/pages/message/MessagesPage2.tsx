@@ -38,7 +38,6 @@ const MessagesPage2 = () => {
     const [myId, setMyId] = useState<MyIdType | undefined>(undefined);
     const messagesEndRef = useRef<null | HTMLDivElement>(null);
     const myId2: number = Number(localStorage.getItem("id")) || -1; //ifall att numret är null så sätts värdet till "-1"
-    const privilege2: string = localStorage.getItem("privilege") || "";
 
 
     const [socketConnected, setSocketConnected] = useState(false);
