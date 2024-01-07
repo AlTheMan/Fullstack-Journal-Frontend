@@ -1,12 +1,12 @@
 import axios from "axios";
 import { imageApiAddress } from "../../api/RequestAddresses";
 
-export const fetchImageMetadata = async (patientId: number) => {
-  const requestUri = imageApiAddress() + "image_data";
+export const fetchImageMetadata = async (patientId: number, token: string | undefined) => {
+  const requestUri = imageApiAddress() + "image/data";
 
   try {
-    const response = await axios.get<ImageMetadata>(requestUri, {
-      params: { patientId },
+    const response = await axios.get<ImageMetaData>(requestUri, {
+      params: { patientId }, headers: {Authorization: `Bearer ${token}`}
     });
 
     if (response.status === 200) {
@@ -22,11 +22,11 @@ export const fetchImageMetadata = async (patientId: number) => {
   }
 };
 
-export const fetchImage = async (imageId: string, mongoId: string) => {
+export const fetchImage = async (imageId: string, mongoId: string, token: string | undefined) => {
   const requestUri = imageApiAddress() + "image";
   try {
     const response = await axios.get<EncodedImage>(requestUri, {
-      params: { mongoId, imageId },
+      params: { mongoId, imageId },headers: {Authorization: `Bearer ${token}`}
     });
 
     if (response.status === 200) {
@@ -51,9 +51,9 @@ export const fetchImage = async (imageId: string, mongoId: string) => {
 export const addImageToDb = async (
   imageData: string,
   patientId: string,
-  description: string
+  description: string,
+  token: string | undefined
 ): Promise<boolean> => {
-  // Check for required parameters
   if (!imageData || !patientId || !description) {
     console.error("Missing required parameters");
     return false;
@@ -75,6 +75,7 @@ export const addImageToDb = async (
     const result = await axios.post(requestUri, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`
       },
     });
 
@@ -99,7 +100,8 @@ export const putImageToDb = async (
   imageData: string,
   patientId: string,
   description: string,
-  imageId: string
+  imageId: string,
+  token: string | undefined
 ): Promise<boolean> => {
   if (!imageData || !patientId || !description || !imageId) {
     console.error("Missing required parameters");
@@ -123,6 +125,7 @@ export const putImageToDb = async (
     const result = await axios.put(requestUri, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`
       },
     });
 

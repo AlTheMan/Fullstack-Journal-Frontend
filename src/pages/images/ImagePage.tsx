@@ -16,14 +16,15 @@ import TwoRadioButtons from "../../components/RadioButton";
 import { Popup } from "../../components/SaveImagePopup";
 import { InformationPopup } from "../../components/InformationPopup";
 import NavBar from "../../components/NavBar";
+import {useKeycloak} from "@react-keycloak/web";
 
 const ImagesPage: React.FC = () => {
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
-  const [imagesMetaData, setImagesMetaData] = useState<ImageMetadata | null>(
+  const [imagesMetaData, setImagesMetaData] = useState<ImageMetaData | null>(
     null
   );
 
-  const [imageMeta, setImageMeta] = useState<imageData[]>([]);
+  const [imageMeta, setImageMeta] = useState<ImageData[]>([]);
 
   const [currentImageId, setCurrentImageId] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -42,6 +43,7 @@ const ImagesPage: React.FC = () => {
   const [informationPopupText, setInformationPopupText] = useState<string>("");
   const [informationPopupVisible, setInformationPopupVisible] = useState<boolean>(false);
   const [resetImage, setResetImage] = useState<boolean>(false);
+  const {keycloak} = useKeycloak()
 
   const handleResetPopup = () => {
     setResetImage(!resetImage);
@@ -49,6 +51,14 @@ const ImagesPage: React.FC = () => {
   const handleCloseInformationPopup = () => {
     setInformationPopupText("");
     setInformationPopupVisible(false);
+  }
+
+  const handleToken = () => {
+    keycloak.updateToken(30).then(function () {
+    }).catch(function () {
+      alert('Failed to refresh token, or the session has expired');
+      return
+    });
   }
 
 
@@ -60,23 +70,26 @@ const ImagesPage: React.FC = () => {
     if (currentImageId === null) return;
 
     if (!inputText || inputText.length < 3) {
-      setInputError("Please enter atleast 3 characters");
+      setInputError("Please enter at least 3 characters");
       return;
     } else if (inputText.length > 30) {
       setInputError("Please enter less than 30 characters");
       return;
     }
-    let isSuccess = false;
+    let isSuccess: boolean;
+
+    handleToken()
+
     if (currentImageId.length === 0) {
       // image loaded from file, post
-      isSuccess = await addImageToDb(imageData, selectedPatient.id.toString(), inputText);
+      isSuccess = await addImageToDb(imageData, selectedPatient.id.toString(), inputText, keycloak.token);
     } else {
       // image loaded from db, put
       isSuccess = await putImageToDb(
         imageData,
         selectedPatient.id.toString(),
         inputText,
-        currentImageId
+        currentImageId, keycloak.token
       );
     }
 
@@ -135,7 +148,8 @@ const ImagesPage: React.FC = () => {
   const handleDropdownItemClick = async (itemId: string) => {
     if (imagesMetaData && imagesMetaData.mongoId) {
       try {
-        const imageData = await fetchImage(itemId, imagesMetaData.mongoId);
+        handleToken()
+        const imageData = await fetchImage(itemId, imagesMetaData.mongoId, keycloak.token);
         if (imageData) {
           const base64Image = imageData.base64Image;
           const contentType = imageData.contentType;
@@ -180,7 +194,8 @@ const ImagesPage: React.FC = () => {
       const loadImages = async () => {
         setLoading(true);
         try {
-          const metadata = await fetchImageMetadata(selectedPatient.id);
+          handleToken()
+          const metadata = await fetchImageMetadata(selectedPatient.id, keycloak.token);
           if (metadata && metadata.images) {
             setImagesMetaData(metadata);
             setImageMeta(metadata.images);

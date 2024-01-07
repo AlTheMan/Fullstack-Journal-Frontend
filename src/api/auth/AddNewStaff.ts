@@ -10,7 +10,7 @@ export const addNewStaff = async (
 
 ): Promise<ReturnedStaffProps | null> => {
     try {
-        const addedStaff = await axios.post(patientApiAddress() + '/add-staff', {
+        const addedStaff = await axios.post(patientApiAddress() + 'add-staff', {
             firstName, lastName, privilege, userId
         }, {
             headers: {
