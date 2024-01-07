@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/login/LoginPage";
-import MessagesPage from "./pages/message/MessagesPage.tsx";
 import ConditionPage from "./pages/conditions/ConditionPage.tsx";
 import ObservationPage from "./pages/observations/ObservationPage.tsx";
 import RegisterPage from "./pages/login/RegisterPage";
@@ -20,7 +19,6 @@ import ImagePage from "./pages/images/ImagePage";
 import SearchPage from "./pages/search/SearchPage";
 import SearchPatientPage from "./pages/search/SearchPatientPage";
 import SearchEncounterPage from "./pages/search/SearchEncounterPage";
-import ChatRoom from "./pages/message/ChatRoom";
 import MessagesPage2 from "./pages/message/MessagesPage2.tsx";
 
 export const Routing = () => {
